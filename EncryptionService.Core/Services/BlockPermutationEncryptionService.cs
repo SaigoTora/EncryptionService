@@ -7,12 +7,12 @@ namespace EncryptionService.Core.Services
 	{
 		private const char FILL_CHAR = '.';
 
-		public string Encrypt(string text, BlockPermutationKey encryptionKey)
+		public EncryptionResult Encrypt(string text, BlockPermutationKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
-		public string Decrypt(string encryptedText, BlockPermutationKey encryptionKey)
+		public EncryptionResult Decrypt(string encryptedText, BlockPermutationKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
 
-		private static string ProcessEncryption(string text, BlockPermutationKey encryptionKey,
+		private static EncryptionResult ProcessEncryption(string text, BlockPermutationKey encryptionKey,
 			bool isEncryption)
 		{
 			while (text.Length % encryptionKey.Key.Length != 0)
@@ -37,7 +37,7 @@ namespace EncryptionService.Core.Services
 					resultArr[i] = text[index];
 			}
 
-			return new string(resultArr);
+			return new(new string(resultArr));
 		}
 	}
 }

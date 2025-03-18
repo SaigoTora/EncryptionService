@@ -24,13 +24,18 @@ namespace EncryptionService.Controllers
 				return View(encryptionViewModel);
 
 			BlockPermutationKey key = _encryptionSettings.BlockPermutationKey;
+			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
-				encryptionViewModel.EncryptedText =
-					_encryptionService.Encrypt(encryptionViewModel.InputText!, key);
+			{
+				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!, key);
+				encryptionViewModel.EncryptedText = encryptionResult.Text;
+			}
 			else if (actionType == "Decrypt")
-				encryptionViewModel.DecryptedText =
-					_encryptionService.Decrypt(encryptionViewModel.EncryptedInputText!, key);
+			{
+				encryptionResult = _encryptionService.Decrypt(encryptionViewModel.EncryptedInputText!, key);
+				encryptionViewModel.DecryptedText = encryptionResult.Text;
+			}
 
 			return View(encryptionViewModel);
 		}
