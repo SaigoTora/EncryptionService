@@ -4,6 +4,6 @@ namespace EncryptionService.Configurations
 {
 	public class EncryptionSettings
 	{
-		public required BlockPermutationKey BlockPermutationKey { get; set; }
+		public required BlockTranspositionKey BlockTranspositionKey { get; set; }
 	}
 }

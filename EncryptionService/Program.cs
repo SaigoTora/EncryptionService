@@ -14,8 +14,8 @@ builder.Services.AddControllersWithViews(options =>
 });
 builder.Services.Configure<EncryptionSettings>(
 		builder.Configuration.GetSection(nameof(EncryptionSettings)));
-builder.Services.AddScoped<IEncryptionService<BlockPermutationKey, int[]>,
-	BlockPermutationEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<BlockTranspositionKey, int[]>,
+	BlockTranspositionEncryptionService>();
 
 
 var app = builder.Build();
