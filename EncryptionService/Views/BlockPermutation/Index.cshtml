@@ -1,12 +1,12 @@
 ﻿@model EncryptionViewModel
 
 @{
-	ViewData["Title"] = "Block Permutation";
+	ViewData["Title"] = "Block transposition";
 }
 
-<h1>Block Permutation</h1>
+<h1>Block transposition</h1>
 
-<form asp-controller="BlockPermutation" asp-action="Index" method="post">
+<form asp-controller="BlockTransposition" asp-action="Index" method="post">
 	<div class="form-group">
 		<label asp-for="InputText" class="control-label">Text: </label>
 		<input asp-for="InputText" class="form-control w-50" />

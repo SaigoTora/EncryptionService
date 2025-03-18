@@ -8,11 +8,11 @@ using Microsoft.Extensions.Options;
 
 namespace EncryptionService.Controllers
 {
-	public class BlockPermutationController(IEncryptionService<BlockPermutationKey, int[]> encryptionService,
+	public class BlockTranspositionController(IEncryptionService<BlockTranspositionKey, int[]> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<BlockPermutationKey, int[]> _encryptionService = encryptionService;
+		readonly IEncryptionService<BlockTranspositionKey, int[]> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
@@ -23,7 +23,7 @@ namespace EncryptionService.Controllers
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockPermutationKey key = _encryptionSettings.BlockPermutationKey;
+			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")

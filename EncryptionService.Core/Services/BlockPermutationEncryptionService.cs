@@ -3,16 +3,16 @@ using EncryptionService.Core.Models;
 
 namespace EncryptionService.Core.Services
 {
-	public class BlockPermutationEncryptionService : IEncryptionService<BlockPermutationKey, int[]>
+	public class BlockTranspositionEncryptionService : IEncryptionService<BlockTranspositionKey, int[]>
 	{
 		private const char FILL_CHAR = '.';
 
-		public EncryptionResult Encrypt(string text, BlockPermutationKey encryptionKey)
+		public EncryptionResult Encrypt(string text, BlockTranspositionKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
-		public EncryptionResult Decrypt(string encryptedText, BlockPermutationKey encryptionKey)
+		public EncryptionResult Decrypt(string encryptedText, BlockTranspositionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
 
-		private static EncryptionResult ProcessEncryption(string text, BlockPermutationKey encryptionKey,
+		private static EncryptionResult ProcessEncryption(string text, BlockTranspositionKey encryptionKey,
 			bool isEncryption)
 		{
 			while (text.Length % encryptionKey.Key.Length != 0)
