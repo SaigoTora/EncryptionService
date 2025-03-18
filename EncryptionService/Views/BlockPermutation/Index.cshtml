@@ -1,0 +1,40 @@
+﻿@model EncryptionViewModel
+
+@{
+	ViewData["Title"] = "Block Permutation";
+}
+
+<h1>Block Permutation</h1>
+
+<form asp-controller="BlockPermutation" asp-action="Index" method="post">
+	<div class="form-group">
+		<label asp-for="InputText" class="control-label">Text: </label>
+		<input asp-for="InputText" class="form-control w-50" />
+	</div>
+
+	@if (Model != null && !string.IsNullOrWhiteSpace(Model.EncryptedText))
+	{
+		<p>Result: <b>@Model.EncryptedText</b></p>
+	}
+
+	<div class="form-group">
+		<button type="submit" name="actionType" value="Encrypt" class="btn btn-primary">Encrypt</button>
+	</div>
+
+
+	<div class="form-group">
+		<label asp-for="EncryptedInputText" class="control-label">Encrypted text: </label>
+		<input asp-for="EncryptedInputText" class="form-control w-50" />
+	</div>
+
+	@if (Model != null && !string.IsNullOrWhiteSpace(Model.DecryptedText))
+	{
+		<p>Result: <b>@Model.DecryptedText</b></p>
+	}
+
+	<div class="form-group">
+		<button type="submit" name="actionType" value="Decrypt" class="btn btn-primary">Decrypt</button>
+	</div>
+	<span asp-validation-for="InputText" class="text-danger"></span>
+	<span asp-validation-for="EncryptedInputText" class="text-danger"></span>
+</form>
