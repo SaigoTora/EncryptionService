@@ -1,4 +1,4 @@
-﻿@model EncryptionViewModel
+﻿@model EncryptionViewModel<EncryptionResult>
 
 @{
 	ViewData["Title"] = "Block transposition";
@@ -12,9 +12,10 @@
 		<input asp-for="InputText" class="form-control w-50" />
 	</div>
 
-	@if (Model != null && !string.IsNullOrWhiteSpace(Model.EncryptedText))
+	@if (Model != null && Model.EncryptionResult != null)
 	{
-		<p>Result: <b>@Model.EncryptedText</b></p>
+		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+				Model.EncryptionResult)
 	}
 
 	<div class="form-group">
@@ -27,9 +28,10 @@
 		<input asp-for="EncryptedInputText" class="form-control w-50" />
 	</div>
 
-	@if (Model != null && !string.IsNullOrWhiteSpace(Model.DecryptedText))
+	@if (Model != null && Model.DecryptionResult != null)
 	{
-		<p>Result: <b>@Model.DecryptedText</b></p>
+		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+				Model.DecryptionResult)
 	}
 
 	<div class="form-group">

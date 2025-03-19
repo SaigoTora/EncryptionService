@@ -2,18 +2,13 @@
 
 namespace EncryptionService.Models.Attributes
 {
-	public class AtLeastOneFieldRequiredAttribute : ValidationAttribute
+	public class AtLeastOneFieldRequiredAttribute(string otherPropertyName,
+		string errorMessage = "") : ValidationAttribute(errorMessage)
 	{
-		private readonly string _otherPropertyName;
+		private readonly string _otherPropertyName = otherPropertyName;
 
-		public AtLeastOneFieldRequiredAttribute(string otherPropertyName,
-			string errorMessage = "")
-			: base(errorMessage)
-		{
-			_otherPropertyName = otherPropertyName;
-		}
-
-		protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+		protected override ValidationResult? IsValid(object? value,
+			ValidationContext validationContext)
 		{
 			var otherProperty = validationContext.ObjectType.GetProperty(_otherPropertyName);
 			if (otherProperty == null)

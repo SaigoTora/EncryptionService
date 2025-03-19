@@ -9,34 +9,38 @@ using EncryptionService.Models;
 namespace EncryptionService.Controllers
 {
 	public class VerticalTranspositionController(
-		IEncryptionService<VerticalTranspositionKey, string> encryptionService,
+		IEncryptionService<VerticalTranspositionEncryptionResult, VerticalTranspositionKey, string>
+		encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings) : Controller
 	{
-		readonly IEncryptionService<VerticalTranspositionKey, string> _encryptionService
-			= encryptionService;
+		readonly IEncryptionService<VerticalTranspositionEncryptionResult,
+			VerticalTranspositionKey, string> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel encryptionViewModel, string actionType)
+		public IActionResult Index(
+			EncryptionViewModel<VerticalTranspositionEncryptionResult> encryptionViewModel,
+			string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
 			VerticalTranspositionKey key = _encryptionSettings.VerticalTranspositionKey;
-			EncryptionResult encryptionResult;
+			ViewData["Key"] = key.Key;
+			VerticalTranspositionEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{
 				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!, key);
-				encryptionViewModel.EncryptedText = encryptionResult.Text;
+				encryptionViewModel.EncryptionResult = encryptionResult;
 			}
 			else if (actionType == "Decrypt")
 			{
-				encryptionResult = _encryptionService.Decrypt(encryptionViewModel.EncryptedInputText!,
-					key);
-				encryptionViewModel.DecryptedText = encryptionResult.Text;
+				encryptionResult = _encryptionService.Decrypt(
+					encryptionViewModel.EncryptedInputText!, key);
+				encryptionViewModel.DecryptionResult = encryptionResult;
 			}
 
 			return View(encryptionViewModel);

@@ -4,16 +4,19 @@ using EncryptionService.Core.Models;
 namespace EncryptionService.Core.Services
 {
 	public class VerticalTranspositionEncryptionService
-		: IEncryptionService<VerticalTranspositionKey, string>
+		: IEncryptionService<VerticalTranspositionEncryptionResult, VerticalTranspositionKey,
+			string>
 	{
 		private const char FILL_CHAR = '.';
 
-		public EncryptionResult Encrypt(string text, VerticalTranspositionKey encryptionKey)
+		public VerticalTranspositionEncryptionResult Encrypt(string text,
+			VerticalTranspositionKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
-		public EncryptionResult Decrypt(string encryptedText, VerticalTranspositionKey encryptionKey)
+		public VerticalTranspositionEncryptionResult Decrypt(string encryptedText,
+			VerticalTranspositionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
 
-		private static EncryptionResult ProcessEncryption(string text,
+		private static VerticalTranspositionEncryptionResult ProcessEncryption(string text,
 			VerticalTranspositionKey encryptionKey, bool isEncryption)
 		{
 			var sorted = encryptionKey.Key
@@ -22,8 +25,8 @@ namespace EncryptionService.Core.Services
 				.Select((x, newIndex) => new { x.index, newIndex })
 				.ToDictionary(x => x.index, x => x.newIndex);
 
-			char[,] matrix = new char[(int)Math.Ceiling((double)text.Length / encryptionKey.Key.Length),
-				encryptionKey.Key.Length];
+			char[,] matrix = new char[(int)Math.Ceiling((double)text.Length
+				/ encryptionKey.Key.Length), encryptionKey.Key.Length];
 			matrix = FillMatrix(matrix, text, sorted, isEncryption);
 
 			string resultText = string.Empty;
@@ -36,8 +39,8 @@ namespace EncryptionService.Core.Services
 					for (int j = 0; j < matrix.GetLength(1); j++)
 						resultText += matrix[i, j];
 
-			//int[] sortIndixes = [.. encryptionKey.Key.Select((_, i) => sorted[i])];
-			return new EncryptionResult(resultText);
+			int[] sortIndixes = [.. encryptionKey.Key.Select((_, i) => sorted[i])];
+			return new VerticalTranspositionEncryptionResult(resultText, matrix, sortIndixes);
 		}
 		private static char[,] FillMatrix(char[,] matrix, string text, Dictionary<int, int> sorted,
 			bool isEncryption)

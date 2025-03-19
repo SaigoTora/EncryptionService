@@ -1,0 +1,39 @@
+﻿@model VerticalTranspositionEncryptionResult
+
+@if (Model != null)
+{
+	<table>
+		@if (ViewData["Key"] != null)
+		{
+			<tr>
+				@foreach (var ch in ViewData["Key"]!.ToString()!.ToCharArray())
+				{
+					<td>@ch</td>
+				}
+			</tr>
+		}
+		@if (Model.Indexes != null)
+		{
+			<tr>
+				@foreach (var index in Model.Indexes)
+				{
+					<td>@(index + 1)</td>
+				}
+			</tr>
+		}
+		@if (Model.Matrix != null)
+		{
+			@for (int i = 0; i < Model.Matrix.GetLength(0); i++)
+			{
+				<tr>
+					@for (int j = 0; j < Model.Matrix.GetLength(1); j++)
+					{
+						<td>@Model.Matrix[i, j]</td>
+					}
+				</tr>
+			}
+		}
+	</table>
+
+	@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)
+}

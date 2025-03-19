@@ -3,8 +3,8 @@ using EncryptionService.Core.Models;
 
 namespace EncryptionService.Core.Services
 {
-	public class BlockTranspositionEncryptionService : IEncryptionService<BlockTranspositionKey,
-		int[]>
+	public class BlockTranspositionEncryptionService
+		: IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
 	{
 		private const char FILL_CHAR = '.';
 

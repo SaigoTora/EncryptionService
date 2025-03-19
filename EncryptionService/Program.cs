@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 
+using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
 using EncryptionService.Core.Services;
-using EncryptionService.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +14,10 @@ builder.Services.AddControllersWithViews(options =>
 });
 builder.Services.Configure<EncryptionSettings>(
 		builder.Configuration.GetSection(nameof(EncryptionSettings)));
-builder.Services.AddScoped<IEncryptionService<BlockTranspositionKey, int[]>,
+builder.Services.AddScoped<IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>,
 	BlockTranspositionEncryptionService>();
-builder.Services.AddScoped<IEncryptionService<VerticalTranspositionKey, string>,
-	VerticalTranspositionEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<VerticalTranspositionEncryptionResult,
+	VerticalTranspositionKey, string>, VerticalTranspositionEncryptionService>();
 
 
 var app = builder.Build();

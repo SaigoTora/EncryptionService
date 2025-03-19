@@ -2,9 +2,11 @@
 
 namespace EncryptionService.Core.Interfaces
 {
-	public interface IEncryptionService<TKey, T> where TKey : IEncryptionKey<T>
+	public interface IEncryptionService<TEncryptionResult, TEncryptionKey, TKeyData>
+		where TEncryptionResult : EncryptionResult
+		where TEncryptionKey : IEncryptionKey<TKeyData>
 	{
-		EncryptionResult Encrypt(string text, TKey encryptionKey);
-		EncryptionResult Decrypt(string encryptedText, TKey encryptionKey);
+		TEncryptionResult Encrypt(string text, TEncryptionKey encryptionKey);
+		TEncryptionResult Decrypt(string encryptedText, TEncryptionKey encryptionKey);
 	}
 }
