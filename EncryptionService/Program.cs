@@ -16,6 +16,8 @@ builder.Services.Configure<EncryptionSettings>(
 		builder.Configuration.GetSection(nameof(EncryptionSettings)));
 builder.Services.AddScoped<IEncryptionService<BlockTranspositionKey, int[]>,
 	BlockTranspositionEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<VerticalTranspositionKey, string>,
+	VerticalTranspositionEncryptionService>();
 
 
 var app = builder.Build();
