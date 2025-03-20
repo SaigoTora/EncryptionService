@@ -3,7 +3,8 @@ using EncryptionService.Core.Models;
 
 namespace EncryptionService.Core.Services
 {
-	public class BlockTranspositionEncryptionService : IEncryptionService<BlockTranspositionKey, int[]>
+	public class BlockTranspositionEncryptionService
+		: IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
 	{
 		private const char FILL_CHAR = '.';
 
@@ -12,8 +13,8 @@ namespace EncryptionService.Core.Services
 		public EncryptionResult Decrypt(string encryptedText, BlockTranspositionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
 
-		private static EncryptionResult ProcessEncryption(string text, BlockTranspositionKey encryptionKey,
-			bool isEncryption)
+		private static EncryptionResult ProcessEncryption(string text,
+			BlockTranspositionKey encryptionKey, bool isEncryption)
 		{
 			while (text.Length % encryptionKey.Key.Length != 0)
 				text += FILL_CHAR;

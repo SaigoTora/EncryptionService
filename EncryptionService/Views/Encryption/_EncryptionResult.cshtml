@@ -1,0 +1,6 @@
+﻿@model EncryptionResult
+
+@if (!string.IsNullOrWhiteSpace(Model.Text))
+{
+	<p>Result: <span class="encryption-result-text">@Model.Text</span></p>
+}

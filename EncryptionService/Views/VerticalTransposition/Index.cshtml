@@ -1,12 +1,12 @@
-﻿@model EncryptionViewModel<EncryptionResult>
+﻿@model EncryptionViewModel<VerticalTranspositionEncryptionResult>
 
 @{
-	ViewData["Title"] = "Block transposition";
+	ViewData["Title"] = "Vertical transposition";
 }
 
-<h1 class="mb-5">Block transposition</h1>
+<h1 class="mb-5">Vertical transposition</h1>
 
-<form class="w-100" asp-controller="BlockTransposition" asp-action="Index" method="post">
+<form class="w-100" asp-controller="VerticalTransposition" asp-action="Index" method="post">
 	<div class="form__group field">
 		<input asp-for="InputText" class="form__field" placeholder="Text" />
 		<label asp-for="InputText" class="form__label">Text</label>
@@ -14,7 +14,7 @@
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_VerticalTranspositionEncryptionResult.cshtml",
 				Model.EncryptionResult)
 	}
 
@@ -30,7 +30,7 @@
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_VerticalTranspositionEncryptionResult.cshtml",
 				Model.DecryptionResult)
 	}
 

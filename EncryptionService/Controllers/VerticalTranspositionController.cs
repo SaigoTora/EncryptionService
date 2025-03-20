@@ -8,27 +8,28 @@ using EncryptionService.Models;
 
 namespace EncryptionService.Controllers
 {
-	public class BlockTranspositionController(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
-		IOptions<EncryptionSettings> encryptionSettings)
-		: Controller
+	public class VerticalTranspositionController(
+		IEncryptionService<VerticalTranspositionEncryptionResult, VerticalTranspositionKey, string>
+		encryptionService,
+		IOptions<EncryptionSettings> encryptionSettings) : Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
-			_encryptionService = encryptionService;
+		readonly IEncryptionService<VerticalTranspositionEncryptionResult,
+			VerticalTranspositionKey, string> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<EncryptionResult> encryptionViewModel,
+		public IActionResult Index(
+			EncryptionViewModel<VerticalTranspositionEncryptionResult> encryptionViewModel,
 			string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
-			ViewData["Key"] = string.Join("", key.Key);
-			EncryptionResult encryptionResult;
+			VerticalTranspositionKey key = _encryptionSettings.VerticalTranspositionKey;
+			ViewData["Key"] = key.Key;
+			VerticalTranspositionEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{
