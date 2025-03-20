@@ -67,6 +67,10 @@ table {
     border: 2px solid white !important;
 }
 
+td, th {
+    text-align: center;
+}
+
 .vertical-transposition-table tr:nth-child(1) {
     font-weight: bold;
 }

@@ -1,0 +1,77 @@
+﻿@model EquivalentTranspositionEncryptionResult
+
+@if (Model.InitialMatrix != null)
+{
+	<table class="mb-3 table-striped table-bordered">
+		@if (ViewData["KeyColumnNumbers"] is int[] columnNumbers)
+		{
+			<tr>
+				<th class="p-2"></th>
+				@for (int i = 0; i < columnNumbers.Length; i++)
+				{
+					<th class="p-2">@columnNumbers[i]</th>
+				}
+			</tr>
+		}
+		@{
+			int[]? rowNumbers = ViewData["KeyRowNumbers"] as int[];
+		}
+		@for (int i = 0; i < Model.InitialMatrix.GetLength(0); i++)
+		{
+			<tr>
+				@if (rowNumbers != null)
+				{
+					<td class="p-2">@rowNumbers[i]</td>
+				}
+				@for (int j = 0; j < Model.InitialMatrix.GetLength(1); j++)
+				{
+					<td class="p-2">@Model.InitialMatrix[i, j]</td>
+				}
+			</tr>
+		}
+	</table>
+}
+
+@if (Model.TranspositionMatrix != null)
+{
+	<table class="mb-3 table-striped table-bordered">
+		<tr>
+			<td class="p-2"></td>
+			@for (int j = 0; j < Model.TranspositionMatrix.GetLength(1); j++)
+			{
+				<td class="p-2">@(j + 1)</td>
+			}
+		</tr>
+		@for (int i = 0; i < Model.TranspositionMatrix.GetLength(0); i++)
+		{
+			<tr>
+				<td class="p-2">@(i + 1)</td>
+				@for (int j = 0; j < Model.TranspositionMatrix.GetLength(1); j++)
+				{
+					<td class="p-2">@Model.TranspositionMatrix[i, j]</td>
+				}
+			</tr>
+		}
+	</table>
+}
+
+@if (Model.TranspositionIndexes != null)
+{
+	<table class="mb-3 table-striped table-bordered">
+		<tr>
+			@for (int i = 0; i < Model.TranspositionIndexes.Length; i++)
+			{
+				<td class="p-2">@(Model.TranspositionIndexes[i] + 1)</td>
+			}
+		</tr>
+		<tr>
+			@for (int i = 0; i < Model.Text.Length; i++)
+			{
+				<td class="p-2">@Model.Text[i]</td>
+			}
+		</tr>
+	</table>
+}
+
+
+@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)

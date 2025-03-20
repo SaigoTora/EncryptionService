@@ -1,39 +1,36 @@
 ﻿@model VerticalTranspositionEncryptionResult
 
-@if (Model != null)
-{
-	<table class="mb-2 table-striped table-bordered vertical-transposition-table">
-		@if (ViewData["Key"] != null)
-		{
-			<tr>
-				@foreach (var ch in ViewData["Key"]!.ToString()!.ToCharArray())
-				{
-					<th class="p-2">@ch</th>
-				}
-			</tr>
-		}
-		@if (Model.Indexes != null)
-		{
-			<tr>
-				@foreach (var index in Model.Indexes)
-				{
-					<th class="p-2">@(index + 1)</th>
-				}
-			</tr>
-		}
-		@if (Model.Matrix != null)
-		{
-			@for (int i = 0; i < Model.Matrix.GetLength(0); i++)
+<table class="mb-2 table-striped table-bordered vertical-transposition-table">
+	@if (ViewData["Key"] != null)
+	{
+		<tr>
+			@foreach (var ch in ViewData["Key"]!.ToString()!.ToCharArray())
 			{
-				<tr>
-					@for (int j = 0; j < Model.Matrix.GetLength(1); j++)
-					{
-						<td class="p-2">@Model.Matrix[i, j]</td>
-					}
-				</tr>
+				<th class="p-2">@ch</th>
 			}
+		</tr>
+	}
+	@if (Model.Indexes != null)
+	{
+		<tr>
+			@foreach (var index in Model.Indexes)
+			{
+				<th class="p-2">@(index + 1)</th>
+			}
+		</tr>
+	}
+	@if (Model.Matrix != null)
+	{
+		@for (int i = 0; i < Model.Matrix.GetLength(0); i++)
+		{
+			<tr>
+				@for (int j = 0; j < Model.Matrix.GetLength(1); j++)
+				{
+					<td class="p-2">@Model.Matrix[i, j]</td>
+				}
+			</tr>
 		}
-	</table>
+	}
+</table>
 
-	@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)
-}
+@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)

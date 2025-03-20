@@ -9,26 +9,28 @@ using EncryptionService.Models;
 namespace EncryptionService.Controllers
 {
 	public class EquivalentTranspositionController(
-		IEncryptionService<EncryptionResult, EquivalentTranspositionKey,
+		IEncryptionService<EquivalentTranspositionEncryptionResult, EquivalentTranspositionKey,
 			EquivalentTranspositionKeyData> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, EquivalentTranspositionKey,
+		readonly IEncryptionService<EquivalentTranspositionEncryptionResult, EquivalentTranspositionKey,
 			EquivalentTranspositionKeyData> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<EncryptionResult> encryptionViewModel,
+		public IActionResult Index(EncryptionViewModel<EquivalentTranspositionEncryptionResult> encryptionViewModel,
 			string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
 			EquivalentTranspositionKey key = _encryptionSettings.EquivalentTranspositionKey;
-			EncryptionResult encryptionResult;
+			ViewData["KeyRowNumbers"] = key.Key.RowNumbers;
+			ViewData["KeyColumnNumbers"] = key.Key.ColumnNumbers;
+			EquivalentTranspositionEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{
