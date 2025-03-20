@@ -6,5 +6,6 @@ namespace EncryptionService.Configurations
 	{
 		public required BlockTranspositionKey BlockTranspositionKey { get; set; }
 		public required VerticalTranspositionKey VerticalTranspositionKey { get; set; }
+		public required EquivalentTranspositionKey EquivalentTranspositionKey { get; set; }
 	}
 }

@@ -27,7 +27,7 @@ namespace EncryptionService.Controllers
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			EquivalentTranspositionKey key = null;
+			EquivalentTranspositionKey key = _encryptionSettings.EquivalentTranspositionKey;
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
