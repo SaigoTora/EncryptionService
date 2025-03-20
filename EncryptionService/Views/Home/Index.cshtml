@@ -1,8 +1,28 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+	<h1 class="display-4">Welcome</h1>
+	<p class="lead mb-4">This site allows you to encrypt data in various ways.</p>
+
+	<ol class="list-group-item-primary">
+		<li class="mb-3">
+			<span class="d-block mb-2">Symmetric encryption. Using transposition ciphers.</span>
+			<ol class="nav flex-column text-start">
+				<li class="nav-item mb-1">
+					1.1
+					<a class="link-primary" asp-area="" asp-controller="BlockTransposition" asp-action="Index">
+						Block transposition
+					</a>
+				</li>
+				<li class="nav-item">
+					1.2
+					<a class="link-primary" asp-area="" asp-controller="VerticalTransposition" asp-action="Index">
+						Vertical transposition
+					</a>
+				</li>
+			</ol>
+		</li>
+	</ol>
 </div>

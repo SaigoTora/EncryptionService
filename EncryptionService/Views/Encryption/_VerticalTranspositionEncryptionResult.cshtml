@@ -2,13 +2,13 @@
 
 @if (Model != null)
 {
-	<table>
+	<table class="mb-2 table-striped table-bordered vertical-transposition-table">
 		@if (ViewData["Key"] != null)
 		{
 			<tr>
 				@foreach (var ch in ViewData["Key"]!.ToString()!.ToCharArray())
 				{
-					<td>@ch</td>
+					<th class="p-2">@ch</th>
 				}
 			</tr>
 		}
@@ -17,7 +17,7 @@
 			<tr>
 				@foreach (var index in Model.Indexes)
 				{
-					<td>@(index + 1)</td>
+					<th class="p-2">@(index + 1)</th>
 				}
 			</tr>
 		}
@@ -28,7 +28,7 @@
 				<tr>
 					@for (int j = 0; j < Model.Matrix.GetLength(1); j++)
 					{
-						<td>@Model.Matrix[i, j]</td>
+						<td class="p-2">@Model.Matrix[i, j]</td>
 					}
 				</tr>
 			}
