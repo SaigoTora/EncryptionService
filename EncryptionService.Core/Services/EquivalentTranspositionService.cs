@@ -17,18 +17,20 @@ namespace EncryptionService.Core.Services
 		private static EncryptionResult ProcessEncryption(string text,
 			EquivalentTranspositionKey encryptionKey, bool isEncryption)
 		{
-			while (text.Length != encryptionKey.Key.RowCount * encryptionKey.Key.ColumnCount)
+			int rowCount = encryptionKey.Key.RowNumbers.Length;
+			int columnCount = encryptionKey.Key.ColumnNumbers.Length;
+			while (text.Length != rowCount * columnCount)
 				text += FILL_CHAR;
 
 			EquivalentTranspositionKeyData key = encryptionKey.Key;
-			char[,] matrix = new char[key.RowCount, key.ColumnCount];
+			char[,] matrix = new char[rowCount, columnCount];
 			Direction firstDirection = isEncryption ? key.FirstWritingDirection
 				: key.FirstReadingDirection;
 			Direction secondDirection = isEncryption ? key.SecondWritingDirection
 				: key.SecondReadingDirection;
 			int k = 0;
 
-			ProcessCells(key.RowCount, key.ColumnCount, firstDirection, secondDirection,
+			ProcessCells(rowCount, columnCount, firstDirection, secondDirection,
 				(i, j) => matrix[i, j] = text[k++]);
 
 			matrix = TranspositionMatrix(matrix, encryptionKey.Key.RowNumbers,
@@ -39,7 +41,7 @@ namespace EncryptionService.Core.Services
 				: key.FirstWritingDirection;
 			secondDirection = isEncryption ? key.SecondReadingDirection
 				: key.SecondWritingDirection;
-			ProcessCells(key.RowCount, key.ColumnCount, firstDirection, secondDirection,
+			ProcessCells(rowCount, columnCount, firstDirection, secondDirection,
 				(i, j) => resultText += matrix[i, j]);
 
 			return new EncryptionResult(resultText);

@@ -2,8 +2,6 @@
 {
 	public class EquivalentTranspositionKeyData
 	{
-		public required int RowCount { get; init; }
-		public required int ColumnCount { get; init; }
 		public required int[] RowNumbers { get; init; }
 		public required int[] ColumnNumbers { get; init; }
 		public required Direction FirstWritingDirection { get; init; }
