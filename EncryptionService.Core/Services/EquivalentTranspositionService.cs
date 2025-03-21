@@ -9,6 +9,9 @@ namespace EncryptionService.Core.Services
 	{
 		private const char FILL_CHAR = '.';
 
+		private static int _rowCount;
+		private static int _columnCount;
+
 		private static char[,]? _initialMatrix;
 		private static char[,]? _transpositionMatrix;
 		private static int[,]? _intialIndexes;
@@ -24,21 +27,21 @@ namespace EncryptionService.Core.Services
 		private static EquivalentTranspositionEncryptionResult ProcessEncryption(string text,
 			EquivalentTranspositionKey encryptionKey, bool isEncryption)
 		{
-			int rowCount = encryptionKey.Key.RowNumbers.Length;
-			int columnCount = encryptionKey.Key.ColumnNumbers.Length;
-			while (text.Length != rowCount * columnCount)
+			_rowCount = encryptionKey.Key.RowNumbers.Length;
+			_columnCount = encryptionKey.Key.ColumnNumbers.Length;
+			while (text.Length != _rowCount * _columnCount)
 				text += FILL_CHAR;
 
 			EquivalentTranspositionKeyData key = encryptionKey.Key;
-			char[,] matrix = new char[rowCount, columnCount];
-			_intialIndexes = new int[rowCount, columnCount];
+			char[,] matrix = new char[_rowCount, _columnCount];
+			_intialIndexes = new int[_rowCount, _columnCount];
 			Direction firstDirection = isEncryption ? key.FirstWritingDirection
 				: key.FirstReadingDirection;
 			Direction secondDirection = isEncryption ? key.SecondWritingDirection
 				: key.SecondReadingDirection;
 			int k = 0;
 
-			ProcessCells(rowCount, columnCount, firstDirection, secondDirection,
+			ProcessCells(firstDirection, secondDirection,
 				(i, j) =>
 				{
 					_intialIndexes[i, j] = k;
@@ -49,14 +52,14 @@ namespace EncryptionService.Core.Services
 			matrix = TranspositionMatrix(matrix, encryptionKey.Key.RowNumbers,
 				encryptionKey.Key.ColumnNumbers, isEncryption);
 
-			_transpositionIndexes = new int[rowCount * columnCount];
-			string resultText = ReadResults(matrix, key, isEncryption, rowCount, columnCount);
+			_transpositionIndexes = new int[_rowCount * _columnCount];
+			string resultText = ReadResults(matrix, key, isEncryption);
 
 			return new EquivalentTranspositionEncryptionResult(resultText, _initialMatrix,
 				_transpositionMatrix!, _transpositionIndexes);
 		}
 		private static string ReadResults(char[,] matrix,
-			EquivalentTranspositionKeyData key, bool isEncryption, int rowCount, int columnCount)
+			EquivalentTranspositionKeyData key, bool isEncryption)
 		{
 			string resultText = string.Empty;
 			Direction firstDirection = isEncryption ? key.FirstReadingDirection
@@ -65,7 +68,7 @@ namespace EncryptionService.Core.Services
 				: key.SecondWritingDirection;
 
 			int k = 0;
-			ProcessCells(rowCount, columnCount, firstDirection, secondDirection,
+			ProcessCells(firstDirection, secondDirection,
 				(i, j) =>
 				{
 					_transpositionIndexes![_intialIndexes![i, j]] = k++;
@@ -75,17 +78,14 @@ namespace EncryptionService.Core.Services
 			return resultText;
 		}
 
-		private static void ProcessCells(int rowCount, int columnCount,
-			Direction firstDirection, Direction secondDirection,
+		private static void ProcessCells(Direction firstDirection, Direction secondDirection,
 			Action<int, int> processCell)
 		{
-			(int firstStart, int firstEnd, int firstStep) = GetDirectionRange(firstDirection,
-				rowCount, columnCount);
-			(int secondStart, int secondEnd, int secondStep) = GetDirectionRange(secondDirection,
-				rowCount, columnCount);
+			(int firstStart, int firstEnd, int firstStep) = GetDirectionRange(firstDirection);
+			(int secondStart, int secondEnd, int secondStep) = GetDirectionRange(secondDirection);
 
-			for (int i = firstStart; i != firstEnd; i += firstStep)
-				for (int j = secondStart; j != secondEnd; j += secondStep)
+			for (int i = secondStart; i != secondEnd; i += secondStep)
+				for (int j = firstStart; j != firstEnd; j += firstStep)
 				{
 					if (firstDirection == Direction.Left || firstDirection == Direction.Right)
 						processCell(i, j);
@@ -93,19 +93,18 @@ namespace EncryptionService.Core.Services
 						processCell(j, i);
 				}
 		}
-		private static (int start, int end, int step) GetDirectionRange(Direction direction,
-			int rowCount, int columnCount)
+		private static (int start, int end, int step) GetDirectionRange(Direction direction)
 		{
 			int start, end, step;
 			if (direction == Direction.Left || direction == Direction.Right)
 			{
-				start = direction == Direction.Right ? 0 : columnCount - 1;
-				end = direction == Direction.Right ? columnCount : -1;
+				start = direction == Direction.Right ? 0 : _columnCount - 1;
+				end = direction == Direction.Right ? _columnCount : -1;
 			}
 			else
 			{
-				start = direction == Direction.Down ? 0 : rowCount - 1;
-				end = direction == Direction.Down ? rowCount : -1;
+				start = direction == Direction.Down ? 0 : _rowCount - 1;
+				end = direction == Direction.Down ? _rowCount : -1;
 			}
 			step = start < end ? 1 : -1;
 
