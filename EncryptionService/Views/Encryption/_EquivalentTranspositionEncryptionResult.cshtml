@@ -2,7 +2,8 @@
 
 @if (Model.InitialMatrix != null)
 {
-	<table class="mb-3 table-striped table-bordered">
+	<h4>Initial matrix</h4>
+	<table class="mb-3 table-striped table-bordered equivalent-transposition-table">
 		@if (ViewData["KeyColumnNumbers"] is int[] columnNumbers)
 		{
 			<tr>
@@ -34,7 +35,8 @@
 
 @if (Model.TranspositionMatrix != null)
 {
-	<table class="mb-3 table-striped table-bordered">
+	<h4>Transposition matrix</h4>
+	<table class="mb-3 table-striped table-bordered equivalent-transposition-table">
 		<tr>
 			<td class="p-2"></td>
 			@for (int j = 0; j < Model.TranspositionMatrix.GetLength(1); j++)
@@ -57,6 +59,7 @@
 
 @if (Model.TranspositionIndexes != null)
 {
+	<h4>Simple single transposition cipher</h4>
 	<table class="mb-3 table-striped table-bordered">
 		<tr>
 			@for (int i = 0; i < Model.TranspositionIndexes.Length; i++)

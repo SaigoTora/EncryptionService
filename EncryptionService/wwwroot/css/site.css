@@ -1,17 +1,18 @@
 :root {
     --color-dark: rgb(15, 15, 15);
+    --color-dark-gray: rgb(26, 26, 26);
     --color-white: rgb(230, 230, 230);
 }
 
 
 html {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 
 @media (min-width: 768px) {
     html {
-        font-size: 16px;
+        font-size: 18px;
     }
 }
 
@@ -25,7 +26,6 @@ html {
 }
 
 body {
-    font-size: 18px;
     margin-bottom: 60px;
     color: var(--color-white);
     background-color: var(--color-dark);
@@ -38,8 +38,6 @@ header {
 main {
     width: 75%;
     margin: 0 auto;
-    padding-left: 15px;
-    padding-right: 15px;
     display: grid;
     justify-items: center;
 }
@@ -77,6 +75,25 @@ td, th {
 
 .vertical-transposition-table tr:nth-child(2) {
     border-bottom: 2px solid white;
+}
+
+.vertical-transposition-table td:nth-child(even) {
+    background-color: var(--color-dark-gray);
+}
+
+.equivalent-transposition-table tr:nth-child(1),
+.equivalent-transposition-table td:nth-child(1) {
+    background-color: rgb(2,32,39);
+}
+
+.equivalent-transposition-table tr:nth-child(even) {
+    background-color: var(--color-dark-gray);
+}
+
+.equivalent-transposition-table tr:first-child td:first-child, th:first-child {
+    border: none;
+    background-color: var(--color-dark);
+    border-color: var(--color-dark);
 }
 
 input:-webkit-autofill,
