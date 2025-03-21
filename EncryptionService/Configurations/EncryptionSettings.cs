@@ -1,4 +1,6 @@
-﻿using EncryptionService.Core.Models;
+﻿using EncryptionService.Core.Models.BlockTransposition;
+using EncryptionService.Core.Models.EquivalentTransposition;
+using EncryptionService.Core.Models.VerticalTransposition;
 
 namespace EncryptionService.Configurations
 {

@@ -1,6 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 
-namespace EncryptionService.Core.Models
+namespace EncryptionService.Core.Models.EquivalentTransposition
 {
 	public class EquivalentTranspositionKey : IEncryptionKey<EquivalentTranspositionKeyData>
 	{

@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
+using EncryptionService.Core.Models.BlockTransposition;
+using EncryptionService.Core.Models.EquivalentTransposition;
+using EncryptionService.Core.Models.VerticalTransposition;
 using EncryptionService.Core.Services;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

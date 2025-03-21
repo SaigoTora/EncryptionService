@@ -1,5 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
+using EncryptionService.Core.Models.EquivalentTransposition;
 
 namespace EncryptionService.Core.Services
 {

@@ -1,4 +1,4 @@
-﻿namespace EncryptionService.Core.Models
+﻿namespace EncryptionService.Core.Models.EquivalentTransposition
 {
 	public class EquivalentTranspositionEncryptionResult(string text, char[,] initialMatrix,
 		char[,] transpositionMatrix, int[] transpositionIndexes)

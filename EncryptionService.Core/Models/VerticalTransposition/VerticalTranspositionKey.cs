@@ -1,6 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 
-namespace EncryptionService.Core.Models
+namespace EncryptionService.Core.Models.VerticalTransposition
 {
 	public class VerticalTranspositionKey : IEncryptionKey<string>
 	{
