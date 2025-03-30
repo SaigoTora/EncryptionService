@@ -42,6 +42,10 @@ main {
     justify-items: center;
 }
 
+ol {
+    list-style-position: inside;
+}
+
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
     text-align: end;
 }

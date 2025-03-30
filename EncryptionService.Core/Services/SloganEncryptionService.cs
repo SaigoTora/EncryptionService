@@ -9,48 +9,50 @@ namespace EncryptionService.Core.Services
 		IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>
 	{
 		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
-		private Dictionary<char, char> encryptionMap = [];
 
 		public SloganEncryptionResult Encrypt(string text, SloganEncryptionKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
-		public SloganEncryptionResult Decrypt(string encryptedText, SloganEncryptionKey encryptionKey)
+		public SloganEncryptionResult Decrypt(string encryptedText,
+			SloganEncryptionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
 
-		private SloganEncryptionResult ProcessEncryption(string text,
+		private static SloganEncryptionResult ProcessEncryption(string text,
 			SloganEncryptionKey encryptionKey, bool isEncryption)
 		{
-			CreateEncryptionMap(encryptionKey.Key);
+			Dictionary<char, char> encryptionMap = CreateEncryptionMap(encryptionKey.Key);
 			text = text.ToUpper();
-			string resultText = string.Empty;
+			StringBuilder builder = new();
 
 			for (int i = 0; i < text.Length; i++)
 			{
 				if (isEncryption)
-					resultText += encryptionMap[text[i]];
+					builder.Append(encryptionMap[text[i]]);
 				else
-					resultText += encryptionMap.FirstOrDefault(x => x.Value == text[i]).Key;
+					builder.Append(encryptionMap.FirstOrDefault(x => x.Value == text[i]).Key);
 			}
 
-			return new SloganEncryptionResult(resultText, encryptionMap);
+			return new SloganEncryptionResult(builder.ToString(), encryptionMap);
 		}
-		private void CreateEncryptionMap(string key)
+		private static Dictionary<char, char> CreateEncryptionMap(string key)
 		{
-			encryptionMap = [];
-			char[] encryptionKeyList = new HashSet<char>(key).ToArray();
+			Dictionary<char, char> encryptionMap = [];
+			char[] encryptionKeyArr = new HashSet<char>(key).ToArray();
 			StringBuilder tempAlphabet = new(ukrainianAlphabet);
 
 			int k = 0;
 			for (int i = 0; i < ukrainianAlphabet.Length; i++)
 			{
-				if (i < encryptionKeyList.Length)
+				if (i < encryptionKeyArr.Length)
 				{
-					encryptionMap.Add(ukrainianAlphabet[i], encryptionKeyList[i]);
-					int index = tempAlphabet.ToString().IndexOf(encryptionKeyList[i]);
+					encryptionMap.Add(ukrainianAlphabet[i], encryptionKeyArr[i]);
+					int index = tempAlphabet.ToString().IndexOf(encryptionKeyArr[i]);
 					tempAlphabet.Remove(index, 1);
 				}
 				else
 					encryptionMap.Add(ukrainianAlphabet[i], tempAlphabet[k++]);
 			}
+
+			return encryptionMap;
 		}
 	}
 }
