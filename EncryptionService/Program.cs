@@ -5,6 +5,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.BlockTransposition;
 using EncryptionService.Core.Models.EquivalentTransposition;
+using EncryptionService.Core.Models.SloganEncryption;
 using EncryptionService.Core.Models.VerticalTransposition;
 using EncryptionService.Core.Services;
 
@@ -25,6 +26,8 @@ builder.Services.AddScoped<IEncryptionService<VerticalTranspositionEncryptionRes
 builder.Services.AddScoped<IEncryptionService<EquivalentTranspositionEncryptionResult,
 	EquivalentTranspositionKey, EquivalentTranspositionKeyData>,
 	EquivalentTranspositionEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<EncryptionResult, SloganEncryptionKey, string>,
+	SloganEncryptionService>();
 
 
 var app = builder.Build();

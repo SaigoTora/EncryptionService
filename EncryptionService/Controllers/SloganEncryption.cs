@@ -5,15 +5,16 @@ using EncryptionService.Core.Models;
 using EncryptionService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using EncryptionService.Core.Models.SloganEncryption;
 
 namespace EncryptionService.Controllers
 {
-    public class SloganEncryption(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+	public class SloganEncryption(
+		IEncryptionService<EncryptionResult, SloganEncryptionKey, string> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
+		readonly IEncryptionService<EncryptionResult, SloganEncryptionKey, string>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
@@ -26,7 +27,7 @@ namespace EncryptionService.Controllers
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
+			SloganEncryptionKey key = _encryptionSettings.SloganEncryptionKey;
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
