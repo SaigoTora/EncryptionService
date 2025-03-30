@@ -8,6 +8,7 @@ using EncryptionService.Core.Models.EquivalentTransposition;
 using EncryptionService.Core.Models.SloganEncryption;
 using EncryptionService.Core.Models.VerticalTransposition;
 using EncryptionService.Core.Services;
+using EncryptionService.Core.Models.PlayfairEncryption;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,8 @@ builder.Services.AddScoped<IEncryptionService<EquivalentTranspositionEncryptionR
 	EquivalentTranspositionEncryptionService>();
 builder.Services.AddScoped<IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>,
 	SloganEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<EncryptionResult, PlayfairEncryptionKey, string>,
+	PlayfairEncryptionService>();
 
 
 var app = builder.Build();

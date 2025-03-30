@@ -6,15 +6,16 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.BlockTransposition;
 using EncryptionService.Core.Models;
 using EncryptionService.Models;
+using EncryptionService.Core.Models.PlayfairEncryption;
 
 namespace EncryptionService.Controllers
 {
-	public class PlayFairEncryptionController(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+	public class PlayfairEncryptionController(
+		IEncryptionService<EncryptionResult, PlayfairEncryptionKey, string> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
+		readonly IEncryptionService<EncryptionResult, PlayfairEncryptionKey, string>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
@@ -27,7 +28,7 @@ namespace EncryptionService.Controllers
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
+			PlayfairEncryptionKey key = _encryptionSettings.PlayfairEncryptionKey;
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
