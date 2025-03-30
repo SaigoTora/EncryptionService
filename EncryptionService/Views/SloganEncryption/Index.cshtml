@@ -1,0 +1,43 @@
+﻿@model EncryptionViewModel<EncryptionResult>
+
+@{
+	ViewData["Title"] = "Slogan encryption";
+}
+
+<h1 class="mb-5">Slogan encryption</h1>
+
+<form class="w-100" asp-controller="SloganEncryption" asp-action="Index" method="post">
+	<div class="form__group field">
+		<input asp-for="InputText" class="form__field" placeholder="Text" />
+		<label asp-for="InputText" class="form__label">Text</label>
+	</div>
+
+	@if (Model != null && Model.EncryptionResult != null)
+	{
+		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+				Model.EncryptionResult)
+	}
+
+	<div class="form-group mb-3">
+		<button type="submit" name="actionType" value="Encrypt" class="button">Encrypt</button>
+	</div>
+
+
+	<div class="form__group field">
+		<input asp-for="EncryptedInputText" class="form__field" placeholder="Encrypted text" />
+		<label asp-for="EncryptedInputText" class="form__label">Encrypted text </label>
+	</div>
+
+	@if (Model != null && Model.DecryptionResult != null)
+	{
+		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+				Model.DecryptionResult)
+	}
+
+	<div class="form-group mb-3">
+		<button type="submit" name="actionType" value="Decrypt" class="button">Decrypt</button>
+	</div>
+
+	<span asp-validation-for="InputText" class="text-danger"></span>
+	<span asp-validation-for="EncryptedInputText" class="text-danger"></span>
+</form>

@@ -23,7 +23,8 @@ builder.Services.AddScoped<IEncryptionService<EncryptionResult, BlockTranspositi
 builder.Services.AddScoped<IEncryptionService<VerticalTranspositionEncryptionResult,
 	VerticalTranspositionKey, string>, VerticalTranspositionEncryptionService>();
 builder.Services.AddScoped<IEncryptionService<EquivalentTranspositionEncryptionResult,
-	EquivalentTranspositionKey, EquivalentTranspositionKeyData>, EquivalentTranspositionService>();
+	EquivalentTranspositionKey, EquivalentTranspositionKeyData>,
+	EquivalentTranspositionEncryptionService>();
 
 
 var app = builder.Build();

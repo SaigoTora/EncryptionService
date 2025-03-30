@@ -4,7 +4,7 @@ using EncryptionService.Core.Models.EquivalentTransposition;
 
 namespace EncryptionService.Core.Services
 {
-	public class EquivalentTranspositionService
+	public class EquivalentTranspositionEncryptionService
 		: IEncryptionService<EquivalentTranspositionEncryptionResult, EquivalentTranspositionKey,
 			EquivalentTranspositionKeyData>
 	{
