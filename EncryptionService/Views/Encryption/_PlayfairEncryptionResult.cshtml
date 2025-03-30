@@ -1,0 +1,23 @@
+﻿@using EncryptionService.Core.Models.PlayfairEncryption
+
+@model PlayfairEncryptionResult
+
+
+@if (Model.EncryptionTable != null)
+{
+	<h4>Encryption table</h4>
+
+	<table class="mb-2 table-striped table-bordered">
+		@for (int i = 0; i < Model.EncryptionTable.GetLength(0); i++)
+		{
+			<tr>
+				@for (int j = 0; j < Model.EncryptionTable.GetLength(1); j++)
+				{
+					<td class="p-2">@Model.EncryptionTable[i, j]</td>
+				}
+			</tr>
+		}
+	</table>
+}
+
+@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)

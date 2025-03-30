@@ -29,8 +29,8 @@ builder.Services.AddScoped<IEncryptionService<EquivalentTranspositionEncryptionR
 	EquivalentTranspositionEncryptionService>();
 builder.Services.AddScoped<IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>,
 	SloganEncryptionService>();
-builder.Services.AddScoped<IEncryptionService<EncryptionResult, PlayfairEncryptionKey, string>,
-	PlayfairEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey,
+	string>, PlayfairEncryptionService>();
 
 
 var app = builder.Build();

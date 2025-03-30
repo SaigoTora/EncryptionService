@@ -1,23 +1,23 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.PlayfairEncryption;
 
 namespace EncryptionService.Core.Services
 {
 	public class PlayfairEncryptionService
-		: IEncryptionService<EncryptionResult, PlayfairEncryptionKey, string>
+		: IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey, string>
 	{
 		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 		private const char FILL_CHAR = '.';
 
-		public EncryptionResult Encrypt(string text, PlayfairEncryptionKey encryptionKey)
+		public PlayfairEncryptionResult Encrypt(string text, PlayfairEncryptionKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
-		public EncryptionResult Decrypt(string encryptedText, PlayfairEncryptionKey encryptionKey)
+		public PlayfairEncryptionResult Decrypt(string encryptedText,
+			PlayfairEncryptionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
 
-		private static EncryptionResult ProcessEncryption(string text,
+		private static PlayfairEncryptionResult ProcessEncryption(string text,
 			PlayfairEncryptionKey encryptionKey, bool isEncryption)
 		{
 			char[,] encryptionTable = CreateEncryptionTable(encryptionKey.Key);
@@ -53,7 +53,7 @@ namespace EncryptionService.Core.Services
 				}
 			}
 
-			return new EncryptionResult(builder.ToString());
+			return new PlayfairEncryptionResult(builder.ToString(), encryptionTable);
 		}
 
 		private static char[,] CreateEncryptionTable(string key)
