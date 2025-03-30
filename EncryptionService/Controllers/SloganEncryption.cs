@@ -1,11 +1,11 @@
-﻿using EncryptionService.Configurations;
-using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.BlockTransposition;
-using EncryptionService.Core.Models;
-using EncryptionService.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+
+using EncryptionService.Configurations;
+using EncryptionService.Core.Interfaces;
+using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.SloganEncryption;
+using EncryptionService.Models;
 
 namespace EncryptionService.Controllers
 {

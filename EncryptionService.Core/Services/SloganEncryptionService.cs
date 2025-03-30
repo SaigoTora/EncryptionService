@@ -1,4 +1,6 @@
-﻿using EncryptionService.Core.Interfaces;
+﻿using System.Text;
+
+using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.SloganEncryption;
 
@@ -7,13 +9,48 @@ namespace EncryptionService.Core.Services
 	public class SloganEncryptionService :
 		IEncryptionService<EncryptionResult, SloganEncryptionKey, string>
 	{
+		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
+		private Dictionary<char, char> encryptionMap = [];
+
 		public EncryptionResult Encrypt(string text, SloganEncryptionKey encryptionKey)
-		{
-			return new EncryptionResult("encrypted text");
-		}
+			=> ProcessEncryption(text, encryptionKey, true);
 		public EncryptionResult Decrypt(string encryptedText, SloganEncryptionKey encryptionKey)
+			=> ProcessEncryption(encryptedText, encryptionKey, false);
+
+		private EncryptionResult ProcessEncryption(string text,
+			SloganEncryptionKey encryptionKey, bool isEncryption)
 		{
-			return new EncryptionResult("decrypted text");
+			CreateEncryptionMap(encryptionKey.Key);
+			string resultText = string.Empty;
+
+			for (int i = 0; i < text.Length; i++)
+			{
+				if (isEncryption)
+					resultText += encryptionMap[text[i]];
+				else
+					resultText += encryptionMap.FirstOrDefault(x => x.Value == text[i]).Key;
+			}
+
+			return new EncryptionResult(resultText);
+		}
+		private void CreateEncryptionMap(string key)
+		{
+			encryptionMap = [];
+			char[] encryptionKeyList = new HashSet<char>(key).ToArray();
+			StringBuilder tempAlphabet = new(ukrainianAlphabet);
+
+			int k = 0;
+			for (int i = 0; i < ukrainianAlphabet.Length; i++)
+			{
+				if (i < encryptionKeyList.Length)
+				{
+					encryptionMap.Add(ukrainianAlphabet[i], encryptionKeyList[i]);
+					int index = tempAlphabet.ToString().IndexOf(encryptionKeyList[i]);
+					tempAlphabet.Remove(index, 1);
+				}
+				else
+					encryptionMap.Add(ukrainianAlphabet[i], tempAlphabet[k++]);
+			}
 		}
 	}
 }
