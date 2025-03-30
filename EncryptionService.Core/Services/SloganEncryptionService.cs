@@ -1,26 +1,26 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.SloganEncryption;
 
 namespace EncryptionService.Core.Services
 {
 	public class SloganEncryptionService :
-		IEncryptionService<EncryptionResult, SloganEncryptionKey, string>
+		IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>
 	{
 		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 		private Dictionary<char, char> encryptionMap = [];
 
-		public EncryptionResult Encrypt(string text, SloganEncryptionKey encryptionKey)
+		public SloganEncryptionResult Encrypt(string text, SloganEncryptionKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
-		public EncryptionResult Decrypt(string encryptedText, SloganEncryptionKey encryptionKey)
+		public SloganEncryptionResult Decrypt(string encryptedText, SloganEncryptionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
 
-		private EncryptionResult ProcessEncryption(string text,
+		private SloganEncryptionResult ProcessEncryption(string text,
 			SloganEncryptionKey encryptionKey, bool isEncryption)
 		{
 			CreateEncryptionMap(encryptionKey.Key);
+			text = text.ToUpper();
 			string resultText = string.Empty;
 
 			for (int i = 0; i < text.Length; i++)
@@ -31,7 +31,7 @@ namespace EncryptionService.Core.Services
 					resultText += encryptionMap.FirstOrDefault(x => x.Value == text[i]).Key;
 			}
 
-			return new EncryptionResult(resultText);
+			return new SloganEncryptionResult(resultText, encryptionMap);
 		}
 		private void CreateEncryptionMap(string key)
 		{

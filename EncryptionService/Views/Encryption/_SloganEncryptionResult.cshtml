@@ -1,0 +1,25 @@
+﻿@using EncryptionService.Core.Models.SloganEncryption
+
+@model SloganEncryptionResult
+
+@if (Model.EncryptionTable != null)
+{
+	<h4>Encryption table</h4>
+
+	<table class="mb-2 table-striped table-bordered">
+		<tr>
+			@foreach (char ch in Model.EncryptionTable.Keys)
+			{
+				<td class="p-2">@ch</td>
+			}
+		</tr>
+		<tr>
+			@foreach (char ch in Model.EncryptionTable.Values)
+			{
+				<td class="p-2">@ch</td>
+			}
+		</tr>
+	</table>
+}
+
+@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)

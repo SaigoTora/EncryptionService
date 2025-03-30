@@ -26,7 +26,7 @@ builder.Services.AddScoped<IEncryptionService<VerticalTranspositionEncryptionRes
 builder.Services.AddScoped<IEncryptionService<EquivalentTranspositionEncryptionResult,
 	EquivalentTranspositionKey, EquivalentTranspositionKeyData>,
 	EquivalentTranspositionEncryptionService>();
-builder.Services.AddScoped<IEncryptionService<EncryptionResult, SloganEncryptionKey, string>,
+builder.Services.AddScoped<IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>,
 	SloganEncryptionService>();
 
 
