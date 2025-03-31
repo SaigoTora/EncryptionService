@@ -10,6 +10,7 @@ namespace EncryptionService.Core.Services
 	{
 		private const char FILL_CHAR = '.';
 		private const char UNKNOWN_CHAR = '�';
+		private const char ADDITIONAL_CHAR = 'Х';
 		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 
 		public PlayfairEncryptionResult Encrypt(string text, PlayfairEncryptionKey encryptionKey)
@@ -22,9 +23,16 @@ namespace EncryptionService.Core.Services
 			PlayfairEncryptionKey encryptionKey, bool isEncryption)
 		{
 			char[,] encryptionTable = CreateEncryptionTable(encryptionKey.Key);
+			text = text.ToUpper();
+
+			if (isEncryption)
+				for (int i = 0; i < text.Length - 1; i += 2)
+					if (text[i] == text[i + 1])
+						text = text.Insert(i + 1, ADDITIONAL_CHAR.ToString());
+
 			if (text.Length % 2 != 0)
 				text += FILL_CHAR;
-			text = text.ToUpper();
+
 			string resultText = ProcessText(text, encryptionTable, isEncryption);
 
 			return new PlayfairEncryptionResult(resultText, encryptionTable);
