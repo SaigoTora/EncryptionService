@@ -13,5 +13,6 @@ namespace EncryptionService.Configurations
 		public required EquivalentTranspositionKey EquivalentTranspositionKey { get; set; }
 		public required SloganEncryptionKey SloganEncryptionKey { get; set; }
 		public required PlayfairEncryptionKey PlayfairEncryptionKey { get; set; }
+		public required Dictionary<string, int> HomophonicEncryptionFrequency { get; set; }
 	}
 }

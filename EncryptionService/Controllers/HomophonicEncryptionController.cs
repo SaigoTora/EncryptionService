@@ -4,18 +4,20 @@ using Microsoft.Extensions.Options;
 using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Core.Models.BlockTransposition;
+using EncryptionService.Core.Models.HomophonicEncryption;
 using EncryptionService.Models;
 
 namespace EncryptionService.Controllers
 {
 	public class HomophonicEncryptionController(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+		IEncryptionService<EncryptionResult, HomophonicEncryptionKey,
+			Dictionary<char, int[]>> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
-			_encryptionService = encryptionService;
+		static HomophonicEncryptionKey? _homophonicEncryptionKey = null;
+		readonly IEncryptionService<EncryptionResult, HomophonicEncryptionKey,
+			Dictionary<char, int[]>> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
@@ -27,18 +29,25 @@ namespace EncryptionService.Controllers
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
+			if (_homophonicEncryptionKey == null)
+			{
+				Dictionary<char, int> frequency = _encryptionSettings.HomophonicEncryptionFrequency
+					.ToDictionary(kvp => kvp.Key[0], kvp => kvp.Value);
+				_homophonicEncryptionKey = HomophonicEncryptionKey.GenerateKey(frequency);
+			}
+
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{
-				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!, key);
+				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!,
+					_homophonicEncryptionKey);
 				encryptionViewModel.EncryptionResult = encryptionResult;
 			}
 			else if (actionType == "Decrypt")
 			{
 				encryptionResult = _encryptionService.Decrypt(
-					encryptionViewModel.EncryptedInputText!, key);
+					encryptionViewModel.EncryptedInputText!, _homophonicEncryptionKey);
 				encryptionViewModel.DecryptionResult = encryptionResult;
 			}
 

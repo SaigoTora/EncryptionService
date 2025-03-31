@@ -9,6 +9,7 @@ using EncryptionService.Core.Models.SloganEncryption;
 using EncryptionService.Core.Models.VerticalTransposition;
 using EncryptionService.Core.Services;
 using EncryptionService.Core.Models.PlayfairEncryption;
+using EncryptionService.Core.Models.HomophonicEncryption;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +32,8 @@ builder.Services.AddScoped<IEncryptionService<SloganEncryptionResult, SloganEncr
 	SloganEncryptionService>();
 builder.Services.AddScoped<IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey,
 	string>, PlayfairEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<EncryptionResult, HomophonicEncryptionKey,
+	Dictionary<char, int[]>>, HomophonicEncryptionService>();
 
 
 var app = builder.Build();
