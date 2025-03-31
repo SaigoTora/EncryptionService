@@ -8,8 +8,9 @@ namespace EncryptionService.Core.Services
 	public class PlayfairEncryptionService
 		: IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey, string>
 	{
-		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 		private const char FILL_CHAR = '.';
+		private const char UNKNOWN_CHAR = '�';
+		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 
 		public PlayfairEncryptionResult Encrypt(string text, PlayfairEncryptionKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
@@ -24,36 +25,9 @@ namespace EncryptionService.Core.Services
 			if (text.Length % 2 != 0)
 				text += FILL_CHAR;
 			text = text.ToUpper();
+			string resultText = ProcessText(text, encryptionTable, isEncryption);
 
-			StringBuilder builder = new();
-			for (int i = 0; i < text.Length - 1; i += 2)
-			{
-				(int firstRow, int firstColumn) = FindInEncryptionTable(encryptionTable, text[i]);
-				(int secondRow, int secondColumn) = FindInEncryptionTable(encryptionTable,
-					text[i + 1]);
-
-				if (firstRow == secondRow)
-				{
-					builder.Append(ProcessRowsEqual(encryptionTable, firstRow, firstColumn,
-						isEncryption));
-					builder.Append(ProcessRowsEqual(encryptionTable, secondRow, secondColumn,
-						isEncryption));
-				}
-				else if (firstColumn == secondColumn)
-				{
-					builder.Append(ProcessColumnsEqual(encryptionTable, firstRow, firstColumn,
-						isEncryption));
-					builder.Append(ProcessColumnsEqual(encryptionTable, secondRow, secondColumn,
-						isEncryption));
-				}
-				else
-				{
-					builder.Append(encryptionTable[firstRow, secondColumn]);
-					builder.Append(encryptionTable[secondRow, firstColumn]);
-				}
-			}
-
-			return new PlayfairEncryptionResult(builder.ToString(), encryptionTable);
+			return new PlayfairEncryptionResult(resultText, encryptionTable);
 		}
 
 		private static char[,] CreateEncryptionTable(string key)
@@ -86,7 +60,7 @@ namespace EncryptionService.Core.Services
 
 			return encryptionTable;
 		}
-		private static (int row, int column) FindInEncryptionTable(char[,] encryptionTable,
+		private static (int? row, int? column) FindInEncryptionTable(char[,] encryptionTable,
 			char ch)
 		{
 			for (int i = 0; i < encryptionTable.GetLength(0); i++)
@@ -94,7 +68,76 @@ namespace EncryptionService.Core.Services
 					if (encryptionTable[i, j] == ch)
 						return (i, j);
 
-			return (-1, -1);
+			return (null, null);
+		}
+
+		private static string ProcessText(string text, char[,] encryptionTable, bool isEncryption)
+		{
+			StringBuilder builder = new();
+			for (int i = 0; i < text.Length - 1; i += 2)
+			{
+				(int? firstRow, int? firstColumn) = FindInEncryptionTable(encryptionTable,
+					text[i]);
+				(int? secondRow, int? secondColumn) = FindInEncryptionTable(encryptionTable,
+					text[i + 1]);
+
+				HandleEncryption(builder, encryptionTable, firstRow, firstColumn,
+					secondRow, secondColumn, isEncryption);
+			}
+
+			return builder.ToString();
+		}
+		private static void HandleEncryption(StringBuilder builder, char[,] encryptionTable,
+			int? firstRow, int? firstColumn, int? secondRow, int? secondColumn, bool isEncryption)
+		{
+			if (firstRow.HasValue && firstColumn.HasValue
+				&& secondRow.HasValue && secondColumn.HasValue)
+			{
+				if (firstRow == secondRow)
+				{
+					builder.Append(ProcessRowsEqual(encryptionTable, firstRow.Value,
+						firstColumn.Value, isEncryption));
+					builder.Append(ProcessRowsEqual(encryptionTable, secondRow.Value,
+						secondColumn.Value, isEncryption));
+				}
+				else if (firstColumn == secondColumn)
+				{
+					builder.Append(ProcessColumnsEqual(encryptionTable, firstRow.Value,
+						firstColumn.Value, isEncryption));
+					builder.Append(ProcessColumnsEqual(encryptionTable, secondRow.Value,
+						secondColumn.Value, isEncryption));
+				}
+				else
+				{
+					builder.Append(encryptionTable[firstRow.Value, secondColumn.Value]);
+					builder.Append(encryptionTable[secondRow.Value, firstColumn.Value]);
+				}
+			}
+			else
+				HandleUnknownCharacters(builder, encryptionTable, firstRow, firstColumn,
+					secondRow, secondColumn);
+		}
+		private static void HandleUnknownCharacters(StringBuilder builder, char[,] encryptionTable,
+			int? firstRow, int? firstColumn, int? secondRow, int? secondColumn)
+		{
+			if (firstRow == null && firstColumn == null
+					&& secondRow == null && secondColumn == null)
+			{
+				builder.Append(UNKNOWN_CHAR);
+				builder.Append(UNKNOWN_CHAR);
+			}
+			else if (firstRow == null && firstColumn == null
+				&& secondRow.HasValue && secondColumn.HasValue)
+			{
+				builder.Append(UNKNOWN_CHAR);
+				builder.Append(encryptionTable[secondRow.Value, secondColumn.Value]);
+			}
+			else if (firstRow.HasValue && firstColumn.HasValue
+				&& secondRow == null && secondColumn == null)
+			{
+				builder.Append(encryptionTable[firstRow.Value, firstColumn.Value]);
+				builder.Append(UNKNOWN_CHAR);
+			}
 		}
 
 		private static char ProcessRowsEqual(char[,] encryptionTable, int row, int column,

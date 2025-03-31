@@ -1,4 +1,6 @@
-﻿using EncryptionService.Core.Interfaces;
+﻿using System.Text;
+
+using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.EquivalentTransposition;
 
@@ -62,7 +64,7 @@ namespace EncryptionService.Core.Services
 		private static string ReadResults(char[,] matrix,
 			EquivalentTranspositionKeyData key, bool isEncryption)
 		{
-			string resultText = string.Empty;
+			StringBuilder builder = new();
 			Direction firstDirection = isEncryption ? key.FirstReadingDirection
 				: key.FirstWritingDirection;
 			Direction secondDirection = isEncryption ? key.SecondReadingDirection
@@ -73,10 +75,10 @@ namespace EncryptionService.Core.Services
 				(i, j) =>
 				{
 					_transpositionIndexes![_intialIndexes![i, j]] = k++;
-					resultText += matrix[i, j];
+					builder.Append(matrix[i, j]);
 				});
 
-			return resultText;
+			return builder.ToString();
 		}
 
 		private static void ProcessCells(Direction firstDirection, Direction secondDirection,

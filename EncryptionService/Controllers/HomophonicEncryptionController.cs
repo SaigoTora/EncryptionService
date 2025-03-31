@@ -22,7 +22,8 @@ namespace EncryptionService.Controllers
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<HomophonicEncryptionResult> encryptionViewModel,
+		public IActionResult Index(
+			EncryptionViewModel<HomophonicEncryptionResult> encryptionViewModel,
 			string actionType)
 		{
 			if (!ModelState.IsValid)
@@ -45,8 +46,21 @@ namespace EncryptionService.Controllers
 			}
 			else if (actionType == "Decrypt")
 			{
+				if (encryptionViewModel.EncryptedInputText!.Length % 3 != 0)
+				{
+					ModelState.AddModelError("EncryptedInputText",
+						"The length of the encrypted text must be a multiple of 3.");
+					return View(encryptionViewModel);
+				}
+				else if (encryptionViewModel.EncryptedInputText.Any(ch => !char.IsDigit(ch)))
+				{
+					ModelState.AddModelError("EncryptedInputText",
+						"The encrypted text must contain only digits.");
+					return View(encryptionViewModel);
+				}
+
 				encryptionResult = _encryptionService.Decrypt(
-					encryptionViewModel.EncryptedInputText!, _homophonicEncryptionKey);
+					encryptionViewModel.EncryptedInputText, _homophonicEncryptionKey);
 				encryptionViewModel.DecryptionResult = encryptionResult;
 			}
 

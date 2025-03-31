@@ -19,18 +19,20 @@ namespace EncryptionService.Core.Services
 
 			foreach (char ch in text)
 			{
-				if (keyCopy[ch].Count != 0)
+				if (keyCopy.TryGetValue(ch, out var listNumbers))
 				{
-					List<int> numbers = keyCopy[ch];
-					int randomIndex = random.Next(0, numbers.Count);
-					builder.Append(numbers[randomIndex].ToString("D3"));
-					numbers.RemoveAt(randomIndex);
-				}
-				else
-				{
-					int[] numbers = encryptionKey.Key[ch];
-					int randomIndex = random.Next(0, numbers.Length);
-					builder.Append(numbers[randomIndex].ToString("D3"));
+					if (listNumbers.Count != 0)
+					{
+						int randomIndex = random.Next(0, listNumbers.Count);
+						builder.Append(listNumbers[randomIndex].ToString("D3"));
+						listNumbers.RemoveAt(randomIndex);
+					}
+					else
+					{
+						int[] arrNumbers = encryptionKey.Key[ch];
+						int randomIndex = random.Next(0, arrNumbers.Length);
+						builder.Append(arrNumbers[randomIndex].ToString("D3"));
+					}
 				}
 			}
 

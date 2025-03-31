@@ -8,6 +8,7 @@ namespace EncryptionService.Core.Services
 	public class SloganEncryptionService :
 		IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>
 	{
+		private const char UNKNOWN_CHAR = '�';
 		private static readonly string ukrainianAlphabet = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
 
 		public SloganEncryptionResult Encrypt(string text, SloganEncryptionKey encryptionKey)
@@ -26,9 +27,20 @@ namespace EncryptionService.Core.Services
 			for (int i = 0; i < text.Length; i++)
 			{
 				if (isEncryption)
-					builder.Append(encryptionMap[text[i]]);
+				{
+					if (encryptionMap.TryGetValue(text[i], out char value))
+						builder.Append(value);
+					else
+						builder.Append(UNKNOWN_CHAR);
+				}
 				else
-					builder.Append(encryptionMap.FirstOrDefault(x => x.Value == text[i]).Key);
+				{
+					char ch = encryptionMap.FirstOrDefault(x => x.Value == text[i]).Key;
+					if (ch != default)
+						builder.Append(ch);
+					else
+						builder.Append(UNKNOWN_CHAR);
+				}
 			}
 
 			return new SloganEncryptionResult(builder.ToString(), encryptionMap);

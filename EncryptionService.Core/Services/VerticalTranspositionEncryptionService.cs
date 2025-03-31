@@ -1,4 +1,6 @@
-﻿using EncryptionService.Core.Interfaces;
+﻿using System.Text;
+
+using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.VerticalTransposition;
 
 namespace EncryptionService.Core.Services
@@ -29,18 +31,19 @@ namespace EncryptionService.Core.Services
 				/ encryptionKey.Key.Length), encryptionKey.Key.Length];
 			matrix = FillMatrix(matrix, text, sorted, isEncryption);
 
-			string resultText = string.Empty;
+			StringBuilder builder = new();
 			if (isEncryption)
 				foreach (int j in sorted.OrderBy(x => x.Value).Select(x => x.Key))
 					for (int i = 0; i < matrix.GetLength(0); i++)
-						resultText += matrix[i, j];
+						builder.Append(matrix[i, j]);
 			else
 				for (int i = 0; i < matrix.GetLength(0); i++)
 					for (int j = 0; j < matrix.GetLength(1); j++)
-						resultText += matrix[i, j];
+						builder.Append(matrix[i, j]);
 
 			int[] sortIndixes = [.. encryptionKey.Key.Select((_, i) => sorted[i])];
-			return new VerticalTranspositionEncryptionResult(resultText, matrix, sortIndixes);
+			return new VerticalTranspositionEncryptionResult(builder.ToString(), 
+				matrix, sortIndixes);
 		}
 		private static char[,] FillMatrix(char[,] matrix, string text, Dictionary<int, int> sorted,
 			bool isEncryption)
