@@ -32,7 +32,7 @@ builder.Services.AddScoped<IEncryptionService<SloganEncryptionResult, SloganEncr
 	SloganEncryptionService>();
 builder.Services.AddScoped<IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey,
 	string>, PlayfairEncryptionService>();
-builder.Services.AddScoped<IEncryptionService<EncryptionResult, HomophonicEncryptionKey,
+builder.Services.AddScoped<IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,
 	Dictionary<char, int[]>>, HomophonicEncryptionService>();
 
 

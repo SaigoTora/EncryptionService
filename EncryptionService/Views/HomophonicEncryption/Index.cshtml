@@ -1,4 +1,6 @@
-﻿@model EncryptionViewModel<EncryptionResult>
+﻿@using EncryptionService.Core.Models.HomophonicEncryption
+
+@model EncryptionViewModel<HomophonicEncryptionResult>
 
 @{
 	ViewData["Title"] = "Homophonic encryption";
@@ -14,7 +16,7 @@
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_HomophonicEncryptionResult.cshtml",
 				Model.EncryptionResult)
 	}
 
@@ -30,7 +32,7 @@
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_HomophonicEncryptionResult.cshtml",
 				Model.DecryptionResult)
 	}
 

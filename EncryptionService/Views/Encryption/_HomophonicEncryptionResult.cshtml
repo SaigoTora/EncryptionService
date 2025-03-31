@@ -1,0 +1,23 @@
+﻿@using EncryptionService.Core.Models.HomophonicEncryption
+
+@model HomophonicEncryptionResult
+
+
+@if (Model.EncryptionTable != null)
+{
+	<h4>Encryption table</h4>
+
+	<table class="mb-2 table-striped table-bordered homophonic-encryption-table">
+		@foreach (var kvp in Model.EncryptionTable.OrderBy(kvp => kvp.Key))
+		{
+			<tr>
+				<td class="p-1">@kvp.Key</td>
+				<td class="p-0">
+					<small>@string.Join(", ", kvp.Value.Select(x => x.ToString("D3")))</small>
+				</td>
+			</tr>
+		}
+	</table>
+}
+
+@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)

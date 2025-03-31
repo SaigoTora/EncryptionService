@@ -1,16 +1,16 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.HomophonicEncryption;
 
 namespace EncryptionService.Core.Services
 {
 	public class HomophonicEncryptionService
-		: IEncryptionService<EncryptionResult, HomophonicEncryptionKey,
+		: IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,
 			Dictionary<char, int[]>>
 	{
-		public EncryptionResult Encrypt(string text, HomophonicEncryptionKey encryptionKey)
+		public HomophonicEncryptionResult Encrypt(string text,
+			HomophonicEncryptionKey encryptionKey)
 		{
 			text = text.ToUpper();
 			Random random = new();
@@ -34,9 +34,9 @@ namespace EncryptionService.Core.Services
 				}
 			}
 
-			return new EncryptionResult(builder.ToString());
+			return new HomophonicEncryptionResult(builder.ToString(), encryptionKey.Key);
 		}
-		public EncryptionResult Decrypt(string encryptedText,
+		public HomophonicEncryptionResult Decrypt(string encryptedText,
 			HomophonicEncryptionKey encryptionKey)
 		{
 			StringBuilder builder = new();
@@ -54,7 +54,7 @@ namespace EncryptionService.Core.Services
 				}
 			}
 
-			return new EncryptionResult(builder.ToString());
+			return new HomophonicEncryptionResult(builder.ToString(), encryptionKey.Key);
 		}
 
 		private static Dictionary<char, List<int>> GenerateKeyCopy(

@@ -3,27 +3,26 @@ using Microsoft.Extensions.Options;
 
 using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.HomophonicEncryption;
 using EncryptionService.Models;
 
 namespace EncryptionService.Controllers
 {
 	public class HomophonicEncryptionController(
-		IEncryptionService<EncryptionResult, HomophonicEncryptionKey,
+		IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,
 			Dictionary<char, int[]>> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
 		static HomophonicEncryptionKey? _homophonicEncryptionKey = null;
-		readonly IEncryptionService<EncryptionResult, HomophonicEncryptionKey,
+		readonly IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,
 			Dictionary<char, int[]>> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<EncryptionResult> encryptionViewModel,
+		public IActionResult Index(EncryptionViewModel<HomophonicEncryptionResult> encryptionViewModel,
 			string actionType)
 		{
 			if (!ModelState.IsValid)
@@ -36,7 +35,7 @@ namespace EncryptionService.Controllers
 				_homophonicEncryptionKey = HomophonicEncryptionKey.GenerateKey(frequency);
 			}
 
-			EncryptionResult encryptionResult;
+			HomophonicEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{
