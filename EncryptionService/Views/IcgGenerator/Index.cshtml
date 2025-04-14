@@ -1,0 +1,24 @@
+﻿@model NumberGeneratorViewModel
+
+@{
+	ViewData["Title"] = "Inverse Congruential Generator";
+}
+
+<h1 class="mb-5">Inverse Congruential Generator</h1>
+
+<form class="w-100" asp-controller="IcgGenerator" asp-action="Index" method="post">
+	<div class="form__group field">
+		<input asp-for="Seed" class="form__field" placeholder="Text" />
+		<label asp-for="Seed" class="form__label">Seed</label>
+	</div>
+
+	@if (Model != null)
+	{
+		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+				new EncryptionResult(Model.ResultNumber.ToString()));
+	}
+
+	<div class="form-group mb-3">
+		<button type="submit" class="button">Generate</button>
+	</div>
+</form>
