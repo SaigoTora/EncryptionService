@@ -10,6 +10,7 @@ using EncryptionService.Core.Models.VerticalTransposition;
 using EncryptionService.Core.Services;
 using EncryptionService.Core.Models.PlayfairEncryption;
 using EncryptionService.Core.Models.HomophonicEncryption;
+using EncryptionService.Core.Models.XorEncryption;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,6 +35,8 @@ builder.Services.AddScoped<IEncryptionService<PlayfairEncryptionResult, Playfair
 	string>, PlayfairEncryptionService>();
 builder.Services.AddScoped<IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,
 	Dictionary<char, int[]>>, HomophonicEncryptionService>();
+builder.Services.AddScoped<IEncryptionService<EncryptionResult, XorEncryptionKey, string>,
+	XorEncryptionService>();
 
 
 var app = builder.Build();

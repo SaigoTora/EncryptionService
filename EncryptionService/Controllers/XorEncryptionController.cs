@@ -4,17 +4,17 @@ using Microsoft.Extensions.Options;
 using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Core.Models.BlockTransposition;
 using EncryptionService.Models;
+using EncryptionService.Core.Models.XorEncryption;
 
 namespace EncryptionService.Controllers
 {
 	public class XorEncryptionController(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+		IEncryptionService<EncryptionResult, XorEncryptionKey, string> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
+		readonly IEncryptionService<EncryptionResult, XorEncryptionKey, string>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
@@ -27,7 +27,7 @@ namespace EncryptionService.Controllers
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
+			XorEncryptionKey key = _encryptionSettings.XorEncryptionKey;
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")

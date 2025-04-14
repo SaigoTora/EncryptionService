@@ -3,6 +3,7 @@ using EncryptionService.Core.Models.EquivalentTransposition;
 using EncryptionService.Core.Models.PlayfairEncryption;
 using EncryptionService.Core.Models.SloganEncryption;
 using EncryptionService.Core.Models.VerticalTransposition;
+using EncryptionService.Core.Models.XorEncryption;
 
 namespace EncryptionService.Configurations
 {
@@ -14,5 +15,6 @@ namespace EncryptionService.Configurations
 		public required SloganEncryptionKey SloganEncryptionKey { get; set; }
 		public required PlayfairEncryptionKey PlayfairEncryptionKey { get; set; }
 		public required Dictionary<string, int> HomophonicEncryptionFrequency { get; set; }
+		public required XorEncryptionKey XorEncryptionKey { get; set; }
 	}
 }
