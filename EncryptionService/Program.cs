@@ -11,6 +11,7 @@ using EncryptionService.Core.Services;
 using EncryptionService.Core.Models.PlayfairEncryption;
 using EncryptionService.Core.Models.HomophonicEncryption;
 using EncryptionService.Core.Models.XorEncryption;
+using EncryptionService.Core.Models.IcgGenerator;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +38,7 @@ builder.Services.AddScoped<IEncryptionService<HomophonicEncryptionResult, Homoph
 	Dictionary<char, int[]>>, HomophonicEncryptionService>();
 builder.Services.AddScoped<IEncryptionService<EncryptionResult, XorEncryptionKey, string>,
 	XorEncryptionService>();
+builder.Services.AddScoped<IRandomNumbersGenerator<IcgGeneratorParameters>, IcgGeneratorService>();
 
 
 var app = builder.Build();

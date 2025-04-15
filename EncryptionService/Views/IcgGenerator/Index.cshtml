@@ -8,14 +8,19 @@
 
 <form class="w-100" asp-controller="IcgGenerator" asp-action="Index" method="post">
 	<div class="form__group field">
-		<input asp-for="Seed" class="form__field" placeholder="Text" />
+		<input asp-for="GammaLength" class="form__field" placeholder="Gamma length" required />
+		<label asp-for="GammaLength" class="form__label">Gamma length</label>
+	</div>
+
+	<div class="form__group field">
+		<input asp-for="Seed" class="form__field" placeholder="Seed" required />
 		<label asp-for="Seed" class="form__label">Seed</label>
 	</div>
 
-	@if (Model != null)
+	@if (Model != null && Model.ResultNumbers != null)
 	{
 		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
-				new EncryptionResult(Model.ResultNumber.ToString()));
+				new EncryptionResult(string.Join(", ", Model.ResultNumbers)))
 	}
 
 	<div class="form-group mb-3">
