@@ -2,6 +2,7 @@
     --color-dark: rgb(15, 15, 15);
     --color-dark-gray: rgb(26, 26, 26);
     --color-white: rgb(230, 230, 230);
+    --color-accent: rgb(0, 169, 127);
 }
 
 
@@ -179,9 +180,39 @@ input:-webkit-autofill:active {
     box-shadow: none;
 }
 
+a {
+    color: var(--color-accent);
+}
+
+.accordion-button {
+    font-size: 24px;
+}
+
+.list-group-item {
+    font-size: 20px;
+}
+
+.accordion-body, .accordion-button, .list-group-item, .accordion-button.collapsed {
+    background-color: var(--color-dark);
+    color: var(--color-white);
+}
+
+    .accordion-button:focus {
+        background-color: var(--color-dark);
+        color: white;
+    }
+
+    .accordion-button:not(.collapsed) {
+        background-color: var(--color-dark);
+        color: var(--color-white);
+    }
+
+    .accordion-button:focus, .accordion-button:active {
+        box-shadow: none;
+    }
 
 .button {
-    --color: #00A97F;
+    --color: var(--color-accent);
     padding: 0.5em 1.3em;
     background-color: transparent;
     border-radius: .3em;
