@@ -2,7 +2,7 @@
 using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
 
-namespace EncryptionService.Core.Services
+namespace EncryptionService.Core.Services.TranspositionCiphers
 {
 	public class BlockTranspositionEncryptionService
 		: IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>

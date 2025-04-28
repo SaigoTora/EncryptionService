@@ -1,9 +1,8 @@
 ﻿using System.Text;
-
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption;
 
-namespace EncryptionService.Core.Services
+namespace EncryptionService.Core.Services.SubstitutionCiphers
 {
 	public class HomophonicEncryptionService
 		: IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,

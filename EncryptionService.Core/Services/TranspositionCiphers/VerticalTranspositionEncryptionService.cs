@@ -1,9 +1,8 @@
 ﻿using System.Text;
-
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition;
 
-namespace EncryptionService.Core.Services
+namespace EncryptionService.Core.Services.TranspositionCiphers
 {
 	public class VerticalTranspositionEncryptionService
 		: IEncryptionService<VerticalTranspositionEncryptionResult, VerticalTranspositionKey,

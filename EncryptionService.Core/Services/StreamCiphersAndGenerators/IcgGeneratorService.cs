@@ -1,7 +1,7 @@
 ﻿using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
 
-namespace EncryptionService.Core.Services
+namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 {
 	public class IcgGeneratorService : IRandomNumbersGenerator<IcgGeneratorParameters>
 	{

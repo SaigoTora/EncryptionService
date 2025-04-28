@@ -1,10 +1,9 @@
 ﻿using System.Text;
-
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
 
-namespace EncryptionService.Core.Services
+namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 {
 	public class XorEncryptionService : IEncryptionService<EncryptionResult,
 		XorEncryptionKey, string>

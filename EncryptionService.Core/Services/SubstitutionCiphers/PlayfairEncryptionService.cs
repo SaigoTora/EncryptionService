@@ -1,9 +1,8 @@
 ﻿using System.Text;
-
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.SubstitutionCiphers.PlayfairEncryption;
 
-namespace EncryptionService.Core.Services
+namespace EncryptionService.Core.Services.SubstitutionCiphers
 {
 	public class PlayfairEncryptionService
 		: IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey, string>
