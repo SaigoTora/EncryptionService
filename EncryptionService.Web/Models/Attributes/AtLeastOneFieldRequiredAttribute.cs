@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EncryptionService.Models.Attributes
+namespace EncryptionService.Web.Models.Attributes
 {
 	public class AtLeastOneFieldRequiredAttribute(string otherPropertyName,
 		string errorMessage = "") : ValidationAttribute(errorMessage)

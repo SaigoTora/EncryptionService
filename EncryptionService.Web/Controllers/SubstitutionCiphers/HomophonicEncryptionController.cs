@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Models;
 using EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption;
+using EncryptionService.Web.Configurations;
+using EncryptionService.Web.Models;
 
-namespace EncryptionService.Controllers.SubstitutionCiphers
+namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 {
 	public class HomophonicEncryptionController(
 		IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,

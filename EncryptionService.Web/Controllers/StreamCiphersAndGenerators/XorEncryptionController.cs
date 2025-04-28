@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Models;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
+using EncryptionService.Web.Configurations;
+using EncryptionService.Web.Models;
 
-namespace EncryptionService.Controllers.StreamCiphersAndGenerators
+namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 {
 	public class XorEncryptionController(
 		IEncryptionService<EncryptionResult, XorEncryptionKey, string> encryptionService,

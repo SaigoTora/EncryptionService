@@ -1,5 +1,4 @@
 ﻿using EncryptionService.Core.Interfaces;
-using System;
 
 namespace EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption
 {

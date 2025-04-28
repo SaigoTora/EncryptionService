@@ -6,7 +6,7 @@ using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
 using EncryptionService.Core.Models.TranspositionCiphers.EquivalentTransposition;
 using EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition;
 
-namespace EncryptionService.Configurations
+namespace EncryptionService.Web.Configurations
 {
 	public class EncryptionSettings
 	{

@@ -1,33 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using EncryptionService.Configurations;
+using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Models;
-using EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption;
+using EncryptionService.Web.Models;
+using EncryptionService.Core.Models.SubstitutionCiphers.PlayfairEncryption;
 
-namespace EncryptionService.Controllers.SubstitutionCiphers
+namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 {
-	public class SloganEncryptionController(
-		IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string> encryptionService,
-		IOptions<EncryptionSettings> encryptionSettings)
+	public class PlayfairEncryptionController(
+		IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey,
+			string> encryptionService, IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>
+		readonly IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey, string>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<SloganEncryptionResult> encryptionViewModel,
-			string actionType)
+		public IActionResult Index(
+			EncryptionViewModel<PlayfairEncryptionResult> encryptionViewModel, string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			SloganEncryptionKey key = _encryptionSettings.SloganEncryptionKey;
-			SloganEncryptionResult encryptionResult;
+			PlayfairEncryptionKey key = _encryptionSettings.PlayfairEncryptionKey;
+			PlayfairEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{

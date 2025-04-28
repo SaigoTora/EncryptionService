@@ -1,4 +1,4 @@
-namespace EncryptionService.Models
+namespace EncryptionService.Web.Models
 {
 	public class ErrorViewModel
 	{

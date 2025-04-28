@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using EncryptionService.Configurations;
+using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Models;
+using EncryptionService.Web.Models;
 using EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition;
 
-namespace EncryptionService.Controllers.TranspositionCiphers
+namespace EncryptionService.Web.Controllers.TranspositionCiphers
 {
 	public class VerticalTranspositionController(
 		IEncryptionService<VerticalTranspositionEncryptionResult, VerticalTranspositionKey, string>

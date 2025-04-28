@@ -1,34 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using EncryptionService.Configurations;
+using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
-using EncryptionService.Models;
-using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
+using EncryptionService.Web.Models;
+using EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption;
 
-namespace EncryptionService.Controllers.TranspositionCiphers
+namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 {
-	public class BlockTranspositionController(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+	public class SloganEncryptionController(
+		IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
+		readonly IEncryptionService<SloganEncryptionResult, SloganEncryptionKey, string>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<EncryptionResult> encryptionViewModel,
+		public IActionResult Index(EncryptionViewModel<SloganEncryptionResult> encryptionViewModel,
 			string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
-			EncryptionResult encryptionResult;
+			SloganEncryptionKey key = _encryptionSettings.SloganEncryptionKey;
+			SloganEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{

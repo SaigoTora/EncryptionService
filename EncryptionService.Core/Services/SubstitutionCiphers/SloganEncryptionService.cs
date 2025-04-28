@@ -1,4 +1,5 @@
 ﻿using System.Text;
+
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption;
 

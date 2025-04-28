@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace EncryptionService.Models
+namespace EncryptionService.Web.Models
 {
 	public class NumberGeneratorViewModel
 	{

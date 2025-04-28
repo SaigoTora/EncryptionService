@@ -1,4 +1,5 @@
 ﻿using System.Text;
+
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition;
 
@@ -41,7 +42,7 @@ namespace EncryptionService.Core.Services.TranspositionCiphers
 						builder.Append(matrix[i, j]);
 
 			int[] sortIndixes = [.. encryptionKey.Key.Select((_, i) => sorted[i])];
-			return new VerticalTranspositionEncryptionResult(builder.ToString(), 
+			return new VerticalTranspositionEncryptionResult(builder.ToString(),
 				matrix, sortIndixes);
 		}
 		private static char[,] FillMatrix(char[,] matrix, string text, Dictionary<int, int> sorted,

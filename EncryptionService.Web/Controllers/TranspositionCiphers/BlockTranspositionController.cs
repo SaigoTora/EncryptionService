@@ -1,33 +1,34 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-using EncryptionService.Configurations;
+using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Models;
-using EncryptionService.Core.Models.SubstitutionCiphers.PlayfairEncryption;
+using EncryptionService.Core.Models;
+using EncryptionService.Web.Models;
+using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
 
-namespace EncryptionService.Controllers.SubstitutionCiphers
+namespace EncryptionService.Web.Controllers.TranspositionCiphers
 {
-	public class PlayfairEncryptionController(
-		IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey,
-			string> encryptionService, IOptions<EncryptionSettings> encryptionSettings)
+	public class BlockTranspositionController(
+		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey, string>
+		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(
-			EncryptionViewModel<PlayfairEncryptionResult> encryptionViewModel, string actionType)
+		public IActionResult Index(EncryptionViewModel<EncryptionResult> encryptionViewModel,
+			string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			PlayfairEncryptionKey key = _encryptionSettings.PlayfairEncryptionKey;
-			PlayfairEncryptionResult encryptionResult;
+			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
+			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{

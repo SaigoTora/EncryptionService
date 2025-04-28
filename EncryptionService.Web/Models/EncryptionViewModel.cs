@@ -1,7 +1,7 @@
 ﻿using EncryptionService.Core.Models;
-using EncryptionService.Models.Attributes;
+using EncryptionService.Web.Models.Attributes;
 
-namespace EncryptionService.Models
+namespace EncryptionService.Web.Models
 {
 	public class EncryptionViewModel<TEncryptionResult> where TEncryptionResult : EncryptionResult
 	{

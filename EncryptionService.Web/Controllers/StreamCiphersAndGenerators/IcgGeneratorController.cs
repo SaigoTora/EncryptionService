@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-using EncryptionService.Models;
-using EncryptionService.Configurations;
 using Microsoft.Extensions.Options;
+
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
+using EncryptionService.Web.Configurations;
+using EncryptionService.Web.Models;
 
-namespace EncryptionService.Controllers.StreamCiphersAndGenerators
+namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 {
 	public class IcgGeneratorController(IRandomNumbersGenerator<IcgGeneratorParameters>
 		randomNumberGenerator, IOptions<EncryptionSettings> encryptionSettings) : Controller
