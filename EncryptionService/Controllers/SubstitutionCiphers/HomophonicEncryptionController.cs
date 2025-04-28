@@ -6,7 +6,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.HomophonicEncryption;
 using EncryptionService.Models;
 
-namespace EncryptionService.Controllers
+namespace EncryptionService.Controllers.SubstitutionCiphers
 {
 	public class HomophonicEncryptionController(
 		IEncryptionService<HomophonicEncryptionResult, HomophonicEncryptionKey,

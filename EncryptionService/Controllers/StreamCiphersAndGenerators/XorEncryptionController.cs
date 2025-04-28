@@ -7,7 +7,7 @@ using EncryptionService.Core.Models;
 using EncryptionService.Models;
 using EncryptionService.Core.Models.XorEncryption;
 
-namespace EncryptionService.Controllers
+namespace EncryptionService.Controllers.StreamCiphersAndGenerators
 {
 	public class XorEncryptionController(
 		IEncryptionService<EncryptionResult, XorEncryptionKey, string> encryptionService,

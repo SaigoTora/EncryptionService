@@ -6,7 +6,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.VerticalTransposition;
 using EncryptionService.Models;
 
-namespace EncryptionService.Controllers
+namespace EncryptionService.Controllers.TranspositionCiphers
 {
 	public class VerticalTranspositionController(
 		IEncryptionService<VerticalTranspositionEncryptionResult, VerticalTranspositionKey, string>

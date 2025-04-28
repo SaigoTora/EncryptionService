@@ -6,7 +6,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.EquivalentTransposition;
 using EncryptionService.Models;
 
-namespace EncryptionService.Controllers
+namespace EncryptionService.Controllers.TranspositionCiphers
 {
 	public class EquivalentTranspositionController(
 		IEncryptionService<EquivalentTranspositionEncryptionResult, EquivalentTranspositionKey,

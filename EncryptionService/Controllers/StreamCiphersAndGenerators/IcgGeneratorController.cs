@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using EncryptionService.Core.Models.IcgGenerator;
 using EncryptionService.Core.Interfaces;
 
-namespace EncryptionService.Controllers
+namespace EncryptionService.Controllers.StreamCiphersAndGenerators
 {
 	public class IcgGeneratorController(IRandomNumbersGenerator<IcgGeneratorParameters>
 		randomNumberGenerator, IOptions<EncryptionSettings> encryptionSettings) : Controller

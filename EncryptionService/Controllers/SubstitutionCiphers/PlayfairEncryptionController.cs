@@ -6,7 +6,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Models;
 using EncryptionService.Core.Models.PlayfairEncryption;
 
-namespace EncryptionService.Controllers
+namespace EncryptionService.Controllers.SubstitutionCiphers
 {
 	public class PlayfairEncryptionController(
 		IEncryptionService<PlayfairEncryptionResult, PlayfairEncryptionKey,
