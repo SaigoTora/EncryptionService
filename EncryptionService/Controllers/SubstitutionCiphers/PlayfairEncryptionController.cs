@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Models;
-using EncryptionService.Core.Models.PlayfairEncryption;
+using EncryptionService.Core.Models.SubstitutionCiphers.PlayfairEncryption;
 
 namespace EncryptionService.Controllers.SubstitutionCiphers
 {

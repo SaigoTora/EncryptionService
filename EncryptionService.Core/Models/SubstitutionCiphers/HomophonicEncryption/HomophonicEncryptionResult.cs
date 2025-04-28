@@ -1,4 +1,4 @@
-﻿namespace EncryptionService.Core.Models.HomophonicEncryption
+﻿namespace EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption
 {
 	public class HomophonicEncryptionResult(string text, Dictionary<char, int[]> encryptionTable)
 		: EncryptionResult(text)

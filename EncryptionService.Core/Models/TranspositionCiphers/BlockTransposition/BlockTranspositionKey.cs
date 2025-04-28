@@ -1,6 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 
-namespace EncryptionService.Core.Models.BlockTransposition
+namespace EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition
 {
 	public class BlockTranspositionKey : IEncryptionKey<int[]>
 	{

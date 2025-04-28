@@ -1,7 +1,7 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.HomophonicEncryption;
+using EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption;
 
 namespace EncryptionService.Core.Services
 {

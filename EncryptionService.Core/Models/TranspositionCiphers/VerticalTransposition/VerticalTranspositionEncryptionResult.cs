@@ -1,4 +1,4 @@
-﻿namespace EncryptionService.Core.Models.VerticalTransposition
+﻿namespace EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition
 {
 	public class VerticalTranspositionEncryptionResult(string text, char[,] matrix, int[] indexes)
 		: EncryptionResult(text)

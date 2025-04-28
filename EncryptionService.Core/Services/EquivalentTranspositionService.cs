@@ -2,7 +2,7 @@
 
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Core.Models.EquivalentTransposition;
+using EncryptionService.Core.Models.TranspositionCiphers.EquivalentTransposition;
 
 namespace EncryptionService.Core.Services
 {

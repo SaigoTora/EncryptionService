@@ -1,6 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Core.Models.BlockTransposition;
+using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
 
 namespace EncryptionService.Core.Services
 {

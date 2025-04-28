@@ -1,6 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 
-namespace EncryptionService.Core.Models.IcgGenerator
+namespace EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator
 {
 	public class IcgGeneratorParameters : IGeneratorParameters
 	{

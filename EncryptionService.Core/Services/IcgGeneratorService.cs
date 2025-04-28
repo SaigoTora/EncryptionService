@@ -1,5 +1,5 @@
 ﻿using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.IcgGenerator;
+using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
 
 namespace EncryptionService.Core.Services
 {

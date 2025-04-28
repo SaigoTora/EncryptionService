@@ -2,7 +2,7 @@
 
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Core.Models.XorEncryption;
+using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
 
 namespace EncryptionService.Core.Services
 {

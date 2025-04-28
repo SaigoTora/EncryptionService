@@ -1,7 +1,7 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.VerticalTransposition;
+using EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition;
 
 namespace EncryptionService.Core.Services
 {

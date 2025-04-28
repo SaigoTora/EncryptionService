@@ -1,7 +1,7 @@
 ﻿using EncryptionService.Core.Interfaces;
 using System;
 
-namespace EncryptionService.Core.Models.HomophonicEncryption
+namespace EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption
 {
 	public class HomophonicEncryptionKey : IEncryptionKey<Dictionary<char, int[]>>
 	{

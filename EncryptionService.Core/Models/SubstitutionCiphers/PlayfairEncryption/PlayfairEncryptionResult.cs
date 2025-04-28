@@ -1,4 +1,4 @@
-﻿namespace EncryptionService.Core.Models.PlayfairEncryption
+﻿namespace EncryptionService.Core.Models.SubstitutionCiphers.PlayfairEncryption
 {
 	public class PlayfairEncryptionResult(string text, char[,] encryptionTable)
 		: EncryptionResult(text)

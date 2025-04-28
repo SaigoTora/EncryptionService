@@ -1,10 +1,10 @@
-﻿using EncryptionService.Core.Models.BlockTransposition;
-using EncryptionService.Core.Models.EquivalentTransposition;
-using EncryptionService.Core.Models.IcgGenerator;
-using EncryptionService.Core.Models.PlayfairEncryption;
-using EncryptionService.Core.Models.SloganEncryption;
-using EncryptionService.Core.Models.VerticalTransposition;
-using EncryptionService.Core.Models.XorEncryption;
+﻿using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
+using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
+using EncryptionService.Core.Models.SubstitutionCiphers.PlayfairEncryption;
+using EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption;
+using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
+using EncryptionService.Core.Models.TranspositionCiphers.EquivalentTransposition;
+using EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition;
 
 namespace EncryptionService.Configurations
 {

@@ -1,6 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 
-namespace EncryptionService.Core.Models.SloganEncryption
+namespace EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption
 {
 	public class SloganEncryptionKey : IEncryptionKey<string>
 	{

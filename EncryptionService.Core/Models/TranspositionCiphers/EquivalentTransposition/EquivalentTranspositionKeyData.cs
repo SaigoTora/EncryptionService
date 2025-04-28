@@ -1,4 +1,4 @@
-﻿namespace EncryptionService.Core.Models.EquivalentTransposition
+﻿namespace EncryptionService.Core.Models.TranspositionCiphers.EquivalentTransposition
 {
 	public class EquivalentTranspositionKeyData
 	{

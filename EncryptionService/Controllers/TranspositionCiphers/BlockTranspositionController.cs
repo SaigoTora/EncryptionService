@@ -4,8 +4,8 @@ using Microsoft.Extensions.Options;
 using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Core.Models.BlockTransposition;
 using EncryptionService.Models;
+using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
 
 namespace EncryptionService.Controllers.TranspositionCiphers
 {

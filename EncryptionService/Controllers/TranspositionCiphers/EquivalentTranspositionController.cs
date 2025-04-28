@@ -3,8 +3,8 @@ using Microsoft.Extensions.Options;
 
 using EncryptionService.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.EquivalentTransposition;
 using EncryptionService.Models;
+using EncryptionService.Core.Models.TranspositionCiphers.EquivalentTransposition;
 
 namespace EncryptionService.Controllers.TranspositionCiphers
 {

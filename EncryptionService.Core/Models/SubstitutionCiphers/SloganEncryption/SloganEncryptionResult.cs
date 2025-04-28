@@ -1,4 +1,4 @@
-﻿namespace EncryptionService.Core.Models.SloganEncryption
+﻿namespace EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption
 {
 	public class SloganEncryptionResult(string text, Dictionary<char, char> encryptionTable)
 		: EncryptionResult(text)

@@ -3,8 +3,8 @@
 using EncryptionService.Models;
 using EncryptionService.Configurations;
 using Microsoft.Extensions.Options;
-using EncryptionService.Core.Models.IcgGenerator;
 using EncryptionService.Core.Interfaces;
+using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
 
 namespace EncryptionService.Controllers.StreamCiphersAndGenerators
 {

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.SloganEncryption;
+using EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption;
 
 namespace EncryptionService.Core.Services
 {
