@@ -1,4 +1,5 @@
 ﻿using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
+using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
 using EncryptionService.Core.Models.SubstitutionCiphers.PlayfairEncryption;
 using EncryptionService.Core.Models.SubstitutionCiphers.SloganEncryption;
@@ -18,5 +19,6 @@ namespace EncryptionService.Web.Configurations
 		public required Dictionary<string, int> HomophonicEncryptionFrequency { get; set; }
 		public required XorEncryptionKey XorEncryptionKey { get; set; }
 		public required IcgGeneratorParameters IcgGeneratorParameters { get; set; }
+		public required LfsrGeneratorKey LfsrGeneratorKey { get; set; }
 	}
 }

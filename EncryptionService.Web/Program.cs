@@ -14,6 +14,7 @@ using EncryptionService.Core.Services.StreamCiphersAndGenerators;
 using EncryptionService.Core.Services.SubstitutionCiphers;
 using EncryptionService.Core.Services.TranspositionCiphers;
 using EncryptionService.Web.Configurations;
+using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 		Dictionary<char, int[]>>, HomophonicEncryptionService>();
 	services.AddScoped<IEncryptionService<EncryptionResult, XorEncryptionKey, string>,
 		XorEncryptionService>();
+	services.AddScoped<IEncryptionService<EncryptionResult, LfsrGeneratorKey, int[]>,
+		LfsrGeneratorService>();
 	services.AddScoped<IRandomNumbersGenerator<IcgGeneratorParameters>, IcgGeneratorService>();
 }
 static void ConfigureMiddleware(WebApplication app)

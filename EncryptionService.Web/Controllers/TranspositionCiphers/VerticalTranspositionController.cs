@@ -3,8 +3,8 @@ using Microsoft.Extensions.Options;
 
 using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Web.Models;
 using EncryptionService.Core.Models.TranspositionCiphers.VerticalTransposition;
+using EncryptionService.Web.Models.EncryptionViewModels;
 
 namespace EncryptionService.Web.Controllers.TranspositionCiphers
 {

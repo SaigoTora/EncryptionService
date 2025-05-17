@@ -5,7 +5,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
 using EncryptionService.Web.Configurations;
-using EncryptionService.Web.Models;
+using EncryptionService.Web.Models.EncryptionViewModels;
 
 namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 {

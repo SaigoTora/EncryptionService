@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption;
 using EncryptionService.Web.Configurations;
-using EncryptionService.Web.Models;
+using EncryptionService.Web.Models.EncryptionViewModels;
 
 namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 {
