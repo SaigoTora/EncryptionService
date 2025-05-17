@@ -1,5 +1,7 @@
-﻿@using EncryptionService.Web.Models.EncryptionViewModels
-@model LfsrGeneratorViewModel<EncryptionResult>
+﻿@using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator
+@using EncryptionService.Web.Models.EncryptionViewModels
+
+@model LfsrGeneratorViewModel<LfsrEncryptionResult>
 
 @{
 	ViewData["Title"] = "Linear Feedback Shift Register Generator";
@@ -20,7 +22,7 @@
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_LfsrEncryptionResult.cshtml",
 				Model.EncryptionResult)
 	}
 
@@ -36,7 +38,7 @@
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_LfsrEncryptionResult.cshtml",
 				Model.DecryptionResult)
 	}
 

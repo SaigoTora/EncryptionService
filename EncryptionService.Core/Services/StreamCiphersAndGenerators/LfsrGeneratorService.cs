@@ -1,15 +1,14 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 
 namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 {
-	public class LfsrGeneratorService : IEncryptionService<EncryptionResult,
+	public class LfsrGeneratorService : IEncryptionService<LfsrEncryptionResult,
 		LfsrGeneratorKey, int[]>
 	{
-		public EncryptionResult Encrypt(string text, LfsrGeneratorKey encryptionKey)
+		public LfsrEncryptionResult Encrypt(string text, LfsrGeneratorKey encryptionKey)
 		{
 			byte[] inputBytes = Encoding.UTF8.GetBytes(text);
 			byte[] encryptedBytes = new byte[inputBytes.Length];
@@ -25,9 +24,9 @@ namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 			string binary = string.Concat(encryptedBytes.Select(b => Convert.ToString(b, 2).PadLeft(8, '0')));
 			string hex = BitConverter.ToString(encryptedBytes).Replace("-", "");
 
-			return new EncryptionResult(encryptedBase64);
+			return new LfsrEncryptionResult(encryptedBase64, binary, hex);
 		}
-		public EncryptionResult Decrypt(string encryptedBase64, LfsrGeneratorKey encryptionKey)
+		public LfsrEncryptionResult Decrypt(string encryptedBase64, LfsrGeneratorKey encryptionKey)
 		{
 			byte[] encryptedBytes = Convert.FromBase64String(encryptedBase64);
 			byte[] decryptedBytes = new byte[encryptedBytes.Length];
@@ -43,7 +42,7 @@ namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 			string binary = string.Concat(decryptedBytes.Select(b => Convert.ToString(b, 2).PadLeft(8, '0')));
 			string hex = BitConverter.ToString(decryptedBytes).Replace("-", "");
 
-			return new EncryptionResult(decryptedText);
+			return new LfsrEncryptionResult(decryptedText, binary, hex);
 		}
 
 		private static bool[] GetBits(LfsrGeneratorKey key)

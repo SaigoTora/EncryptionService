@@ -50,7 +50,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 		Dictionary<char, int[]>>, HomophonicEncryptionService>();
 	services.AddScoped<IEncryptionService<EncryptionResult, XorEncryptionKey, string>,
 		XorEncryptionService>();
-	services.AddScoped<IEncryptionService<EncryptionResult, LfsrGeneratorKey, int[]>,
+	services.AddScoped<IEncryptionService<LfsrEncryptionResult, LfsrGeneratorKey, int[]>,
 		LfsrGeneratorService>();
 	services.AddScoped<IRandomNumbersGenerator<IcgGeneratorParameters>, IcgGeneratorService>();
 }
