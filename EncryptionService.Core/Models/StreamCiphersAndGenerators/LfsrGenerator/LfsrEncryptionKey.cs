@@ -2,10 +2,11 @@
 
 namespace EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator
 {
-	public class LfsrGeneratorKey : IEncryptionKey<int[]>
+	public class LfsrEncryptionKey : IEncryptionKey<int[]>
 	{
 		public required int[] Key { get; init; }
-		public bool[] InitialState { get; set; } = [];
+		public bool[] InitialState { get; private set; } = [];
+		public EncryptionFormat Format { get; private set; }
 
 		public void SetInitialState(string state)
 		{
@@ -16,5 +17,6 @@ namespace EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator
 				if (state[i] == '1')
 					InitialState[i] = true;
 		}
+		public void SetEncryptionFormat(EncryptionFormat format) => Format = format;
 	}
 }

@@ -9,11 +9,11 @@ using EncryptionService.Web.Models.EncryptionViewModels;
 namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 {
 	public class LfsrGeneratorController(
-		IEncryptionService<LfsrEncryptionResult, LfsrGeneratorKey, int[]> encryptionService,
+		IEncryptionService<LfsrEncryptionResult, LfsrEncryptionKey, int[]> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<LfsrEncryptionResult, LfsrGeneratorKey, int[]> _encryptionService
+		readonly IEncryptionService<LfsrEncryptionResult, LfsrEncryptionKey, int[]> _encryptionService
 			= encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
@@ -26,17 +26,19 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			LfsrGeneratorKey key = _encryptionSettings.LfsrGeneratorKey;
+			LfsrEncryptionKey key = _encryptionSettings.LfsrGeneratorKey;
 			key.SetInitialState(encryptionViewModel.InitialState);
 			LfsrEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{
+				key.SetEncryptionFormat(encryptionViewModel.EncryptionFormat);
 				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!, key);
 				encryptionViewModel.EncryptionResult = encryptionResult;
 			}
 			else if (actionType == "Decrypt")
 			{
+				key.SetEncryptionFormat(encryptionViewModel.DecryptionFormat);
 				encryptionResult = _encryptionService.Decrypt(
 					encryptionViewModel.EncryptedInputText!, key);
 				encryptionViewModel.DecryptionResult = encryptionResult;

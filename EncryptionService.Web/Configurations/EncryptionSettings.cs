@@ -19,6 +19,6 @@ namespace EncryptionService.Web.Configurations
 		public required Dictionary<string, int> HomophonicEncryptionFrequency { get; set; }
 		public required XorEncryptionKey XorEncryptionKey { get; set; }
 		public required IcgGeneratorParameters IcgGeneratorParameters { get; set; }
-		public required LfsrGeneratorKey LfsrGeneratorKey { get; set; }
+		public required LfsrEncryptionKey LfsrGeneratorKey { get; set; }
 	}
 }

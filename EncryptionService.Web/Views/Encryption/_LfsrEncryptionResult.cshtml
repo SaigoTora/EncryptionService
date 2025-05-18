@@ -5,6 +5,6 @@
 @if (!string.IsNullOrWhiteSpace(Model.Text))
 {
 	<p>Text result: <span class="encryption-result-text">@Model.Text</span></p>
-	<p>Binary result: <span class="encryption-result-text">@Model.BinaryText</span></p>
+	<p>Binary result: <span class="encryption-result-text"><small>@Model.BinaryText</small></span></p>
 	<p>Hexadecimal result: <span class="encryption-result-text">@Model.HexText</span></p>
 }

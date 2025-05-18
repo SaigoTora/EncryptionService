@@ -1,51 +1,90 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
+using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 
 namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 {
 	public class LfsrGeneratorService : IEncryptionService<LfsrEncryptionResult,
-		LfsrGeneratorKey, int[]>
+		LfsrEncryptionKey, int[]>
 	{
-		public LfsrEncryptionResult Encrypt(string text, LfsrGeneratorKey encryptionKey)
+		public LfsrEncryptionResult Encrypt(string text, LfsrEncryptionKey encryptionKey)
+			=> ProcessEncryption(text, encryptionKey, true);
+		public LfsrEncryptionResult Decrypt(string encryptedText, LfsrEncryptionKey encryptionKey)
+			=> ProcessEncryption(encryptedText, encryptionKey, false);
+
+		private static LfsrEncryptionResult ProcessEncryption(string text,
+			LfsrEncryptionKey encryptionKey, bool isEncryption)
 		{
-			byte[] inputBytes = Encoding.UTF8.GetBytes(text);
-			byte[] encryptedBytes = new byte[inputBytes.Length];
+			byte[] inputBytes = GetInputBytes(text, encryptionKey.Format, isEncryption);
+			byte[] outputBytes = new byte[inputBytes.Length];
 
 			for (int i = 0; i < inputBytes.Length; i++)
 			{
 				bool[] bits = GetBits(encryptionKey);
 				byte gammaByte = GetByteFromBits(bits);
-				encryptedBytes[i] = (byte)(inputBytes[i] ^ gammaByte);
+				outputBytes[i] = (byte)(inputBytes[i] ^ gammaByte);
 			}
 
-			string encryptedBase64 = Convert.ToBase64String(encryptedBytes);
-			string binary = string.Concat(encryptedBytes.Select(b => Convert.ToString(b, 2).PadLeft(8, '0')));
-			string hex = BitConverter.ToString(encryptedBytes).Replace("-", "");
+			string resultText = GetResultText(outputBytes, isEncryption);
+			string binary = string.Concat(outputBytes.Select(b
+				=> Convert.ToString(b, 2).PadLeft(8, '0')));
+			string hex = Convert.ToHexString(outputBytes);
 
-			return new LfsrEncryptionResult(encryptedBase64, binary, hex);
+			return new LfsrEncryptionResult(resultText, binary, hex);
 		}
-		public LfsrEncryptionResult Decrypt(string encryptedBase64, LfsrGeneratorKey encryptionKey)
+		private static byte[] GetInputBytes(string text, EncryptionFormat format, bool isEncryption)
 		{
-			byte[] encryptedBytes = Convert.FromBase64String(encryptedBase64);
-			byte[] decryptedBytes = new byte[encryptedBytes.Length];
-
-			for (int i = 0; i < encryptedBytes.Length; i++)
+			if (isEncryption)
 			{
-				bool[] bits = GetBits(encryptionKey);
-				byte gammaByte = GetByteFromBits(bits);
-				decryptedBytes[i] = (byte)(encryptedBytes[i] ^ gammaByte);
+				return format switch
+				{
+					EncryptionFormat.Text => Encoding.UTF8.GetBytes(text),
+					EncryptionFormat.Binary => BinaryStringToBytes(text),
+					EncryptionFormat.Hexadecimal => Convert.FromHexString(text),
+					_ => throw new ArgumentOutOfRangeException(nameof(format),
+						"Unsupported format.")
+				};
 			}
-
-			string decryptedText = Encoding.UTF8.GetString(decryptedBytes);
-			string binary = string.Concat(decryptedBytes.Select(b => Convert.ToString(b, 2).PadLeft(8, '0')));
-			string hex = BitConverter.ToString(decryptedBytes).Replace("-", "");
-
-			return new LfsrEncryptionResult(decryptedText, binary, hex);
+			else
+			{
+				return format switch
+				{
+					EncryptionFormat.Text => Convert.FromBase64String(text),
+					EncryptionFormat.Binary => BinaryStringToBytes(text),
+					EncryptionFormat.Hexadecimal => Convert.FromHexString(text),
+					_ => throw new ArgumentOutOfRangeException(nameof(format),
+						"Unsupported format.")
+				};
+			}
 		}
 
-		private static bool[] GetBits(LfsrGeneratorKey key)
+		private static byte[] BinaryStringToBytes(string binary)
+		{
+			if (binary.Length % 8 != 0)
+				throw new ArgumentException("Binary string length must be multiple of 8.");
+
+			int byteCount = binary.Length / 8;
+			byte[] result = new byte[byteCount];
+
+			for (int i = 0; i < byteCount; i++)
+			{
+				string byteStr = binary.Substring(i * 8, 8);
+				result[i] = Convert.ToByte(byteStr, 2);
+			}
+
+			return result;
+		}
+		private static string GetResultText(byte[] bytes, bool isEncryption)
+		{
+			if (isEncryption)
+				return Convert.ToBase64String(bytes);
+
+			return Encoding.UTF8.GetString(bytes);
+		}
+
+		private static bool[] GetBits(LfsrEncryptionKey key)
 		{
 			int[] polynomial = key.Key;
 			int stateLength = key.InitialState.Length;

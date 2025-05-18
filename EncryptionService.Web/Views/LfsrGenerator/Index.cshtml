@@ -20,6 +20,12 @@
 		<label asp-for="InputText" class="form__label">Text</label>
 	</div>
 
+	<select class="mb-3" name="EncryptionFormat">
+		<option value="@EncryptionFormat.Text">Text</option>
+		<option value="@EncryptionFormat.Binary">Binary</option>
+		<option value="@EncryptionFormat.Hexadecimal">Hexadecimal</option>
+	</select>
+
 	@if (Model != null && Model.EncryptionResult != null)
 	{
 		@await Html.PartialAsync("~/Views/Encryption/_LfsrEncryptionResult.cshtml",
@@ -35,6 +41,12 @@
 		<input asp-for="EncryptedInputText" class="form__field" placeholder="Encrypted text" />
 		<label asp-for="EncryptedInputText" class="form__label">Encrypted text </label>
 	</div>
+
+	<select class="mb-3" name="DecryptionFormat">
+		<option value="@EncryptionFormat.Text">Text</option>
+		<option value="@EncryptionFormat.Binary">Binary</option>
+		<option value="@EncryptionFormat.Hexadecimal">Hexadecimal</option>
+	</select>
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{

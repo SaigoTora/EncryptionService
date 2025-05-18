@@ -184,6 +184,15 @@ a {
     color: var(--color-accent);
 }
 
+select {
+    padding-block: 4px;
+    border-radius: 8px;
+    text-align: center;
+    color: var(--color-white);
+    border: 1px solid var(--color-white);
+    background-color: var(--color-dark-gray);
+}
+
 .accordion-button {
     font-size: 22px;
 }
