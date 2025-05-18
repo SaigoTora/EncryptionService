@@ -1,7 +1,7 @@
 ﻿@using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator
 @using EncryptionService.Web.Models.EncryptionViewModels
 
-@model LfsrGeneratorViewModel<LfsrEncryptionResult>
+@model LfsrEncryptionViewModel<LfsrEncryptionResult>
 
 @{
 	ViewData["Title"] = "Linear Feedback Shift Register Generator";
@@ -9,7 +9,7 @@
 
 <h1 class="mb-5">Linear Feedback Shift Register Generator</h1>
 
-<form class="w-100" asp-controller="LfsrGenerator" asp-action="Index" method="post">
+<form class="w-100" asp-controller="LfsrGenerator" asp-action="Index" method="post" enctype="multipart/form-data">
 	<div class="form__group field">
 		<input asp-for="InitialState" class="form__field" placeholder="Initial state (8 bytes)" />
 		<label asp-for="InitialState" class="form__label">Initial state (8 bytes)</label>
@@ -19,6 +19,8 @@
 		<input asp-for="InputText" class="form__field" placeholder="Text" />
 		<label asp-for="InputText" class="form__label">Text</label>
 	</div>
+
+	<input class="mb-3" type="file" name="EncryptionInputFile" />
 
 	<select class="mb-3" name="EncryptionFormat">
 		<option value="@EncryptionFormat.Text">Text</option>
@@ -41,6 +43,8 @@
 		<input asp-for="EncryptedInputText" class="form__field" placeholder="Encrypted text" />
 		<label asp-for="EncryptedInputText" class="form__label">Encrypted text </label>
 	</div>
+
+	<input class="mb-3" type="file" name="DecryptionInputFile" />
 
 	<select class="mb-3" name="DecryptionFormat">
 		<option value="@EncryptionFormat.Text">Text</option>

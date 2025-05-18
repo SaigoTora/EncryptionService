@@ -20,8 +20,8 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(LfsrGeneratorViewModel<LfsrEncryptionResult> encryptionViewModel,
-			string actionType)
+		public async Task<IActionResult> Index(
+			LfsrEncryptionViewModel<LfsrEncryptionResult> encryptionViewModel, string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
@@ -31,20 +31,66 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 			LfsrEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
+				encryptionResult = await ProcessEncrypt(encryptionViewModel, key);
+			else if (actionType == "Decrypt")
+				encryptionResult = await ProcessDecrypt(encryptionViewModel, key);
+
+			return View(encryptionViewModel);
+		}
+
+		private async Task<LfsrEncryptionResult> ProcessEncrypt(
+			LfsrEncryptionViewModel<LfsrEncryptionResult> encryptionViewModel,
+			LfsrEncryptionKey key)
+		{
+			LfsrEncryptionResult encryptionResult;
+			key.SetEncryptionFormat(encryptionViewModel.EncryptionFormat);
+
+			if (encryptionViewModel.EncryptionInputFile != null
+				&& encryptionViewModel.EncryptionInputFile.Length > 0)
 			{
-				key.SetEncryptionFormat(encryptionViewModel.EncryptionFormat);
-				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!, key);
+				string text;
+
+				using var reader = new StreamReader(encryptionViewModel
+					.EncryptionInputFile.OpenReadStream());
+				text = await reader.ReadToEndAsync();
+				encryptionResult = _encryptionService.Encrypt(text, key);
 				encryptionViewModel.EncryptionResult = encryptionResult;
 			}
-			else if (actionType == "Decrypt")
+			else
 			{
-				key.SetEncryptionFormat(encryptionViewModel.DecryptionFormat);
+				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!,
+					key);
+				encryptionViewModel.EncryptionResult = encryptionResult;
+			}
+
+			return encryptionResult;
+		}
+		private async Task<LfsrEncryptionResult> ProcessDecrypt(
+			LfsrEncryptionViewModel<LfsrEncryptionResult> encryptionViewModel,
+			LfsrEncryptionKey key)
+		{
+			LfsrEncryptionResult encryptionResult;
+			key.SetEncryptionFormat(encryptionViewModel.DecryptionFormat);
+
+			if (encryptionViewModel.DecryptionInputFile != null
+				&& encryptionViewModel.DecryptionInputFile.Length > 0)
+			{
+				string text;
+
+				using var reader = new StreamReader(encryptionViewModel
+					.DecryptionInputFile.OpenReadStream());
+				text = await reader.ReadToEndAsync();
+				encryptionResult = _encryptionService.Decrypt(text, key);
+				encryptionViewModel.DecryptionResult = encryptionResult;
+			}
+			else
+			{
 				encryptionResult = _encryptionService.Decrypt(
 					encryptionViewModel.EncryptedInputText!, key);
 				encryptionViewModel.DecryptionResult = encryptionResult;
 			}
 
-			return View(encryptionViewModel);
+			return encryptionResult;
 		}
 	}
 }
