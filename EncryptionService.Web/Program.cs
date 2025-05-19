@@ -15,6 +15,8 @@ using EncryptionService.Core.Services.SubstitutionCiphers;
 using EncryptionService.Core.Services.TranspositionCiphers;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
+using EncryptionService.Core.Services.AsymmetricEncryption;
+using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -53,6 +55,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	services.AddScoped<IEncryptionService<LfsrEncryptionResult, LfsrEncryptionKey, int[]>,
 		LfsrGeneratorService>();
 	services.AddScoped<IRandomNumbersGenerator<IcgGeneratorParameters>, IcgGeneratorService>();
+	services.AddSingleton<IEncryptionService<EncryptionResult, RsaEncryptionKey,
+		RsaEncryptionKeyData>, RsaEncryptionService>();
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.

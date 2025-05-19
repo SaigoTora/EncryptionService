@@ -27,7 +27,7 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			LfsrEncryptionKey key = _encryptionSettings.LfsrGeneratorKey;
+			LfsrEncryptionKey key = _encryptionSettings.LfsrEncryptionKey;
 			key.SetInitialState(encryptionViewModel.InitialState);
 
 			if (actionType == "Encrypt")
