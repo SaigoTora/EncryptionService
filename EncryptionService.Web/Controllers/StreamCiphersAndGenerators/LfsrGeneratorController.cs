@@ -5,6 +5,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Models.EncryptionViewModels;
+using EncryptionService.Web.Extensions;
 
 namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 {
@@ -13,8 +14,8 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<LfsrEncryptionResult, LfsrEncryptionKey, int[]> _encryptionService
-			= encryptionService;
+		readonly IEncryptionService<LfsrEncryptionResult, LfsrEncryptionKey,
+			int[]> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
@@ -28,69 +29,72 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 
 			LfsrEncryptionKey key = _encryptionSettings.LfsrGeneratorKey;
 			key.SetInitialState(encryptionViewModel.InitialState);
-			LfsrEncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
-				encryptionResult = await ProcessEncrypt(encryptionViewModel, key);
+				return await ProcessEncrypt(encryptionViewModel, key);
 			else if (actionType == "Decrypt")
-				encryptionResult = await ProcessDecrypt(encryptionViewModel, key);
+				return await ProcessDecrypt(encryptionViewModel, key);
 
 			return View(encryptionViewModel);
 		}
 
-		private async Task<LfsrEncryptionResult> ProcessEncrypt(
-			LfsrEncryptionViewModel<LfsrEncryptionResult> encryptionViewModel,
-			LfsrEncryptionKey key)
+		private async Task<ViewResult> ProcessEncrypt(
+			LfsrEncryptionViewModel<LfsrEncryptionResult> model, LfsrEncryptionKey key)
 		{
 			LfsrEncryptionResult encryptionResult;
-			key.SetEncryptionFormat(encryptionViewModel.EncryptionFormat);
+			key.SetEncryptionFormat(model.EncryptionFormat);
 
-			if (encryptionViewModel.EncryptionInputFile != null
-				&& encryptionViewModel.EncryptionInputFile.Length > 0)
+			if (model.EncryptionInputFile != null
+				&& model.EncryptionInputFile.Length > 0)
 			{
 				string text;
 
-				using var reader = new StreamReader(encryptionViewModel
+				using var reader = new StreamReader(model
 					.EncryptionInputFile.OpenReadStream());
 				text = await reader.ReadToEndAsync();
 				encryptionResult = _encryptionService.Encrypt(text, key);
-				encryptionViewModel.EncryptionResult = encryptionResult;
 			}
 			else
 			{
-				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!,
-					key);
-				encryptionViewModel.EncryptionResult = encryptionResult;
-			}
+				if (!this.ValidateRequiredInput(model.InputText,
+					nameof(model.InputText), "Text"))
+					return View(model);
 
-			return encryptionResult;
+				encryptionResult = _encryptionService.Encrypt(model.InputText!,
+					key);
+			}
+			model.EncryptionResult = encryptionResult;
+
+			return View(model);
 		}
-		private async Task<LfsrEncryptionResult> ProcessDecrypt(
-			LfsrEncryptionViewModel<LfsrEncryptionResult> encryptionViewModel,
-			LfsrEncryptionKey key)
+		private async Task<ViewResult> ProcessDecrypt(
+			LfsrEncryptionViewModel<LfsrEncryptionResult> model, LfsrEncryptionKey key)
 		{
 			LfsrEncryptionResult encryptionResult;
-			key.SetEncryptionFormat(encryptionViewModel.DecryptionFormat);
+			key.SetEncryptionFormat(model.DecryptionFormat);
 
-			if (encryptionViewModel.DecryptionInputFile != null
-				&& encryptionViewModel.DecryptionInputFile.Length > 0)
+			if (model.DecryptionInputFile != null
+				&& model.DecryptionInputFile.Length > 0)
 			{
 				string text;
 
-				using var reader = new StreamReader(encryptionViewModel
+				using var reader = new StreamReader(model
 					.DecryptionInputFile.OpenReadStream());
 				text = await reader.ReadToEndAsync();
 				encryptionResult = _encryptionService.Decrypt(text, key);
-				encryptionViewModel.DecryptionResult = encryptionResult;
 			}
 			else
 			{
-				encryptionResult = _encryptionService.Decrypt(
-					encryptionViewModel.EncryptedInputText!, key);
-				encryptionViewModel.DecryptionResult = encryptionResult;
-			}
+				if (!this.ValidateRequiredInput(model.EncryptedInputText,
+					nameof(model.EncryptedInputText), "Encrypted text"))
+					return View(model);
 
-			return encryptionResult;
+				encryptionResult = _encryptionService.Decrypt(
+					model.EncryptedInputText!, key);
+			}
+			model.DecryptionResult = encryptionResult;
+
+			return View(model);
 		}
 	}
 }
