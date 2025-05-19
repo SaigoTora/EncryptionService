@@ -55,7 +55,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	services.AddScoped<IEncryptionService<LfsrEncryptionResult, LfsrEncryptionKey, int[]>,
 		LfsrGeneratorService>();
 	services.AddScoped<IRandomNumbersGenerator<IcgGeneratorParameters>, IcgGeneratorService>();
-	services.AddSingleton<IEncryptionService<EncryptionResult, RsaEncryptionKey,
+	services.AddSingleton<IEncryptionService<RsaEncryptionResult, RsaEncryptionKey,
 		RsaEncryptionKeyData>, RsaEncryptionService>();
 }
 static void ConfigureMiddleware(WebApplication app)

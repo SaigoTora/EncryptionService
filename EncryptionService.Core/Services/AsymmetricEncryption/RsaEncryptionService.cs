@@ -1,37 +1,34 @@
-﻿using System.Text;
-
-using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
+﻿using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 
 namespace EncryptionService.Core.Services.AsymmetricEncryption
 {
-	public class RsaEncryptionService : IEncryptionService<EncryptionResult,
+	public class RsaEncryptionService : IEncryptionService<RsaEncryptionResult,
 		RsaEncryptionKey, RsaEncryptionKeyData>
 	{
-		private const string SEPARATOR = "-";
+		private const string SEPARATOR = " ";
 
 		private record EncryptionValues(int N, int EulerPhi, int E, int D);
 		private int? _e;
 		private readonly Random _random = new();
 
-		public EncryptionResult Encrypt(string text, RsaEncryptionKey encryptionKey)
+		public RsaEncryptionResult Encrypt(string text, RsaEncryptionKey encryptionKey)
 			=> ProcessEncryption(text, encryptionKey, true);
-		public EncryptionResult Decrypt(string encryptedText, RsaEncryptionKey encryptionKey)
+		public RsaEncryptionResult Decrypt(string encryptedText, RsaEncryptionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, encryptionKey, false);
-		private EncryptionResult ProcessEncryption(string text,
+		private RsaEncryptionResult ProcessEncryption(string text,
 			RsaEncryptionKey encryptionKey, bool isEncryption)
 		{
 			EncryptionValues values = GenerateEncryptionValues(encryptionKey.Key, !isEncryption);
 
-			StringBuilder builder = new();
+			string resultText;
 			if (isEncryption)
 			{
 				List<int> encrypted = [];
 				foreach (char ch in text)
 					encrypted.Add(ModPow(ch, values.E, values.N));
 
-				builder.Append(string.Join(SEPARATOR, encrypted));
+				resultText = string.Join(SEPARATOR, encrypted);
 			}
 			else
 			{
@@ -41,11 +38,13 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 					int num = int.Parse(token);
 					decrypted.Add((char)ModPow(num, values.D, values.N));
 				}
-				builder.Append(new string([.. decrypted]));
-
+				resultText = new string([.. decrypted]);
 			}
 
-			return new(builder.ToString());
+			if (isEncryption)
+				return new RsaEncryptionResult(resultText, values.N, e: values.E);
+
+			return new RsaEncryptionResult(resultText, values.N, d: values.D);
 		}
 		private EncryptionValues GenerateEncryptionValues(RsaEncryptionKeyData keyData,
 			bool calculateD)
