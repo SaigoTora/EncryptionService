@@ -6,7 +6,7 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 	public class RsaEncryptionService : IEncryptionService<RsaEncryptionResult,
 		RsaEncryptionKey, RsaEncryptionKeyData>
 	{
-		private const string SEPARATOR = " ";
+		public const string SEPARATOR = " ";
 
 		private record EncryptionValues(int N, int EulerPhi, int E, int D);
 		private int? _e;

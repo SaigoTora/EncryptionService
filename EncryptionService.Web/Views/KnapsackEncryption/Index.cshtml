@@ -1,7 +1,7 @@
 ﻿@using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption
 @using EncryptionService.Web.Models.EncryptionViewModels
 
-@model EncryptionViewModel<KnapsackEncryptionResult>
+@model FileEncryptionViewModel<KnapsackEncryptionResult>
 
 @{
 	ViewData["Title"] = "Knapsack encryption";
@@ -9,11 +9,13 @@
 
 <h1 class="mb-5">Knapsack encryption</h1>
 
-<form class="w-100" asp-controller="KnapsackEncryption" asp-action="Index" method="post">
+<form class="w-100" asp-controller="KnapsackEncryption" asp-action="Index" method="post" enctype="multipart/form-data">
 	<div class="form__group field">
 		<input asp-for="InputText" class="form__field" placeholder="Text" />
 		<label asp-for="InputText" class="form__label">Text</label>
 	</div>
+
+	<input class="mb-3" type="file" name="EncryptionInputFile" />
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
@@ -30,6 +32,8 @@
 		<input asp-for="EncryptedInputText" class="form__field" placeholder="Encrypted text" />
 		<label asp-for="EncryptedInputText" class="form__label">Encrypted text </label>
 	</div>
+
+	<input class="mb-3" type="file" name="DecryptionInputFile" />
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{

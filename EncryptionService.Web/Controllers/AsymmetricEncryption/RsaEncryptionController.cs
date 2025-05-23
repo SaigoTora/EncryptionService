@@ -106,11 +106,11 @@ namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 		private bool IsEncryptedTextValid(FileEncryptionViewModel<RsaEncryptionResult> model)
 		{
 			foreach (char ch in model.EncryptedInputText ?? string.Empty)
-				if (!char.IsDigit(ch) && !KnapsackEncryptionService.SEPARATOR.Contains(ch))
+				if (!char.IsDigit(ch) && !RsaEncryptionService.SEPARATOR.Contains(ch))
 				{
 					ModelState.AddModelError(nameof(model.EncryptedInputText),
 						$"The encrypted input text can only contain digits and " +
-						$"the separator({KnapsackEncryptionService.SEPARATOR}) symbol.");
+						$"the separator '{RsaEncryptionService.SEPARATOR}' symbol.");
 					return false;
 				}
 
