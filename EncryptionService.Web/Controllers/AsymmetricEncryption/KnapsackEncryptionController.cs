@@ -2,21 +2,21 @@
 using Microsoft.Extensions.Options;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.EncryptionViewModels;
+using EncryptionService.Core.Services.AsymmetricEncryption;
 
 namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 {
 	public class KnapsackEncryptionController(
-		IEncryptionService<EncryptionResult, KnapsackEncryptionKey,
+		IEncryptionService<KnapsackEncryptionResult, KnapsackEncryptionKey,
 		KnapsackEncryptionKeyData> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, KnapsackEncryptionKey,
+		readonly IEncryptionService<KnapsackEncryptionResult, KnapsackEncryptionKey,
 		KnapsackEncryptionKeyData>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
@@ -24,36 +24,50 @@ namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<EncryptionResult> encryptionViewModel,
+		public IActionResult Index(EncryptionViewModel<KnapsackEncryptionResult> encryptionViewModel,
 			string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
 			KnapsackEncryptionKey key = _encryptionSettings.KnapsackEncryptionKey;
-			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
-			{
-				if (!this.ValidateRequiredInput(encryptionViewModel.InputText,
-					nameof(encryptionViewModel.InputText), "Text"))
-					return View(encryptionViewModel);
-
-				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!, key);
-				encryptionViewModel.EncryptionResult = encryptionResult;
-			}
+				ProcessEncrypt(encryptionViewModel, key);
 			else if (actionType == "Decrypt")
-			{
-				if (!this.ValidateRequiredInput(encryptionViewModel.EncryptedInputText,
-					nameof(encryptionViewModel.EncryptedInputText), "Encrypted text"))
-					return View(encryptionViewModel);
-
-				encryptionResult = _encryptionService.Decrypt(
-					encryptionViewModel.EncryptedInputText!, key);
-				encryptionViewModel.DecryptionResult = encryptionResult;
-			}
+				ProcessDecrypt(encryptionViewModel, key);
 
 			return View(encryptionViewModel);
+		}
+		private ViewResult ProcessEncrypt(
+			EncryptionViewModel<KnapsackEncryptionResult> model,
+			KnapsackEncryptionKey key)
+		{
+			if (!this.ValidateRequiredInput(model.InputText, nameof(model.InputText), "Text"))
+				return View(model);
+
+			model.EncryptionResult = _encryptionService.Encrypt(model.InputText!, key);
+			return View(model);
+		}
+		private ViewResult ProcessDecrypt(
+			EncryptionViewModel<KnapsackEncryptionResult> model,
+			KnapsackEncryptionKey key)
+		{
+			if (!this.ValidateRequiredInput(model.EncryptedInputText,
+				nameof(model.EncryptedInputText), "Encrypted text"))
+				return View(model);
+
+			foreach (char ch in model.EncryptedInputText ?? string.Empty)
+				if (!char.IsDigit(ch) && !KnapsackEncryptionService.SEPARATOR.Contains(ch))
+				{
+					ModelState.AddModelError(nameof(model.EncryptedInputText),
+						$"The encrypted input text can only contain digits and " +
+						$"the separator({KnapsackEncryptionService.SEPARATOR}) symbol.");
+					return View(model);
+				}
+
+			model.DecryptionResult = _encryptionService.Decrypt(model.EncryptedInputText!, key);
+			return View(model);
 		}
 	}
 }

@@ -61,7 +61,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 		RsaEncryptionKeyData>, RsaEncryptionService>();
 
 
-	services.AddSingleton<IEncryptionService<EncryptionResult, KnapsackEncryptionKey,
+	services.AddSingleton<IEncryptionService<KnapsackEncryptionResult, KnapsackEncryptionKey,
 		KnapsackEncryptionKeyData>>(provider =>
 	{
 		var settings = provider.GetRequiredService<IOptions<EncryptionSettings>>();

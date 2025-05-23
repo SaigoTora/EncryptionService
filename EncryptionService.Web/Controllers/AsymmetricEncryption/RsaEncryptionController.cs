@@ -6,6 +6,7 @@ using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.EncryptionViewModels;
 using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
+using EncryptionService.Core.Services.AsymmetricEncryption;
 
 namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 {
@@ -79,6 +80,10 @@ namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 				using var reader = new StreamReader(model
 					.DecryptionInputFile.OpenReadStream());
 				text = await reader.ReadToEndAsync();
+
+				model.EncryptedInputText = text;
+				if (!IsEncryptedTextValid(model))
+					return View(model);
 				encryptionResult = _encryptionService.Decrypt(text, key);
 			}
 			else
@@ -87,12 +92,29 @@ namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 					nameof(model.EncryptedInputText), "Encrypted text"))
 					return View(model);
 
+				if (!IsEncryptedTextValid(model))
+					return View(model);
+
 				encryptionResult = _encryptionService.Decrypt(
 					model.EncryptedInputText!, key);
 			}
 			model.DecryptionResult = encryptionResult;
 
 			return View(model);
+		}
+
+		private bool IsEncryptedTextValid(FileEncryptionViewModel<RsaEncryptionResult> model)
+		{
+			foreach (char ch in model.EncryptedInputText ?? string.Empty)
+				if (!char.IsDigit(ch) && !KnapsackEncryptionService.SEPARATOR.Contains(ch))
+				{
+					ModelState.AddModelError(nameof(model.EncryptedInputText),
+						$"The encrypted input text can only contain digits and " +
+						$"the separator({KnapsackEncryptionService.SEPARATOR}) symbol.");
+					return false;
+				}
+
+			return true;
 		}
 	}
 }

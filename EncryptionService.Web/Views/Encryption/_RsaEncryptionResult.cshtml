@@ -2,7 +2,6 @@
 
 @model RsaEncryptionResult
 
-@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)
 @if (Model.E.HasValue)
 {
 	<p>Public key: (e, n) = <span class="encryption-result-text">(@Model.E, @Model.N)</span></p>
@@ -11,3 +10,5 @@
 {
 	<p>Private key: (d, n) = <span class="encryption-result-text">(@Model.D, @Model.N)</span></p>
 }
+
+@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)

@@ -1,15 +1,14 @@
 ﻿using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
 
 namespace EncryptionService.Core.Services.AsymmetricEncryption
 {
-	public class KnapsackEncryptionService : IEncryptionService<EncryptionResult,
+	public class KnapsackEncryptionService : IEncryptionService<KnapsackEncryptionResult,
 		KnapsackEncryptionKey, KnapsackEncryptionKeyData>
 	{
-		private const string SEPARATOR = " ";
+		public const string SEPARATOR = " ";
 
 		private int[] _d = [], _e = [];
 		private int _m, _n, _inverseN;
@@ -21,12 +20,13 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 			GenerateEncryptionValues(key.Key);
 		}
 
-		public EncryptionResult Encrypt(string text, KnapsackEncryptionKey encryptionKey)
+		public KnapsackEncryptionResult Encrypt(string text, KnapsackEncryptionKey encryptionKey)
 			=> ProcessEncryption(text, true);
-		public EncryptionResult Decrypt(string encryptedText, KnapsackEncryptionKey encryptionKey)
+		public KnapsackEncryptionResult Decrypt(string encryptedText,
+			KnapsackEncryptionKey encryptionKey)
 			=> ProcessEncryption(encryptedText, false);
 
-		private EncryptionResult ProcessEncryption(string text, bool isEncryption)
+		private KnapsackEncryptionResult ProcessEncryption(string text, bool isEncryption)
 		{
 			StringBuilder builder = new();
 
@@ -46,10 +46,10 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 					builder.Append(ConvertBitsToChar(_bits));
 				}
 
-			return new EncryptionResult(builder.ToString());
+			return new KnapsackEncryptionResult(builder.ToString(), _n, _m, _d, _e);
 		}
 
-		#region Encryption values
+		#region Generating encryption values
 		private void GenerateEncryptionValues(KnapsackEncryptionKeyData keyData)
 		{
 			GenerateD(keyData);

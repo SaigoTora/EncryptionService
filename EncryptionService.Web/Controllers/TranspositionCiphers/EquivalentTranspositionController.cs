@@ -53,7 +53,7 @@ namespace EncryptionService.Web.Controllers.TranspositionCiphers
 
 			if (model.InputText!.Length > maxTextLength)
 			{
-				ModelState.AddModelError("InputText",
+				ModelState.AddModelError(nameof(model.InputText),
 					"The length of the input text must be less than or equal to " +
 					$"{maxTextLength}. You have entered characters: " +
 					$"{model.InputText.Length}.");
@@ -73,7 +73,7 @@ namespace EncryptionService.Web.Controllers.TranspositionCiphers
 
 			if (model.EncryptedInputText!.Length > maxTextLength)
 			{
-				ModelState.AddModelError("EncryptedInputText",
+				ModelState.AddModelError(nameof(model.EncryptedInputText),
 					"The length of the encrypted input text must be less than or equal to " +
 					$"{maxTextLength}. You have entered characters: " +
 					$"{model.EncryptedInputText.Length}.");
