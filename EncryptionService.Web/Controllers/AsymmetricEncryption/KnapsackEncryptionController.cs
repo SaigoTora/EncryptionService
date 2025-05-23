@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
-using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
+using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.EncryptionViewModels;
@@ -11,11 +11,13 @@ using EncryptionService.Web.Models.EncryptionViewModels;
 namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 {
 	public class KnapsackEncryptionController(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+		IEncryptionService<EncryptionResult, KnapsackEncryptionKey,
+		KnapsackEncryptionKeyData> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
+		readonly IEncryptionService<EncryptionResult, KnapsackEncryptionKey,
+		KnapsackEncryptionKeyData>
 			_encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
@@ -28,7 +30,7 @@ namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
+			KnapsackEncryptionKey key = _encryptionSettings.KnapsackEncryptionKey;
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")

@@ -17,6 +17,7 @@ using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 using EncryptionService.Core.Services.AsymmetricEncryption;
 using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
+using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +58,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	services.AddScoped<IRandomNumbersGenerator<IcgGeneratorParameters>, IcgGeneratorService>();
 	services.AddSingleton<IEncryptionService<RsaEncryptionResult, RsaEncryptionKey,
 		RsaEncryptionKeyData>, RsaEncryptionService>();
+	services.AddSingleton<IEncryptionService<EncryptionResult, KnapsackEncryptionKey,
+		KnapsackEncryptionKeyData>, KnapsackEncryptionService>();
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.

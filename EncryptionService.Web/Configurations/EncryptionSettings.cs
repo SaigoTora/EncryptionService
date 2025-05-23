@@ -1,4 +1,5 @@
-﻿using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
+﻿using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
+using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
@@ -22,5 +23,6 @@ namespace EncryptionService.Web.Configurations
 		public required IcgGeneratorParameters IcgGeneratorParameters { get; set; }
 		public required LfsrEncryptionKey LfsrEncryptionKey { get; set; }
 		public required RsaEncryptionKey RsaEncryptionKey { get; set; }
+		public required KnapsackEncryptionKey KnapsackEncryptionKey { get; set; }
 	}
 }
