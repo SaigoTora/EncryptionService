@@ -16,7 +16,7 @@
 	@if (Model != null && Model.EncryptionResult != null)
 	{
 		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
-							Model.EncryptionResult)
+				Model.EncryptionResult)
 	}
 
 	<div class="form-group mb-3">
@@ -32,7 +32,7 @@
 	@if (Model != null && Model.DecryptionResult != null)
 	{
 		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
-							Model.DecryptionResult)
+				Model.DecryptionResult)
 	}
 
 	<div class="form-group mb-3">

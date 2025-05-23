@@ -19,6 +19,7 @@ using EncryptionService.Core.Services.AsymmetricEncryption;
 using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
 using Microsoft.Extensions.Options;
+using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,13 +61,15 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	services.AddSingleton<IEncryptionService<RsaEncryptionResult, RsaEncryptionKey,
 		RsaEncryptionKeyData>, RsaEncryptionService>();
 
-
 	services.AddSingleton<IEncryptionService<KnapsackEncryptionResult, KnapsackEncryptionKey,
 		KnapsackEncryptionKeyData>>(provider =>
 	{
 		var settings = provider.GetRequiredService<IOptions<EncryptionSettings>>();
 		return new KnapsackEncryptionService(settings.Value.KnapsackEncryptionKey);
 	});
+
+	services.AddSingleton<IEncryptionService<EncryptionResult, ElGamalEncryptionKey,
+		ElGamalEncryptionKeyData>, ElGamalEncryptionService>();
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.

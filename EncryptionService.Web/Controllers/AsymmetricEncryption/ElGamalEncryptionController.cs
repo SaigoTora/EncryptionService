@@ -2,21 +2,22 @@
 using Microsoft.Extensions.Options;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.TranspositionCiphers.BlockTransposition;
 using EncryptionService.Core.Models;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.EncryptionViewModels;
+using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
 
 namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 {
 	public class ElGamalEncryptionController(
-		IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]> encryptionService,
+		IEncryptionService<EncryptionResult, ElGamalEncryptionKey,
+			ElGamalEncryptionKeyData> encryptionService,
 		IOptions<EncryptionSettings> encryptionSettings)
 		: Controller
 	{
-		readonly IEncryptionService<EncryptionResult, BlockTranspositionKey, int[]>
-			_encryptionService = encryptionService;
+		readonly IEncryptionService<EncryptionResult, ElGamalEncryptionKey,
+			ElGamalEncryptionKeyData> _encryptionService = encryptionService;
 		readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
@@ -28,7 +29,7 @@ namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			BlockTranspositionKey key = _encryptionSettings.BlockTranspositionKey;
+			ElGamalEncryptionKey key = _encryptionSettings.ElGamalEncryptionKey;
 			EncryptionResult encryptionResult;
 
 			if (actionType == "Encrypt")
