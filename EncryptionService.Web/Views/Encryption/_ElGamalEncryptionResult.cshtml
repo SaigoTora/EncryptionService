@@ -1,0 +1,25 @@
+﻿@using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption
+
+@model ElGamalEncryptionResult
+
+<span>X = @Model.X</span>
+<span class="mb-3">Public key(y, g, p): <b>{@Model.Y, @Model.G, @Model.P}</b></span>
+
+<table class="mb-3 table-bordered">
+	<tr>
+		<td class="p-2">a</td>
+		@for (int i = 0; i < Model.B.Count; i++)
+		{
+			<td class="p-2">@Model.A</td>
+		}
+	</tr>
+	<tr>
+		<td class="p-2">b</td>
+		@for (int i = 0; i < Model.B.Count; i++)
+		{
+			<td class="p-2">@Model.B[i]</td>
+		}
+	</tr>
+</table>
+
+@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)

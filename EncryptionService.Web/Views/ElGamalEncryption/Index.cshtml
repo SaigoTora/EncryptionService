@@ -1,5 +1,7 @@
-﻿@using EncryptionService.Web.Models.EncryptionViewModels
-@model EncryptionViewModel<EncryptionResult>
+﻿@using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption
+@using EncryptionService.Web.Models.EncryptionViewModels
+
+@model EncryptionViewModel<ElGamalEncryptionResult>
 
 @{
 	ViewData["Title"] = "El Gamal encryption";
@@ -15,7 +17,7 @@
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_ElGamalEncryptionResult.cshtml",
 				Model.EncryptionResult)
 	}
 
@@ -31,7 +33,7 @@
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("~/Views/Encryption/_ElGamalEncryptionResult.cshtml",
 				Model.DecryptionResult)
 	}
 

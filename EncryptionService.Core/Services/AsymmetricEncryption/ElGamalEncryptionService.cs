@@ -2,12 +2,11 @@
 using System.Text;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
 
 namespace EncryptionService.Core.Services.AsymmetricEncryption
 {
-	public class ElGamalEncryptionService : IEncryptionService<EncryptionResult,
+	public class ElGamalEncryptionService : IEncryptionService<ElGamalEncryptionResult,
 		ElGamalEncryptionKey, ElGamalEncryptionKeyData>
 	{
 		public const char SEPARATOR_A = '|';
@@ -26,7 +25,7 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 			_y = (int)BigInteger.ModPow(_g, _x, p);
 		}
 
-		public EncryptionResult Encrypt(string text, ElGamalEncryptionKey encryptionKey)
+		public ElGamalEncryptionResult Encrypt(string text, ElGamalEncryptionKey encryptionKey)
 		{
 			int p = encryptionKey.Key.P;
 			int k = encryptionKey.Key.K;
@@ -42,9 +41,10 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 			}
 
 			string result = Serialize(a, bList);
-			return new EncryptionResult(result);
+			return new ElGamalEncryptionResult(result, _y, _g, p, _x, a, bList);
 		}
-		public EncryptionResult Decrypt(string encryptedText, ElGamalEncryptionKey encryptionKey)
+		public ElGamalEncryptionResult Decrypt(string encryptedText,
+			ElGamalEncryptionKey encryptionKey)
 		{
 			int p = encryptionKey.Key.P;
 			var (a, bList) = Deserialize(encryptedText);
@@ -57,7 +57,7 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 				builder.Append((char)m);
 			}
 
-			return new EncryptionResult(builder.ToString());
+			return new ElGamalEncryptionResult(builder.ToString(), _y, _g, p, _x, a, bList);
 		}
 
 		private static string Serialize(int a, IEnumerable<int> bList)

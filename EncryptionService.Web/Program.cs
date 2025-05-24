@@ -68,7 +68,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 		return new KnapsackEncryptionService(settings.Value.KnapsackEncryptionKey);
 	});
 
-	services.AddSingleton<IEncryptionService<EncryptionResult, ElGamalEncryptionKey,
+	services.AddSingleton<IEncryptionService<ElGamalEncryptionResult, ElGamalEncryptionKey,
 		ElGamalEncryptionKeyData>>(provider =>
 	{
 		var settings = provider.GetRequiredService<IOptions<EncryptionSettings>>();
