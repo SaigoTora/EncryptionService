@@ -69,7 +69,11 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	});
 
 	services.AddSingleton<IEncryptionService<EncryptionResult, ElGamalEncryptionKey,
-		ElGamalEncryptionKeyData>, ElGamalEncryptionService>();
+		ElGamalEncryptionKeyData>>(provider =>
+	{
+		var settings = provider.GetRequiredService<IOptions<EncryptionSettings>>();
+		return new ElGamalEncryptionService(settings.Value.ElGamalEncryptionKey);
+	});
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.
