@@ -2,7 +2,7 @@
 {
 	public enum HashingMethod : byte
 	{
-		ChecksumParity,
+		Checksum,
 		MiddleSquares,
 		ModuloDivision,
 		BaseConversion,

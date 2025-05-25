@@ -2,12 +2,14 @@
 
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.HashingViewModels;
+using EncryptionService.Core.Interfaces;
 
 namespace EncryptionService.Web.Controllers.Hashing
 {
-	public class HashingController()
-		: Controller
+	public class HashingController(IHashingService hashingService) : Controller
 	{
+		private readonly IHashingService _hashingService = hashingService;
+
 		public IActionResult Index() => View();
 
 		[HttpPost]
@@ -22,7 +24,8 @@ namespace EncryptionService.Web.Controllers.Hashing
 					nameof(hashingViewModel.TextToHash), "Text"))
 					return View(hashingViewModel);
 
-				hashingViewModel.GeneratedHash = "Generated Hash";
+				hashingViewModel.GeneratedHash = _hashingService.ComputeHash(
+					hashingViewModel.TextToHash!, hashingViewModel.HashingMethod);
 			}
 			else if (actionType == "Verify")
 			{
@@ -33,7 +36,9 @@ namespace EncryptionService.Web.Controllers.Hashing
 					nameof(hashingViewModel.HashToVerify), "Hash"))
 					return View(hashingViewModel);
 
-				hashingViewModel.VerificationResult = true;
+				hashingViewModel.VerificationResult = _hashingService.VerifyHash(
+					hashingViewModel.TextToVerify!, hashingViewModel.HashToVerify!,
+					hashingViewModel.HashingMethod);
 			}
 
 			return View(hashingViewModel);

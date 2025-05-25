@@ -11,8 +11,8 @@
 
 <form class="w-100" asp-controller="Hashing" asp-action="Index" method="post">
 
-	<select class="mb-3" name="">
-		<option value="@HashingMethod.ChecksumParity">Checksum</option>
+	<select class="mb-3" name="HashingMethod">
+		<option value="@HashingMethod.Checksum">Checksum</option>
 		<option value="@HashingMethod.MiddleSquares">Middle Squares Method</option>
 		<option value="@HashingMethod.ModuloDivision">Modulo Division Method</option>
 		<option value="@HashingMethod.BaseConversion">Base Conversion Method</option>
@@ -32,7 +32,6 @@
 	<div class="form-group mb-3">
 		<button type="submit" name="actionType" value="Hash" class="button">Hash</button>
 	</div>
-
 
 	<div class="form__group field">
 		<input asp-for="TextToVerify" class="form__field" placeholder="Text" />

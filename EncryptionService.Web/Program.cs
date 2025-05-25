@@ -20,6 +20,7 @@ using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
 using Microsoft.Extensions.Options;
 using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
+using EncryptionService.Core.Services.Hashing;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -74,6 +75,7 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 		var settings = provider.GetRequiredService<IOptions<EncryptionSettings>>();
 		return new ElGamalEncryptionService(settings.Value.ElGamalEncryptionKey);
 	});
+	services.AddScoped<IHashingService, HashingService>();
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.
