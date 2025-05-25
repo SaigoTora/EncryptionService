@@ -12,11 +12,11 @@
 <form class="w-100" asp-controller="Hashing" asp-action="Index" method="post">
 
 	<select class="mb-3" name="HashingMethod">
-		<option value="@HashingMethod.Checksum">Checksum</option>
-		<option value="@HashingMethod.MiddleSquares">Middle Squares Method</option>
-		<option value="@HashingMethod.ModuloDivision">Modulo Division Method</option>
-		<option value="@HashingMethod.BaseConversion">Base Conversion Method</option>
-		<option value="@HashingMethod.Folding">Folding Method</option>
+		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.Checksum)" value="@HashingMethod.Checksum">Checksum</option>
+		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.MiddleSquares)" value="@HashingMethod.MiddleSquares">Middle Squares Method</option>
+		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.ModuloDivision)" value="@HashingMethod.ModuloDivision">Modulo Division Method</option>
+		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.BaseConversion)" value="@HashingMethod.BaseConversion">Base Conversion Method</option>
+		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.Folding)" value="@HashingMethod.Folding">Folding Method</option>
 	</select>
 
 	<div class="form__group field">
