@@ -43,6 +43,10 @@ main {
     justify-items: center;
 }
 
+h1 {
+    text-align: center;
+}
+
 ol {
     list-style-position: inside;
 }
