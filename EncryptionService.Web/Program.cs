@@ -77,6 +77,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	});
 	services.AddScoped<IHashingService, HashingService>();
 	services.AddScoped<ISignatureService<RsaEncryptionKey, RsaEncryptionKeyData>, RsaSignatureService>();
+	services.AddScoped<ISignatureService<ElGamalEncryptionKey, ElGamalEncryptionKeyData>,
+		ElGamalSignatureService>();
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.

@@ -1,0 +1,89 @@
+﻿using System.Numerics;
+
+using EncryptionService.Core.Interfaces;
+using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
+
+namespace EncryptionService.Core.Services.Hashing
+{
+	public class ElGamalSignatureService(IEncryptionService<ElGamalEncryptionResult,
+		ElGamalEncryptionKey, ElGamalEncryptionKeyData> encryptionService)
+		: ISignatureService<ElGamalEncryptionKey, ElGamalEncryptionKeyData>
+	{
+		public const char SEPARATOR = ',';
+		private readonly IEncryptionService<ElGamalEncryptionResult, ElGamalEncryptionKey,
+			ElGamalEncryptionKeyData> _encryptionService = encryptionService;
+
+		public string CreateSignature(string text, ElGamalEncryptionKey key)
+		{
+			int p = key.Key.P;
+			var encryptionResult = _encryptionService.Encrypt(string.Empty, key);
+			int g = encryptionResult.G;
+			int x = encryptionResult.X;
+
+			int k = key.Key.K;
+
+			int m = GetHashValue(text, p);
+			int kInv = ModInverse(k, p - 1);
+			int a = (int)BigInteger.ModPow(g, k, p);
+			int b = (kInv * (m - x * a)) % (p - 1);
+
+			if (b < 0)
+				b += (p - 1);
+
+			return $"{a}{SEPARATOR}{b}";
+		}
+		public bool VerifySignature(string text, string signature, ElGamalEncryptionKey key)
+		{
+			int p = key.Key.P;
+			int m = GetHashValue(text, p);
+
+			var encryptionResult = _encryptionService.Encrypt(string.Empty, key);
+			int g = encryptionResult.G;
+			int y = encryptionResult.Y;
+
+			var parts = signature.Split(SEPARATOR);
+			int a = Convert.ToInt32(parts[0]);
+			int b = Convert.ToInt32(parts[1]);
+
+			if (a <= 0 || a >= p)
+				return false;
+
+			BigInteger left = BigInteger.ModPow(g, m, p);
+			BigInteger right = (BigInteger.ModPow(y, a, p) * BigInteger.ModPow(a, b, p)) % p;
+
+			return left == right;
+		}
+
+		private static int GetHashValue(string text, int n)
+		{
+			// Simplified Quadratic Convolution Hash Function
+			int m = 0;
+
+			foreach (char ch in text)
+				m = (int)BigInteger.ModPow(m + ch, 2, n);
+
+			return m;
+		}
+		private static int ModInverse(int a, int mod)
+		{
+			int t = 0, newT = 1;
+			int r = mod, newR = a;
+
+			while (newR != 0)
+			{
+				int quotient = r / newR;
+
+				(t, newT) = (newT, t - quotient * newT);
+				(r, newR) = (newR, r - quotient * newR);
+			}
+
+			if (r > 1)
+				throw new ArgumentException("The number does not have an inverse modulus.");
+
+			if (t < 0)
+				t += mod;
+
+			return t;
+		}
+	}
+}
