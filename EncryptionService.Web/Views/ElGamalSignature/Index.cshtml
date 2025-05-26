@@ -4,12 +4,12 @@
 @model HashingViewModel
 
 @{
-	ViewData["Title"] = "RSA Signature";
+	ViewData["Title"] = "El Gamal Signature";
 }
 
-<h1 class="mb-5">Electronic digital signature using RSA algorithm</h1>
+<h1 class="mb-5">Electronic digital signature using El Gamal algorithm</h1>
 
-<form class="w-100" asp-controller="RsaSignature" asp-action="Index" method="post">
+<form class="w-100" asp-controller="ElGamalSignature" asp-action="Index" method="post">
 
 	<div class="form__group field">
 		<input asp-for="TextToHash" class="form__field" placeholder="Text" />
