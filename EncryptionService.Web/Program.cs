@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models;
@@ -18,9 +19,10 @@ using EncryptionService.Core.Models.StreamCiphersAndGenerators.LfsrGenerator;
 using EncryptionService.Core.Services.AsymmetricEncryption;
 using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
-using Microsoft.Extensions.Options;
 using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
 using EncryptionService.Core.Services.Hashing;
+using EncryptionService.Core.Services.CryptoAnalysis;
+using EncryptionService.Core.Models.CryptoAnalysis.SubstitutionAnalyzer;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -79,6 +81,8 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	services.AddScoped<ISignatureService<RsaEncryptionKey, RsaEncryptionKeyData>, RsaSignatureService>();
 	services.AddScoped<ISignatureService<ElGamalEncryptionKey, ElGamalEncryptionKeyData>,
 		ElGamalSignatureService>();
+	services.AddScoped<ICryptoAnalyzer<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
+		SubstitutionAnalyzerKeyData>, SubstitutionAnalyzerService>();
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.

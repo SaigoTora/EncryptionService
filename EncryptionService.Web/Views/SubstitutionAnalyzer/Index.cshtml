@@ -1,5 +1,7 @@
-﻿@using EncryptionService.Web.Models.EncryptionViewModels
-@model EncryptionViewModel<EncryptionResult>
+﻿@using EncryptionService.Core.Models.CryptoAnalysis.SubstitutionAnalyzer
+@using EncryptionService.Web.Models.EncryptionViewModels
+
+@model EncryptionViewModel<SubstitutionAnalyzerResult>
 
 @{
 	ViewData["Title"] = "Simple substitution cipher";
@@ -29,10 +31,17 @@
 		<label asp-for="EncryptedInputText" class="form__label">Encrypted text </label>
 	</div>
 
-	@if (Model != null && Model.DecryptionResult != null)
+	@if (Model != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
-				Model.DecryptionResult)
+		if (Model.DecryptionResult != null)
+		{
+			if (Model.DecryptionResult.Accuracy != null)
+			{
+				<p>Accuracy: <span class="encryption-result-text">@Model.DecryptionResult.Accuracy.Value.ToString("F2")%</span></p>
+			}
+			@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+					Model.DecryptionResult)
+		}
 	}
 
 	<div class="form-group mb-3">
