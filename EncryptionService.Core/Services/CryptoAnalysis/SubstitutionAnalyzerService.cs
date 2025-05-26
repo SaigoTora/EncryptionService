@@ -86,7 +86,7 @@ namespace EncryptionService.Core.Services.CryptoAnalysis
 				new CharFrequency('А', 0.064),
 				new CharFrequency('Б', 0.013),
 				new CharFrequency('В', 0.046),
-				new CharFrequency('Г', 0.013),
+				new CharFrequency('Г', 0.0129),
 				new CharFrequency('Ґ', 0.0001),
 				new CharFrequency('Д', 0.027),
 				new CharFrequency('Е', 0.042),
