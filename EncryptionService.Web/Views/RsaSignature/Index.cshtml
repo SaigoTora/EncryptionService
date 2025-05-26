@@ -18,11 +18,11 @@
 
 	@if (Model != null && Model.GeneratedHash != null)
 	{
-		<p>Hash: <span class="encryption-result-text">@Model.GeneratedHash</span></p>
+		<p>Electronic digital signature: <span class="encryption-result-text">@Model.GeneratedHash</span></p>
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Hash" class="button">Hash</button>
+		<button type="submit" name="actionType" value="Sign" class="button">Sign</button>
 	</div>
 
 	<div class="form__group field">
@@ -31,8 +31,8 @@
 	</div>
 
 	<div class="form__group field">
-		<input asp-for="HashToVerify" class="form__field" placeholder="Hash" />
-		<label asp-for="HashToVerify" class="form__label">Hash</label>
+		<input asp-for="HashToVerify" class="form__field" placeholder="Electronic digital signature" />
+		<label asp-for="HashToVerify" class="form__label">Electronic digital signature</label>
 	</div>
 
 	@if (Model != null && Model.VerificationResult != null)

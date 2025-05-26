@@ -1,14 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 using EncryptionService.Core.Interfaces;
+using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
+using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.HashingViewModels;
 
 namespace EncryptionService.Web.Controllers.Hashing
 {
-    public class RsaSignatureController(IHashingService hashingService) : Controller
+	public class RsaSignatureController(ISignatureService<RsaEncryptionKey,
+		RsaEncryptionKeyData> signatureService, IOptions<EncryptionSettings> encryptionSettings)
+		: Controller
 	{
-		private readonly IHashingService _hashingService = hashingService;
+		private readonly ISignatureService<RsaEncryptionKey, RsaEncryptionKeyData>
+			_signatureService = signatureService;
+		private readonly EncryptionSettings _encryptionSettings = encryptionSettings.Value;
 
 		public IActionResult Index() => View();
 
@@ -18,14 +25,16 @@ namespace EncryptionService.Web.Controllers.Hashing
 			if (!ModelState.IsValid)
 				return View(hashingViewModel);
 
-			if (actionType == "Hash")
+
+			RsaEncryptionKey key = _encryptionSettings.RsaEncryptionKey;
+			if (actionType == "Sign")
 			{
 				if (!this.ValidateRequiredInput(hashingViewModel.TextToHash,
 					nameof(hashingViewModel.TextToHash), "Text"))
 					return View(hashingViewModel);
 
-				hashingViewModel.GeneratedHash = _hashingService.ComputeHash(
-					hashingViewModel.TextToHash!, hashingViewModel.HashingMethod);
+				hashingViewModel.GeneratedHash = _signatureService.CreateSignature(
+					hashingViewModel.TextToHash!, key);
 			}
 			else if (actionType == "Verify")
 			{
@@ -33,12 +42,11 @@ namespace EncryptionService.Web.Controllers.Hashing
 					nameof(hashingViewModel.TextToVerify), "Text"))
 					return View(hashingViewModel);
 				if (!this.ValidateRequiredInput(hashingViewModel.HashToVerify,
-					nameof(hashingViewModel.HashToVerify), "Hash"))
+					nameof(hashingViewModel.HashToVerify), "Electronic digital signature"))
 					return View(hashingViewModel);
 
-				hashingViewModel.VerificationResult = _hashingService.VerifyHash(
-					hashingViewModel.TextToVerify!, hashingViewModel.HashToVerify!,
-					hashingViewModel.HashingMethod);
+				hashingViewModel.VerificationResult = _signatureService.VerifySignature(
+					hashingViewModel.TextToVerify!, hashingViewModel.HashToVerify!, key);
 			}
 
 			return View(hashingViewModel);
