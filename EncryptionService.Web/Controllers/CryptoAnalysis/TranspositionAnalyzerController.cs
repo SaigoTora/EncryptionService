@@ -1,32 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 using EncryptionService.Core.Interfaces;
-using EncryptionService.Core.Models.CryptoAnalysis.SubstitutionAnalyzer;
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.EncryptionViewModels;
+using EncryptionService.Core.Models.CryptoAnalysis.TranspositionAnalyzer;
 
 namespace EncryptionService.Web.Controllers.CryptoAnalysis
 {
 	public class TranspositionAnalyzerController(
-		ICryptoAnalyzer<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
-			SubstitutionAnalyzerKeyData> cryptoAnalyzerService)
+		IEncryptionService<TranspositionAnalyzerResult, TranspositionAnalyzerKey,
+			HashSet<int>> cryptoAnalyzerService)
 		: Controller
 	{
-		readonly ICryptoAnalyzer<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
-			SubstitutionAnalyzerKeyData> _cryptoAnalyzerService = cryptoAnalyzerService;
+		readonly IEncryptionService<TranspositionAnalyzerResult, TranspositionAnalyzerKey,
+			HashSet<int>> _cryptoAnalyzerService = cryptoAnalyzerService;
 
 		public IActionResult Index() => View();
 
 		[HttpPost]
 		public IActionResult Index(
-			EncryptionViewModel<SubstitutionAnalyzerResult> encryptionViewModel,
+			EncryptionViewModel<TranspositionAnalyzerResult> encryptionViewModel,
 			string actionType)
 		{
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			SubstitutionAnalyzerKey key = new();
-			SubstitutionAnalyzerResult encryptionResult;
+			TranspositionAnalyzerResult encryptionResult;
 
 			if (actionType == "Encrypt")
 			{
@@ -34,6 +33,7 @@ namespace EncryptionService.Web.Controllers.CryptoAnalysis
 					nameof(encryptionViewModel.InputText), "Text"))
 					return View(encryptionViewModel);
 
+				TranspositionAnalyzerKey key = new(encryptionViewModel.InputText!.Length);
 				encryptionResult = _cryptoAnalyzerService.Encrypt(encryptionViewModel.InputText!,
 					key);
 				encryptionViewModel.EncryptionResult = encryptionResult;
@@ -44,6 +44,7 @@ namespace EncryptionService.Web.Controllers.CryptoAnalysis
 					nameof(encryptionViewModel.EncryptedInputText), "Encrypted text"))
 					return View(encryptionViewModel);
 
+				TranspositionAnalyzerKey key = new(encryptionViewModel.EncryptedInputText!.Length);
 				encryptionResult = _cryptoAnalyzerService.Decrypt(
 					encryptionViewModel.EncryptedInputText!, key);
 				encryptionViewModel.DecryptionResult = encryptionResult;

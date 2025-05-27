@@ -8,12 +8,12 @@ using EncryptionService.Core.Models.CryptoAnalysis.SubstitutionAnalyzer;
 namespace EncryptionService.Web.Controllers.CryptoAnalysis
 {
 	public class SubstitutionAnalyzerController(
-		ICryptoAnalyzer<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
-			SubstitutionAnalyzerKeyData> cryptoAnalyzerService)
+		IEncryptionService<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
+			Dictionary<char, char>> cryptoAnalyzerService)
 		: Controller
 	{
-		readonly ICryptoAnalyzer<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
-			SubstitutionAnalyzerKeyData> _cryptoAnalyzerService = cryptoAnalyzerService;
+		readonly IEncryptionService<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
+			Dictionary<char, char>> _cryptoAnalyzerService = cryptoAnalyzerService;
 
 		public IActionResult Index() => View();
 

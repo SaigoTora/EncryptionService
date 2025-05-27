@@ -11,8 +11,8 @@ namespace EncryptionService.Core.Services.CryptoAnalysis
 		public double Frequency { get; init; } = frequency;
 	}
 
-	public class SubstitutionAnalyzerService : ICryptoAnalyzer<SubstitutionAnalyzerResult,
-		SubstitutionAnalyzerKey, SubstitutionAnalyzerKeyData>
+	public class SubstitutionAnalyzerService : IEncryptionService<SubstitutionAnalyzerResult,
+		SubstitutionAnalyzerKey, Dictionary<char, char>>
 	{
 		private const char UNKNOWN_CHAR = '�';
 
@@ -35,13 +35,13 @@ namespace EncryptionService.Core.Services.CryptoAnalysis
 			{
 				char upperChar = char.ToUpper(ch);
 
-				if (!key.Key.SubstitutionMap.ContainsKey(upperChar))
+				if (!key.Key.ContainsKey(upperChar))
 				{
 					builder.Append(UNKNOWN_CHAR);
 					continue;
 				}
 
-				char encryptedChar = key.Key.SubstitutionMap[upperChar];
+				char encryptedChar = key.Key[upperChar];
 
 				if (char.IsLower(ch))
 					builder.Append(char.ToLower(encryptedChar));
@@ -153,7 +153,7 @@ namespace EncryptionService.Core.Services.CryptoAnalysis
 			foreach (var kvp in reverseMap)
 			{
 				char decryptedChar = kvp.Value;
-				char originalChar = key.Key.SubstitutionMap
+				char originalChar = key.Key
 					.FirstOrDefault(x => x.Key == decryptedChar).Value;
 
 				if (kvp.Key == originalChar)

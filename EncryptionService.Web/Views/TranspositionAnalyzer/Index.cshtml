@@ -1,7 +1,7 @@
-﻿@using EncryptionService.Core.Models.CryptoAnalysis.SubstitutionAnalyzer
+﻿@using EncryptionService.Core.Models.CryptoAnalysis.TranspositionAnalyzer
 @using EncryptionService.Web.Models.EncryptionViewModels
 
-@model EncryptionViewModel<SubstitutionAnalyzerResult>
+@model EncryptionViewModel<TranspositionAnalyzerResult>
 
 @{
 	ViewData["Title"] = "Simple transposition cipher";
@@ -15,10 +15,26 @@
 		<label asp-for="InputText" class="form__label">Text</label>
 	</div>
 
-	@if (Model != null && Model.EncryptionResult != null)
+	@if (Model != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
-				Model.EncryptionResult)
+		if (Model.EncryptionResult != null)
+		{
+			if (Model.EncryptionResult.Indexes != null)
+			{
+				<span class="mb-2">
+					{
+					@foreach (int index in Model.EncryptionResult.Indexes)
+					{
+						@(index + 1)
+
+						@:
+					}
+					}
+				</span>
+			}
+			@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+					Model.EncryptionResult)
+		}
 	}
 
 	<div class="form-group mb-3">
@@ -31,22 +47,36 @@
 		<label asp-for="EncryptedInputText" class="form__label">Encrypted text </label>
 	</div>
 
+	<div class="form-group mb-3">
+		<button type="submit" name="actionType" value="Decrypt" class="button">Decrypt</button>
+	</div>
+
 	@if (Model != null)
 	{
 		if (Model.DecryptionResult != null)
 		{
-			if (Model.DecryptionResult.Accuracy != null)
+			if (Model.DecryptionResult.AllPermutations != null)
 			{
-				<p>Accuracy: <span class="encryption-result-text">@Model.DecryptionResult.Accuracy.Value.ToString("F2")%</span></p>
+				@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+						Model.DecryptionResult)
+				<span class="mb-3">Number of permutations: @Model.DecryptionResult.AllPermutations.Length</span>
+
+				<table class="mb-4 table-bordered">
+					<tr>
+						<th class="p-2">№</th>
+						<th class="p-2">Permutation</th>
+					</tr>
+					@for (int i = 0; i < Model.DecryptionResult.AllPermutations.Length; i++)
+					{
+						<tr>
+							<td class="p-2">@(i + 1)</td>
+							<td class="p-2">@Model.DecryptionResult.AllPermutations[i]</td>
+						</tr>
+					}
+				</table>
 			}
-			@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
-					Model.DecryptionResult)
 		}
 	}
-
-	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Decrypt" class="button">Decrypt</button>
-	</div>
 
 	<span asp-validation-for="InputText" class="text-danger"></span>
 	<span asp-validation-for="EncryptedInputText" class="text-danger"></span>

@@ -23,6 +23,7 @@ using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
 using EncryptionService.Core.Services.Hashing;
 using EncryptionService.Core.Services.CryptoAnalysis;
 using EncryptionService.Core.Models.CryptoAnalysis.SubstitutionAnalyzer;
+using EncryptionService.Core.Models.CryptoAnalysis.TranspositionAnalyzer;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -81,8 +82,10 @@ static void ConfigureServices(IServiceCollection services, IConfiguration config
 	services.AddScoped<ISignatureService<RsaEncryptionKey, RsaEncryptionKeyData>, RsaSignatureService>();
 	services.AddScoped<ISignatureService<ElGamalEncryptionKey, ElGamalEncryptionKeyData>,
 		ElGamalSignatureService>();
-	services.AddScoped<ICryptoAnalyzer<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
-		SubstitutionAnalyzerKeyData>, SubstitutionAnalyzerService>();
+	services.AddScoped<IEncryptionService<SubstitutionAnalyzerResult, SubstitutionAnalyzerKey,
+		Dictionary<char, char>>, SubstitutionAnalyzerService>();
+	services.AddScoped<IEncryptionService<TranspositionAnalyzerResult, TranspositionAnalyzerKey,
+		HashSet<int>>, TranspositionAnalyzerService>();
 }
 static void ConfigureMiddleware(WebApplication app)
 {// Configure the HTTP request pipeline.
