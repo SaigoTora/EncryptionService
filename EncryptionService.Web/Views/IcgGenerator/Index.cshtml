@@ -7,14 +7,14 @@
 
 <h1 class="mb-5">Inverse Congruential Generator</h1>
 
-<form class="w-100" asp-controller="IcgGenerator" asp-action="Index" method="post">
+<form class="w-100" asp-controller="IcgGenerator" asp-action="Generate" method="post">
 	<div class="form__group field">
-		<input asp-for="GammaLength" class="form__field" placeholder="Gamma length" required />
+		<input asp-for="GammaLength" class="form__field" placeholder="Gamma length" />
 		<label asp-for="GammaLength" class="form__label">Gamma length</label>
 	</div>
 
 	<div class="form__group field">
-		<input asp-for="Seed" class="form__field" placeholder="Seed" required />
+		<input asp-for="Seed" class="form__field" placeholder="Seed" />
 		<label asp-for="Seed" class="form__label">Seed</label>
 	</div>
 
@@ -27,4 +27,7 @@
 	<div class="form-group mb-3">
 		<button type="submit" class="button">Generate</button>
 	</div>
+
+	<span asp-validation-for="GammaLength" class="text-danger"></span>
+	<span asp-validation-for="Seed" class="text-danger"></span>
 </form>

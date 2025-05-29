@@ -18,18 +18,17 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(NumberGeneratorViewModel numberGeneratorViewModel)
+		public IActionResult Generate(NumberGeneratorViewModel model)
 		{
 			if (!ModelState.IsValid)
-				return View();
+				return View("Index", model);
 
 			IcgGeneratorParameters parameters = _encryptionSettings.IcgGeneratorParameters;
 
-			List<int> generatedNumbers = _randomNumberGenerator.Generate(parameters,
-				numberGeneratorViewModel.GammaLength, numberGeneratorViewModel.Seed);
-			numberGeneratorViewModel.ResultNumbers = generatedNumbers;
+			model.ResultNumbers = _randomNumberGenerator.Generate(parameters, model.GammaLength!.Value,
+				model.Seed!.Value);
 
-			return View(numberGeneratorViewModel);
+			return View("Index", model);
 		}
 	}
 }

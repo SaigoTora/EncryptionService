@@ -6,7 +6,6 @@ using EncryptionService.Core.Models;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.XorEncryption;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Models.EncryptionViewModels;
-using EncryptionService.Web.Extensions;
 
 namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 {
@@ -22,36 +21,27 @@ namespace EncryptionService.Web.Controllers.StreamCiphersAndGenerators
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(EncryptionViewModel<EncryptionResult> encryptionViewModel,
-			string actionType)
+		public IActionResult Encrypt(EncryptionViewModel<EncryptionResult> model)
 		{
 			if (!ModelState.IsValid)
-				return View(encryptionViewModel);
+				return View("Index", model);
 
 			XorEncryptionKey key = _encryptionSettings.XorEncryptionKey;
-			EncryptionResult encryptionResult;
 
-			if (actionType == "Encrypt")
-			{
-				if (!this.ValidateRequiredInput(encryptionViewModel.InputText,
-					nameof(encryptionViewModel.InputText), "Text"))
-					return View(encryptionViewModel);
+			model.EncryptionResult = _encryptionService.Encrypt(model.InputText!, key);
+			return View("Index", model);
+		}
 
-				encryptionResult = _encryptionService.Encrypt(encryptionViewModel.InputText!, key);
-				encryptionViewModel.EncryptionResult = encryptionResult;
-			}
-			else if (actionType == "Decrypt")
-			{
-				if (!this.ValidateRequiredInput(encryptionViewModel.EncryptedInputText,
-					nameof(encryptionViewModel.EncryptedInputText), "Encrypted text"))
-					return View(encryptionViewModel);
+		[HttpPost]
+		public IActionResult Decrypt(EncryptionViewModel<EncryptionResult> model)
+		{
+			if (!ModelState.IsValid)
+				return View("Index", model);
 
-				encryptionResult = _encryptionService.Decrypt(
-					encryptionViewModel.EncryptedInputText!, key);
-				encryptionViewModel.DecryptionResult = encryptionResult;
-			}
+			XorEncryptionKey key = _encryptionSettings.XorEncryptionKey;
 
-			return View(encryptionViewModel);
+			model.DecryptionResult = _encryptionService.Decrypt(model.EncryptedInputText!, key);
+			return View("Index", model);
 		}
 	}
 }

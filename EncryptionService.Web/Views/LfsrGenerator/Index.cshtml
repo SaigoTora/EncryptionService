@@ -9,10 +9,10 @@
 
 <h1 class="mb-5">Linear Feedback Shift Register Generator</h1>
 
-<form class="w-100" asp-controller="LfsrGenerator" asp-action="Index" method="post" enctype="multipart/form-data">
+<form class="w-100 mb-4" asp-controller="LfsrGenerator" asp-action="Encrypt" method="post" enctype="multipart/form-data">
 	<div class="form__group field">
-		<input asp-for="InitialState" class="form__field" placeholder="Initial state (8 bytes)" />
-		<label asp-for="InitialState" class="form__label">Initial state (8 bytes)</label>
+		<input asp-for="EncryptionInitialState" class="form__field" placeholder="Initial state (8 bytes)" />
+		<label asp-for="EncryptionInitialState" class="form__label">Initial state (8 bytes)</label>
 	</div>
 
 	<div class="form__group field">
@@ -35,9 +35,15 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Encrypt" class="button">Encrypt</button>
+		<button type="submit" class="button">Encrypt</button>
 	</div>
+</form>
 
+<form class="w-100" id="decryption-form" asp-controller="LfsrGenerator" asp-action="Decrypt" method="post" enctype="multipart/form-data">
+	<div class="form__group field">
+		<input asp-for="DecryptionInitialState" class="form__field" placeholder="Initial state (8 bytes)" />
+		<label asp-for="DecryptionInitialState" class="form__label">Initial state (8 bytes)</label>
+	</div>
 
 	<div class="form__group field">
 		<input asp-for="EncryptedInputText" class="form__field" placeholder="Encrypted text" />
@@ -59,10 +65,11 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Decrypt" class="button">Decrypt</button>
+		<button type="submit" class="button">Decrypt</button>
 	</div>
 
-	<span asp-validation-for="InitialState" class="text-danger"></span>
+	<span asp-validation-for="EncryptionInitialState" class="text-danger"></span>
+	<span asp-validation-for="DecryptionInitialState" class="text-danger"></span>
 	<span asp-validation-for="InputText" class="text-danger"></span>
 	<span asp-validation-for="EncryptedInputText" class="text-danger"></span>
 </form>
