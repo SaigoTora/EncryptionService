@@ -18,76 +18,51 @@ namespace EncryptionService.Web.Controllers.CryptoAnalysis
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public async Task<IActionResult> Index(
-			FileEncryptionViewModel<SubstitutionAnalyzerResult> encryptionViewModel,
-			string actionType)
-		{
-			if (!ModelState.IsValid)
-				return View(encryptionViewModel);
-
-			SubstitutionAnalyzerKey key = SubstitutionAnalyzerKey.UniqueInstance;
-
-			if (actionType == "Encrypt")
-				return await ProcessEncrypt(encryptionViewModel, key);
-			else if (actionType == "Decrypt")
-				return await ProcessDecrypt(encryptionViewModel, key);
-
-			return View(encryptionViewModel);
-		}
-		private async Task<ViewResult> ProcessEncrypt(
-			FileEncryptionViewModel<SubstitutionAnalyzerResult> model, SubstitutionAnalyzerKey key)
+		public async Task<IActionResult> Encrypt(
+			FileEncryptionViewModel<SubstitutionAnalyzerResult> model)
 		{
 			SubstitutionAnalyzerResult encryptionResult;
+			SubstitutionAnalyzerKey key = SubstitutionAnalyzerKey.UniqueInstance;
 
-			if (model.EncryptionInputFile != null
-				&& model.EncryptionInputFile.Length > 0)
+			if (model.EncryptionInputFile != null && model.EncryptionInputFile.Length > 0)
 			{
-				string text;
-
-				using var reader = new StreamReader(model
-					.EncryptionInputFile.OpenReadStream());
-				text = await reader.ReadToEndAsync();
+				string text = await this.ReadFileAsync(model.EncryptionInputFile);
 				encryptionResult = _cryptoAnalyzerService.Encrypt(text, key);
 			}
 			else
 			{
-				if (!this.ValidateRequiredInput(model.InputText,
-					nameof(model.InputText), "Text"))
-					return View(model);
+				if (!ModelState.IsValid)
+					return View("Index", model);
 
 				encryptionResult = _cryptoAnalyzerService.Encrypt(model.InputText!, key);
 			}
 
 			model.EncryptionResult = encryptionResult;
-			return View(model);
+			return View("Index", model);
 		}
-		private async Task<ViewResult> ProcessDecrypt(
-			FileEncryptionViewModel<SubstitutionAnalyzerResult> model, SubstitutionAnalyzerKey key)
+
+		[HttpPost]
+		public async Task<IActionResult> Decrypt(
+			FileEncryptionViewModel<SubstitutionAnalyzerResult> model)
 		{
 			SubstitutionAnalyzerResult encryptionResult;
+			SubstitutionAnalyzerKey key = SubstitutionAnalyzerKey.UniqueInstance;
 
-			if (model.DecryptionInputFile != null
-				&& model.DecryptionInputFile.Length > 0)
+			if (model.DecryptionInputFile != null && model.DecryptionInputFile.Length > 0)
 			{
-				string text;
-
-				using var reader = new StreamReader(model
-					.DecryptionInputFile.OpenReadStream());
-				text = await reader.ReadToEndAsync();
+				string text = await this.ReadFileAsync(model.DecryptionInputFile);
 				encryptionResult = _cryptoAnalyzerService.Decrypt(text, key);
 			}
 			else
 			{
-				if (!this.ValidateRequiredInput(model.EncryptedInputText,
-					nameof(model.EncryptedInputText), "Encrypted text"))
-					return View(model);
+				if (!ModelState.IsValid)
+					return View("Index", model);
 
-				encryptionResult = _cryptoAnalyzerService.Decrypt(
-					model.EncryptedInputText!, key);
+				encryptionResult = _cryptoAnalyzerService.Decrypt(model.EncryptedInputText!, key);
 			}
 
 			model.DecryptionResult = encryptionResult;
-			return View(model);
+			return View("Index", model);
 		}
 	}
 }

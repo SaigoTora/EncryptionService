@@ -46,8 +46,14 @@
 		<button type="submit" class="button">Decrypt</button>
 	</div>
 
-	<span asp-validation-for="InputText" class="text-danger"></span>
-	<span asp-validation-for="EncryptedInputText" class="text-danger"></span>
+	@if (Model?.EncryptionInputFile == null || Model.EncryptionInputFile.Length == 0)
+	{
+		<span asp-validation-for="InputText" class="text-danger"></span>
+	}
+	@if (Model?.DecryptionInputFile == null || Model.DecryptionInputFile.Length == 0)
+	{
+		<span asp-validation-for="EncryptedInputText" class="text-danger"></span>
+	}
 	<span asp-validation-for="EncryptionInputFile" class="text-danger"></span>
 	<span asp-validation-for="DecryptionInputFile" class="text-danger"></span>
 </form>

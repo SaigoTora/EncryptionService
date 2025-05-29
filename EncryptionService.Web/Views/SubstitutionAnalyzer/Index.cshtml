@@ -9,7 +9,7 @@
 
 <h1 class="mb-5">Simple substitution cipher</h1>
 
-<form class="w-100" asp-controller="SubstitutionAnalyzer" asp-action="Index" method="post" enctype="multipart/form-data">
+<form class="w-100" asp-controller="SubstitutionAnalyzer" asp-action="Encrypt" method="post" enctype="multipart/form-data">
 	<div class="form__group field">
 		<input asp-for="InputText" class="form__field" placeholder="Text" />
 		<label asp-for="InputText" class="form__label">Text</label>
@@ -24,10 +24,11 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Encrypt" class="button">Encrypt</button>
+		<button type="submit" class="button">Encrypt</button>
 	</div>
+</form>
 
-
+<form class="w-100" asp-controller="SubstitutionAnalyzer" asp-action="Decrypt" method="post" enctype="multipart/form-data">
 	<div class="form__group field">
 		<input asp-for="EncryptedInputText" class="form__field" placeholder="Encrypted text" />
 		<label asp-for="EncryptedInputText" class="form__label">Encrypted text </label>
@@ -49,9 +50,16 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Decrypt" class="button">Decrypt</button>
+		<button type="submit" class="button">Decrypt</button>
 	</div>
-
-	<span asp-validation-for="InputText" class="text-danger"></span>
-	<span asp-validation-for="EncryptedInputText" class="text-danger"></span>
+	@if (Model?.EncryptionInputFile == null || Model.EncryptionInputFile.Length == 0)
+	{
+		<span asp-validation-for="InputText" class="text-danger"></span>
+	}
+	@if (Model?.DecryptionInputFile == null || Model.DecryptionInputFile.Length == 0)
+	{
+		<span asp-validation-for="EncryptedInputText" class="text-danger"></span>
+	}
+	<span asp-validation-for="EncryptionInputFile" class="text-danger"></span>
+	<span asp-validation-for="DecryptionInputFile" class="text-danger"></span>
 </form>

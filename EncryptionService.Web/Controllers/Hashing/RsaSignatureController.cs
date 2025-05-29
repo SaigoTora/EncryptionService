@@ -4,9 +4,7 @@ using Microsoft.Extensions.Options;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 using EncryptionService.Web.Configurations;
-using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.HashingViewModels;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace EncryptionService.Web.Controllers.Hashing
 {

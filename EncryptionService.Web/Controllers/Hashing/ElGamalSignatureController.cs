@@ -5,9 +5,7 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
 using EncryptionService.Core.Services.Hashing;
 using EncryptionService.Web.Configurations;
-using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.HashingViewModels;
-using System.Reflection;
 
 namespace EncryptionService.Web.Controllers.Hashing
 {
