@@ -12,7 +12,8 @@ namespace EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption
 			GenerateKey(letterFrequency);
 		}
 
-		public static HomophonicEncryptionKey GetUniqueInstance(Dictionary<char, int> letterFrequency)
+		public static HomophonicEncryptionKey GetUniqueInstance(
+			Dictionary<char, int> letterFrequency)
 		{
 			if (_uniqueInstance == null)
 				_uniqueInstance = new HomophonicEncryptionKey(letterFrequency);

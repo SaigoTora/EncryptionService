@@ -5,7 +5,6 @@ using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Models.EncryptionViewModels;
-using EncryptionService.Web.Extensions;
 
 namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 {
@@ -23,12 +22,10 @@ namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(
-			EncryptionViewModel<HomophonicEncryptionResult> encryptionViewModel,
-			string actionType)
+		public IActionResult Encrypt(EncryptionViewModel<HomophonicEncryptionResult> model)
 		{
 			if (!ModelState.IsValid)
-				return View(encryptionViewModel);
+				return View("Index", model);
 
 			if (_homophonicEncryptionKey == null)
 			{
@@ -37,47 +34,49 @@ namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 				_homophonicEncryptionKey = HomophonicEncryptionKey.GetUniqueInstance(frequency);
 			}
 
-			if (actionType == "Encrypt")
-				return ProcessEncrypt(encryptionViewModel);
-			else if (actionType == "Decrypt")
-				return ProcessDecrypt(encryptionViewModel);
-
-			return View(encryptionViewModel);
-		}
-		private ViewResult ProcessEncrypt(EncryptionViewModel<HomophonicEncryptionResult> model)
-		{
-			if (!this.ValidateRequiredInput(model.InputText,
-				nameof(model.InputText), "Text"))
-				return View(model);
-
 			model.EncryptionResult = _encryptionService.Encrypt(model.InputText!,
 				_homophonicEncryptionKey!);
-
-			return View(model);
+			return View("Index", model);
 		}
-		private ViewResult ProcessDecrypt(EncryptionViewModel<HomophonicEncryptionResult> model)
-		{
-			if (!this.ValidateRequiredInput(model.EncryptedInputText,
-				nameof(model.EncryptedInputText), "Encrypted text"))
-				return View(model);
 
+		[HttpPost]
+		public IActionResult Decrypt(EncryptionViewModel<HomophonicEncryptionResult> model)
+		{
+			if (!ModelState.IsValid)
+				return View("Index", model);
+
+			if (_homophonicEncryptionKey == null)
+			{
+				Dictionary<char, int> frequency = _encryptionSettings.HomophonicEncryptionFrequency
+					.ToDictionary(kvp => kvp.Key[0], kvp => kvp.Value);
+				_homophonicEncryptionKey = HomophonicEncryptionKey.GetUniqueInstance(frequency);
+			}
+
+			if (!IsEncryptedInputTextValid(model))
+				return View("Index", model);
+
+			model.DecryptionResult = _encryptionService.Decrypt(model.EncryptedInputText,
+				_homophonicEncryptionKey!);
+			return View("Index", model);
+		}
+
+		private bool IsEncryptedInputTextValid(
+			EncryptionViewModel<HomophonicEncryptionResult> model)
+		{
 			if (model.EncryptedInputText!.Length % 3 != 0)
 			{
 				ModelState.AddModelError("EncryptedInputText",
 					"The length of the encrypted text must be a multiple of 3.");
-				return View(model);
+				return false;
 			}
 			else if (model.EncryptedInputText.Any(ch => !char.IsDigit(ch)))
 			{
 				ModelState.AddModelError("EncryptedInputText",
 					"The encrypted text must contain only digits.");
-				return View(model);
+				return false;
 			}
 
-			model.DecryptionResult = _encryptionService.Decrypt(
-				model.EncryptedInputText, _homophonicEncryptionKey!);
-
-			return View(model);
+			return true;
 		}
 	}
 }
