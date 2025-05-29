@@ -23,92 +23,65 @@ namespace EncryptionService.Web.Controllers.AsymmetricEncryption
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public async Task<IActionResult> Index(
-			FileEncryptionViewModel<RsaEncryptionResult> encryptionViewModel, string actionType)
-		{
-			if (!ModelState.IsValid)
-				return View(encryptionViewModel);
-
-			RsaEncryptionKey key = _encryptionSettings.RsaEncryptionKey;
-
-			if (actionType == "Encrypt")
-				return await ProcessEncrypt(encryptionViewModel, key);
-			else if (actionType == "Decrypt")
-				return await ProcessDecrypt(encryptionViewModel, key);
-
-			return View(encryptionViewModel);
-		}
-
-		private async Task<ViewResult> ProcessEncrypt(
-			FileEncryptionViewModel<RsaEncryptionResult> model, RsaEncryptionKey key)
+		public async Task<IActionResult> Encrypt(FileEncryptionViewModel<RsaEncryptionResult> model)
 		{
 			RsaEncryptionResult encryptionResult;
+			RsaEncryptionKey key = _encryptionSettings.RsaEncryptionKey;
 
-			if (model.EncryptionInputFile != null
-				&& model.EncryptionInputFile.Length > 0)
+			if (model.EncryptionInputFile != null && model.EncryptionInputFile.Length > 0)
 			{
-				string text;
-
-				using var reader = new StreamReader(model
-					.EncryptionInputFile.OpenReadStream());
-				text = await reader.ReadToEndAsync();
+				string text = await this.ReadFileAsync(model.EncryptionInputFile);
 				encryptionResult = _encryptionService.Encrypt(text, key);
 			}
 			else
 			{
-				if (!this.ValidateRequiredInput(model.InputText,
-					nameof(model.InputText), "Text"))
-					return View(model);
+				if (!ModelState.IsValid)
+					return View("Index", model);
 
-				encryptionResult = _encryptionService.Encrypt(model.InputText!,
-					key);
+				encryptionResult = _encryptionService.Encrypt(model.InputText!, key);
 			}
-			model.EncryptionResult = encryptionResult;
 
-			return View(model);
+			model.EncryptionResult = encryptionResult;
+			return View("Index", model);
 		}
-		private async Task<ViewResult> ProcessDecrypt(
-			FileEncryptionViewModel<RsaEncryptionResult> model, RsaEncryptionKey key)
+
+		[HttpPost]
+		public async Task<IActionResult> Decrypt(FileEncryptionViewModel<RsaEncryptionResult> model)
 		{
 			RsaEncryptionResult encryptionResult;
+			RsaEncryptionKey key = _encryptionSettings.RsaEncryptionKey;
 
-			if (model.DecryptionInputFile != null
-				&& model.DecryptionInputFile.Length > 0)
+			if (model.DecryptionInputFile != null && model.DecryptionInputFile.Length > 0)
 			{
-				string text;
-
-				using var reader = new StreamReader(model
-					.DecryptionInputFile.OpenReadStream());
-				text = await reader.ReadToEndAsync();
+				string text = await this.ReadFileAsync(model.DecryptionInputFile);
 
 				model.EncryptedInputText = text;
-				if (!IsEncryptedTextValid(model))
-					return View(model);
+				if (!IsEncryptedTextValid(text, nameof(model.DecryptionInputFile)))
+					return View("Index", model);
 				encryptionResult = _encryptionService.Decrypt(text, key);
 			}
 			else
 			{
-				if (!this.ValidateRequiredInput(model.EncryptedInputText,
-					nameof(model.EncryptedInputText), "Encrypted text"))
-					return View(model);
+				if (!ModelState.IsValid)
+					return View("Index", model);
 
-				if (!IsEncryptedTextValid(model))
-					return View(model);
+				if (!IsEncryptedTextValid(model.EncryptedInputText,
+					nameof(model.EncryptedInputText)))
+					return View("Index", model);
 
-				encryptionResult = _encryptionService.Decrypt(
-					model.EncryptedInputText!, key);
+				encryptionResult = _encryptionService.Decrypt(model.EncryptedInputText!, key);
 			}
-			model.DecryptionResult = encryptionResult;
 
-			return View(model);
+			model.DecryptionResult = encryptionResult;
+			return View("Index", model);
 		}
 
-		private bool IsEncryptedTextValid(FileEncryptionViewModel<RsaEncryptionResult> model)
+		private bool IsEncryptedTextValid(string text, string fieldName)
 		{
-			foreach (char ch in model.EncryptedInputText ?? string.Empty)
+			foreach (char ch in text ?? string.Empty)
 				if (!char.IsDigit(ch) && !RsaEncryptionService.SEPARATOR.Contains(ch))
 				{
-					ModelState.AddModelError(nameof(model.EncryptedInputText),
+					ModelState.AddModelError(fieldName,
 						$"The encrypted input text can only contain digits and " +
 						$"the separator '{RsaEncryptionService.SEPARATOR}' symbol.");
 					return false;

@@ -33,7 +33,7 @@ namespace EncryptionService.Web.Controllers.TranspositionCiphers
 			ViewData["KeyColumnNumbers"] = key.Key.ColumnNumbers;
 			int maxTextLength = key.Key.RowNumbers.Length * key.Key.ColumnNumbers.Length;
 
-			if (!IsInputTextValid(model, maxTextLength))
+			if (!IsInputTextValid(model.InputText, nameof(model.InputText), maxTextLength))
 				return View("Index", model);
 
 			model.EncryptionResult = _encryptionService.Encrypt(model.InputText!, key);
@@ -52,22 +52,22 @@ namespace EncryptionService.Web.Controllers.TranspositionCiphers
 			ViewData["KeyColumnNumbers"] = key.Key.ColumnNumbers;
 			int maxTextLength = key.Key.RowNumbers.Length * key.Key.ColumnNumbers.Length;
 
-			if (!IsInputTextValid(model, maxTextLength))
+			if (!IsInputTextValid(model.EncryptedInputText, nameof(model.EncryptedInputText),
+				maxTextLength))
 				return View("Index", model);
 
 			model.DecryptionResult = _encryptionService.Decrypt(model.EncryptedInputText!, key);
 			return View("Index", model);
 		}
 
-		private bool IsInputTextValid(
-			EncryptionViewModel<EquivalentTranspositionEncryptionResult> model, int maxTextLength)
+		private bool IsInputTextValid(string text, string fieldName, int maxTextLength)
 		{
-			if (model.EncryptedInputText!.Length > maxTextLength)
+			if (text.Length > maxTextLength)
 			{
-				ModelState.AddModelError(nameof(model.EncryptedInputText),
-					"The length of the encrypted input text must be less than or equal to " +
+				ModelState.AddModelError(fieldName,
+					"The length of the input text must be less than or equal to " +
 					$"{maxTextLength}. You have entered characters: " +
-					$"{model.EncryptedInputText.Length}.");
+					$"{text.Length}.");
 				return false;
 			}
 

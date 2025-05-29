@@ -65,13 +65,13 @@ namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 		{
 			if (model.EncryptedInputText!.Length % 3 != 0)
 			{
-				ModelState.AddModelError("EncryptedInputText",
+				ModelState.AddModelError(nameof(model.EncryptedInputText),
 					"The length of the encrypted text must be a multiple of 3.");
 				return false;
 			}
 			else if (model.EncryptedInputText.Any(ch => !char.IsDigit(ch)))
 			{
-				ModelState.AddModelError("EncryptedInputText",
+				ModelState.AddModelError(nameof(model.EncryptedInputText),
 					"The encrypted text must contain only digits.");
 				return false;
 			}
