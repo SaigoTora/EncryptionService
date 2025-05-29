@@ -34,7 +34,7 @@ namespace EncryptionService.Web.Controllers.SubstitutionCiphers
 			{
 				Dictionary<char, int> frequency = _encryptionSettings.HomophonicEncryptionFrequency
 					.ToDictionary(kvp => kvp.Key[0], kvp => kvp.Value);
-				_homophonicEncryptionKey = HomophonicEncryptionKey.GenerateKey(frequency);
+				_homophonicEncryptionKey = HomophonicEncryptionKey.GetUniqueInstance(frequency);
 			}
 
 			if (actionType == "Encrypt")

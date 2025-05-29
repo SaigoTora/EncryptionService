@@ -4,13 +4,25 @@ namespace EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption
 {
 	public class HomophonicEncryptionKey : IEncryptionKey<Dictionary<char, int[]>>
 	{
-		public required Dictionary<char, int[]> Key { get; init; }
+		public Dictionary<char, int[]> Key { get; init; } = [];
+		private static HomophonicEncryptionKey? _uniqueInstance;
 
-		public static HomophonicEncryptionKey GenerateKey(Dictionary<char, int> letterFrequency)
+		private HomophonicEncryptionKey(Dictionary<char, int> letterFrequency)
+		{
+			GenerateKey(letterFrequency);
+		}
+
+		public static HomophonicEncryptionKey GetUniqueInstance(Dictionary<char, int> letterFrequency)
+		{
+			if (_uniqueInstance == null)
+				_uniqueInstance = new HomophonicEncryptionKey(letterFrequency);
+
+			return _uniqueInstance;
+		}
+		public void GenerateKey(Dictionary<char, int> letterFrequency)
 		{
 			HashSet<int> uniqueNumbers = GetRandomNumbers(1000);
 
-			Dictionary<char, int[]> encryptionKey = [];
 			int k = 0;
 			foreach (var frequencyKVP in letterFrequency)
 			{
@@ -18,14 +30,12 @@ namespace EncryptionService.Core.Models.SubstitutionCiphers.HomophonicEncryption
 				for (int i = 0; i < arr.Length; i++)
 					arr[i] = uniqueNumbers.ElementAt(k++);
 
-				encryptionKey.Add(frequencyKVP.Key, arr);
+				Key.Add(frequencyKVP.Key, arr);
 			}
-
-			return new HomophonicEncryptionKey() { Key = encryptionKey };
 		}
 		private static HashSet<int> GetRandomNumbers(int count)
 		{
-			Random random = new Random();
+			Random random = new();
 			var numbers = Enumerable.Range(0, count).ToList();
 			numbers = [.. numbers.OrderBy(x => random.Next())];
 			HashSet<int> uniqueNumbers = [.. numbers];
