@@ -9,8 +9,7 @@
 
 <h1 class="mb-5">Electronic digital signature using RSA algorithm</h1>
 
-<form class="w-100" asp-controller="RsaSignature" asp-action="Index" method="post">
-
+<form class="w-100" asp-controller="RsaSignature" asp-action="Sign" method="post">
 	<div class="form__group field">
 		<input asp-for="TextToHash" class="form__field" placeholder="Text" />
 		<label asp-for="TextToHash" class="form__label">Text</label>
@@ -22,9 +21,11 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Sign" class="button">Sign</button>
+		<button type="submit" class="button">Sign</button>
 	</div>
+</form>
 
+<form class="w-100" asp-controller="RsaSignature" asp-action="Verify" method="post">
 	<div class="form__group field">
 		<input asp-for="TextToVerify" class="form__field" placeholder="Text" />
 		<label asp-for="TextToVerify" class="form__label">Text</label>
@@ -51,7 +52,7 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Verify" class="button">Verify</button>
+		<button type="submit" class="button">Verify</button>
 	</div>
 
 	<span asp-validation-for="TextToHash" class="text-danger"></span>

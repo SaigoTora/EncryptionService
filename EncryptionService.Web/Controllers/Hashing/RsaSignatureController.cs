@@ -6,6 +6,7 @@ using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 using EncryptionService.Web.Configurations;
 using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.HashingViewModels;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 
 namespace EncryptionService.Web.Controllers.Hashing
 {
@@ -20,36 +21,28 @@ namespace EncryptionService.Web.Controllers.Hashing
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(HashingViewModel hashingViewModel, string actionType)
+		public IActionResult Sign(HashingViewModel model)
 		{
 			if (!ModelState.IsValid)
-				return View(hashingViewModel);
-
+				return View("Index", model);
 
 			RsaEncryptionKey key = _encryptionSettings.RsaEncryptionKey;
-			if (actionType == "Sign")
-			{
-				if (!this.ValidateRequiredInput(hashingViewModel.TextToHash,
-					nameof(hashingViewModel.TextToHash), "Text"))
-					return View(hashingViewModel);
+			model.GeneratedHash = _signatureService.CreateSignature(model.TextToHash!, key);
 
-				hashingViewModel.GeneratedHash = _signatureService.CreateSignature(
-					hashingViewModel.TextToHash!, key);
-			}
-			else if (actionType == "Verify")
-			{
-				if (!this.ValidateRequiredInput(hashingViewModel.TextToVerify,
-					nameof(hashingViewModel.TextToVerify), "Text"))
-					return View(hashingViewModel);
-				if (!this.ValidateRequiredInput(hashingViewModel.HashToVerify,
-					nameof(hashingViewModel.HashToVerify), "Electronic digital signature"))
-					return View(hashingViewModel);
+			return View("Index", model);
+		}
 
-				hashingViewModel.VerificationResult = _signatureService.VerifySignature(
-					hashingViewModel.TextToVerify!, hashingViewModel.HashToVerify!, key);
-			}
+		[HttpPost]
+		public IActionResult Verify(HashingViewModel model)
+		{
+			if (!ModelState.IsValid)
+				return View("Index", model);
 
-			return View(hashingViewModel);
+			RsaEncryptionKey key = _encryptionSettings.RsaEncryptionKey;
+			model.VerificationResult = _signatureService.VerifySignature(model.TextToVerify!,
+				model.HashToVerify!, key);
+
+			return View("Index", model);
 		}
 	}
 }

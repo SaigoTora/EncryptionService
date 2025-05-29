@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-using EncryptionService.Web.Extensions;
 using EncryptionService.Web.Models.HashingViewModels;
 using EncryptionService.Core.Interfaces;
 
@@ -13,35 +12,27 @@ namespace EncryptionService.Web.Controllers.Hashing
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(HashingViewModel hashingViewModel, string actionType)
+		public IActionResult CreateHash(HashingViewModel model)
 		{
 			if (!ModelState.IsValid)
-				return View(hashingViewModel);
+				return View("Index", model);
 
-			if (actionType == "Hash")
-			{
-				if (!this.ValidateRequiredInput(hashingViewModel.TextToHash,
-					nameof(hashingViewModel.TextToHash), "Text"))
-					return View(hashingViewModel);
+			model.GeneratedHash = _hashingService.ComputeHash(model.TextToHash!,
+				model.CreatingHashingMethod);
 
-				hashingViewModel.GeneratedHash = _hashingService.ComputeHash(
-					hashingViewModel.TextToHash!, hashingViewModel.HashingMethod);
-			}
-			else if (actionType == "Verify")
-			{
-				if (!this.ValidateRequiredInput(hashingViewModel.TextToVerify,
-					nameof(hashingViewModel.TextToVerify), "Text"))
-					return View(hashingViewModel);
-				if (!this.ValidateRequiredInput(hashingViewModel.HashToVerify,
-					nameof(hashingViewModel.HashToVerify), "Hash"))
-					return View(hashingViewModel);
+			return View("Index", model);
+		}
 
-				hashingViewModel.VerificationResult = _hashingService.VerifyHash(
-					hashingViewModel.TextToVerify!, hashingViewModel.HashToVerify!,
-					hashingViewModel.HashingMethod);
-			}
+		[HttpPost]
+		public IActionResult Verify(HashingViewModel model)
+		{
+			if (!ModelState.IsValid)
+				return View("Index", model);
 
-			return View(hashingViewModel);
+			model.VerificationResult = _hashingService.VerifyHash(model.TextToVerify!,
+				model.HashToVerify!, model.VerifyingHashingMethod);
+
+			return View("Index", model);
 		}
 	}
 }

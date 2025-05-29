@@ -9,14 +9,13 @@
 
 <h1 class="mb-5">Hashing</h1>
 
-<form class="w-100" asp-controller="Hashing" asp-action="Index" method="post">
-
-	<select class="mb-3" name="HashingMethod">
-		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.Checksum)" value="@HashingMethod.Checksum">Checksum</option>
-		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.MiddleSquares)" value="@HashingMethod.MiddleSquares">Middle Squares Method</option>
-		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.ModuloDivision)" value="@HashingMethod.ModuloDivision">Modulo Division Method</option>
-		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.BaseConversion)" value="@HashingMethod.BaseConversion">Base Conversion Method</option>
-		<option selected="@(Model != null && Model.HashingMethod == @HashingMethod.Folding)" value="@HashingMethod.Folding">Folding Method</option>
+<form class="w-100 mb-4" asp-controller="Hashing" asp-action="CreateHash" method="post">
+	<select class="mb-3" name="CreatingHashingMethod">
+		<option selected="@(Model != null && Model.CreatingHashingMethod == @HashingMethod.Checksum)" value="@HashingMethod.Checksum">Checksum</option>
+		<option selected="@(Model != null && Model.CreatingHashingMethod== @HashingMethod.MiddleSquares)" value="@HashingMethod.MiddleSquares">Middle Squares Method</option>
+		<option selected="@(Model != null && Model.CreatingHashingMethod == @HashingMethod.ModuloDivision)" value="@HashingMethod.ModuloDivision">Modulo Division Method</option>
+		<option selected="@(Model != null && Model.CreatingHashingMethod == @HashingMethod.BaseConversion)" value="@HashingMethod.BaseConversion">Base Conversion Method</option>
+		<option selected="@(Model != null && Model.CreatingHashingMethod == @HashingMethod.Folding)" value="@HashingMethod.Folding">Folding Method</option>
 	</select>
 
 	<div class="form__group field">
@@ -30,8 +29,18 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Hash" class="button">Hash</button>
+		<button type="submit" class="button">Hash</button>
 	</div>
+</form>
+
+<form class="w-100" asp-controller="Hashing" asp-action="Verify" method="post">
+	<select class="mb-3" name="VerifyingHashingMethod">
+		<option selected="@(Model != null && Model.VerifyingHashingMethod == @HashingMethod.Checksum)" value="@HashingMethod.Checksum">Checksum</option>
+		<option selected="@(Model != null && Model.VerifyingHashingMethod == @HashingMethod.MiddleSquares)" value="@HashingMethod.MiddleSquares">Middle Squares Method</option>
+		<option selected="@(Model != null && Model.VerifyingHashingMethod == @HashingMethod.ModuloDivision)" value="@HashingMethod.ModuloDivision">Modulo Division Method</option>
+		<option selected="@(Model != null && Model.VerifyingHashingMethod == @HashingMethod.BaseConversion)" value="@HashingMethod.BaseConversion">Base Conversion Method</option>
+		<option selected="@(Model != null && Model.VerifyingHashingMethod == @HashingMethod.Folding)" value="@HashingMethod.Folding">Folding Method</option>
+	</select>
 
 	<div class="form__group field">
 		<input asp-for="TextToVerify" class="form__field" placeholder="Text" />
@@ -59,7 +68,7 @@
 	}
 
 	<div class="form-group mb-3">
-		<button type="submit" name="actionType" value="Verify" class="button">Verify</button>
+		<button type="submit" class="button">Verify</button>
 	</div>
 
 	<span asp-validation-for="TextToHash" class="text-danger"></span>
