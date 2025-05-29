@@ -4,9 +4,25 @@ namespace EncryptionService.Core.Models.CryptoAnalysis.SubstitutionAnalyzer
 {
 	public class SubstitutionAnalyzerKey : IEncryptionKey<Dictionary<char, char>>
 	{
+		private static SubstitutionAnalyzerKey? _uniqueInstance;
+
+		public static SubstitutionAnalyzerKey UniqueInstance
+		{
+			get
+			{
+				if (_uniqueInstance == null)
+					_uniqueInstance = new SubstitutionAnalyzerKey();
+
+				return _uniqueInstance;
+			}
+		}
 		public Dictionary<char, char> Key { get; init; } = [];
 
-		public SubstitutionAnalyzerKey()
+		private SubstitutionAnalyzerKey()
+		{
+			GenerateKey();
+		}
+		private void GenerateKey()
 		{
 			char[] ukrAlphabet =
 			[

@@ -25,7 +25,7 @@ namespace EncryptionService.Web.Controllers.CryptoAnalysis
 			if (!ModelState.IsValid)
 				return View(encryptionViewModel);
 
-			SubstitutionAnalyzerKey key = new();
+			SubstitutionAnalyzerKey key = SubstitutionAnalyzerKey.UniqueInstance;
 
 			if (actionType == "Encrypt")
 				return await ProcessEncrypt(encryptionViewModel, key);
