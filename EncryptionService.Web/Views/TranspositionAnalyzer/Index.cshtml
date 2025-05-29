@@ -32,7 +32,7 @@
 					}
 				</span>
 			}
-			@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+			@await Html.PartialAsync("Encryption/_EncryptionResult",
 					Model.EncryptionResult)
 		}
 	}
@@ -57,7 +57,7 @@
 		{
 			if (Model.DecryptionResult.AllPermutations != null)
 			{
-				@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+				@await Html.PartialAsync("Encryption/_EncryptionResult",
 						Model.DecryptionResult)
 				<span class="mb-3">Number of permutations: @Model.DecryptionResult.AllPermutations.Length</span>
 

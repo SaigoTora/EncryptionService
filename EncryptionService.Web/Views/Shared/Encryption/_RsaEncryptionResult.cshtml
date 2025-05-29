@@ -11,4 +11,4 @@
 	<p>Private key: (d, n) = <span class="encryption-result-text">(@Model.D, @Model.N)</span></p>
 }
 
-@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml", Model)
+@await Html.PartialAsync("Encryption/_EncryptionResult", Model)

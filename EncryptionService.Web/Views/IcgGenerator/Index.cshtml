@@ -20,7 +20,7 @@
 
 	@if (Model != null && Model.ResultNumbers != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_EncryptionResult.cshtml",
+		@await Html.PartialAsync("Encryption/_EncryptionResult",
 				new EncryptionResult(string.Join(", ", Model.ResultNumbers)))
 	}
 

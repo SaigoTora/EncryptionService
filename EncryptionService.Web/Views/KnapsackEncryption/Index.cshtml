@@ -19,7 +19,7 @@
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_KnapsackEncryptionResult.cshtml",
+		@await Html.PartialAsync("Encryption/_KnapsackEncryptionResult",
 				Model.EncryptionResult)
 	}
 
@@ -37,7 +37,7 @@
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_KnapsackEncryptionResult.cshtml",
+		@await Html.PartialAsync("Encryption/_KnapsackEncryptionResult",
 				Model.DecryptionResult)
 	}
 

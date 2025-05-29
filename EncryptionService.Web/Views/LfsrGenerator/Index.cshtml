@@ -30,7 +30,7 @@
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_LfsrEncryptionResult.cshtml",
+		@await Html.PartialAsync("Encryption/_LfsrEncryptionResult",
 				Model.EncryptionResult)
 	}
 
@@ -54,7 +54,7 @@
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_LfsrEncryptionResult.cshtml",
+		@await Html.PartialAsync("Encryption/_LfsrEncryptionResult",
 				Model.DecryptionResult)
 	}
 

@@ -17,7 +17,7 @@
 
 	@if (Model != null && Model.EncryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_HomophonicEncryptionResult.cshtml",
+		@await Html.PartialAsync("Encryption/_HomophonicEncryptionResult",
 				Model.EncryptionResult)
 	}
 
@@ -33,7 +33,7 @@
 
 	@if (Model != null && Model.DecryptionResult != null)
 	{
-		@await Html.PartialAsync("~/Views/Encryption/_HomophonicEncryptionResult.cshtml",
+		@await Html.PartialAsync("Encryption/_HomophonicEncryptionResult",
 				Model.DecryptionResult)
 	}
 
