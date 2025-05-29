@@ -2,6 +2,7 @@
 
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
+using EncryptionService.Core.Utils;
 
 namespace EncryptionService.Core.Services.Hashing
 {
@@ -23,7 +24,7 @@ namespace EncryptionService.Core.Services.Hashing
 			int k = key.Key.K;
 
 			int m = GetHashValue(text, p);
-			int kInv = ModInverse(k, p - 1);
+			int kInv = MathUtils.ModInverse(k, p - 1);
 			int a = (int)BigInteger.ModPow(g, k, p);
 			int b = (kInv * (m - x * a)) % (p - 1);
 
@@ -63,27 +64,6 @@ namespace EncryptionService.Core.Services.Hashing
 				m = (int)BigInteger.ModPow(m + ch, 2, n);
 
 			return m;
-		}
-		private static int ModInverse(int a, int mod)
-		{
-			int t = 0, newT = 1;
-			int r = mod, newR = a;
-
-			while (newR != 0)
-			{
-				int quotient = r / newR;
-
-				(t, newT) = (newT, t - quotient * newT);
-				(r, newR) = (newR, r - quotient * newR);
-			}
-
-			if (r > 1)
-				throw new ArgumentException("The number does not have an inverse modulus.");
-
-			if (t < 0)
-				t += mod;
-
-			return t;
 		}
 	}
 }

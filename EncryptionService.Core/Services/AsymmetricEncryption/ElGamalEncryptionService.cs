@@ -3,6 +3,7 @@ using System.Text;
 
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.AsymmetricEncryption.ElGamalEncryption;
+using EncryptionService.Core.Utils;
 
 namespace EncryptionService.Core.Services.AsymmetricEncryption
 {
@@ -48,7 +49,7 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 		{
 			int p = encryptionKey.Key.P;
 			var (a, bList) = Deserialize(encryptedText);
-			int a_inv = ModInverse((int)BigInteger.ModPow(a, _x, p), p);
+			int a_inv = MathUtils.ModInverse((int)BigInteger.ModPow(a, _x, p), p);
 			StringBuilder builder = new();
 
 			foreach (int b in bList)
@@ -67,6 +68,7 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 			var parts = input.Split('|');
 			int a = int.Parse(parts[0]);
 			List<int> bValues = [.. parts[1].Split(',').Select(int.Parse)];
+
 			return (a, bValues);
 		}
 
@@ -130,28 +132,6 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 				factors.Add(n);
 
 			return factors;
-		}
-
-		private static int ModInverse(int a, int mod)
-		{
-			int t = 0, newT = 1;
-			int r = mod, newR = a;
-
-			while (newR != 0)
-			{
-				int quotient = r / newR;
-
-				(t, newT) = (newT, t - quotient * newT);
-				(r, newR) = (newR, r - quotient * newR);
-			}
-
-			if (r > 1)
-				throw new ArgumentException("The number does not have an inverse modulus.");
-
-			if (t < 0)
-				t += mod;
-
-			return t;
 		}
 	}
 }

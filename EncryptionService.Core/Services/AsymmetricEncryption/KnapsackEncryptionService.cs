@@ -2,6 +2,7 @@
 
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.AsymmetricEncryption.KnapsackEncryption;
+using EncryptionService.Core.Utils;
 
 namespace EncryptionService.Core.Services.AsymmetricEncryption
 {
@@ -56,7 +57,7 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 			GenerateM(keyData);
 			GenerateN();
 			GenerateE();
-			_inverseN = ModInverse(_n, _m);
+			_inverseN = MathUtils.ModInverse(_n, _m);
 		}
 
 		private void GenerateD(KnapsackEncryptionKeyData keyData)
@@ -72,7 +73,7 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 		{
 			List<int> numbers = [];
 			for (int i = 2; i < _m; i++)
-				if (i % 2 != 0 && GCD(i, _m) == 1)
+				if (i % 2 != 0 && MathUtils.CalculateGCD(i, _m) == 1)
 					numbers.Add(i);
 
 			_n = numbers[_random.Next(numbers.Count)];
@@ -134,38 +135,6 @@ namespace EncryptionService.Core.Services.AsymmetricEncryption
 			}
 
 			return bits;
-		}
-
-		private static int GCD(int a, int b)
-		{
-			while (b != 0)
-			{
-				int temp = b;
-				b = a % b;
-				a = temp;
-			}
-			return a;
-		}
-		private static int ModInverse(int a, int mod)
-		{
-			int t = 0, newT = 1;
-			int r = mod, newR = a;
-
-			while (newR != 0)
-			{
-				int quotient = r / newR;
-
-				(t, newT) = (newT, t - quotient * newT);
-				(r, newR) = (newR, r - quotient * newR);
-			}
-
-			if (r > 1)
-				throw new ArgumentException("The number does not have an inverse modulus.");
-
-			if (t < 0)
-				t += mod;
-
-			return t;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.StreamCiphersAndGenerators.IcgGenerator;
+using EncryptionService.Core.Utils;
 
 namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 {
@@ -23,29 +24,8 @@ namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 			if (seed == 0)
 				return parameters.B;
 
-			return (parameters.A * ModInverse(seed, parameters.M) + parameters.B) % parameters.M;
-		}
-		private static int ModInverse(int a, int m)
-		{
-			int b0 = m, t, q;
-			int x0 = 0, x1 = 1;
-			if (m == 1) return 1;
-
-			while (a > 1)
-			{
-				q = a / m;
-				t = m;
-				m = a % m;
-				a = t;
-				t = x0;
-				x0 = x1 - q * x0;
-				x1 = t;
-			}
-
-			if (x1 < 0)
-				x1 += b0;
-
-			return x1;
+			return (parameters.A * MathUtils.ModInverse(seed, parameters.M) + parameters.B)
+				% parameters.M;
 		}
 	}
 }
