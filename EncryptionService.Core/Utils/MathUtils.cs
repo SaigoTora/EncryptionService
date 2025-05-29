@@ -1,4 +1,6 @@
-﻿namespace EncryptionService.Core.Utils
+﻿using System.Numerics;
+
+namespace EncryptionService.Core.Utils
 {
 	public static class MathUtils
 	{
@@ -47,6 +49,22 @@
 				t += mod;
 
 			return t;
+		}
+
+		/// <summary>
+		/// Calculates a simplified quadratic convolution hash value for the given text modulo <paramref name="mod"/>.
+		/// </summary>
+		/// <param name="text">The input string to hash.</param>
+		/// <param name="mod">The modulus used in the hash calculation.</param>
+		/// <returns>The hash value as an integer.</returns>
+		public static int ComputeQuadraticHash(string text, int mod)
+		{
+			int m = 0;
+
+			foreach (char ch in text)
+				m = (int)BigInteger.ModPow(m + ch, 2, mod);
+
+			return m;
 		}
 	}
 }

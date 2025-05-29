@@ -23,7 +23,7 @@ namespace EncryptionService.Core.Services.Hashing
 
 			int k = key.Key.K;
 
-			int m = GetHashValue(text, p);
+			int m = MathUtils.ComputeQuadraticHash(text, p);
 			int kInv = MathUtils.ModInverse(k, p - 1);
 			int a = (int)BigInteger.ModPow(g, k, p);
 			int b = (kInv * (m - x * a)) % (p - 1);
@@ -36,7 +36,7 @@ namespace EncryptionService.Core.Services.Hashing
 		public bool VerifySignature(string text, string signature, ElGamalEncryptionKey key)
 		{
 			int p = key.Key.P;
-			int m = GetHashValue(text, p);
+			int m = MathUtils.ComputeQuadraticHash(text, p);
 
 			var encryptionResult = _encryptionService.Encrypt(string.Empty, key);
 			int g = encryptionResult.G;
@@ -53,17 +53,6 @@ namespace EncryptionService.Core.Services.Hashing
 			BigInteger right = (BigInteger.ModPow(y, a, p) * BigInteger.ModPow(a, b, p)) % p;
 
 			return left == right;
-		}
-
-		private static int GetHashValue(string text, int n)
-		{
-			// Simplified Quadratic Convolution Hash Function
-			int m = 0;
-
-			foreach (char ch in text)
-				m = (int)BigInteger.ModPow(m + ch, 2, n);
-
-			return m;
 		}
 	}
 }

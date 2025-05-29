@@ -34,7 +34,8 @@ namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 
 			return new LfsrEncryptionResult(resultText, binary, hex);
 		}
-		private static byte[] GetInputBytes(string text, EncryptionFormat format, bool isEncryption)
+		private static byte[] GetInputBytes(string text, EncryptionFormat format,
+			bool isEncryption)
 		{
 			if (isEncryption)
 			{

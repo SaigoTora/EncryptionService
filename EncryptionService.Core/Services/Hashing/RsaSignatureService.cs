@@ -3,6 +3,7 @@
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.AsymmetricEncryption.RsaEncryption;
 using EncryptionService.Core.Services.AsymmetricEncryption;
+using EncryptionService.Core.Utils;
 
 namespace EncryptionService.Core.Services.Hashing
 {
@@ -16,7 +17,7 @@ namespace EncryptionService.Core.Services.Hashing
 		public string CreateSignature(string text, RsaEncryptionKey key)
 		{
 			int n = key.Key.P * key.Key.Q;
-			int hash = GetHashValue(text, n);
+			int hash = MathUtils.ComputeQuadraticHash(text, n);
 
 			var encryptionResult = _encryptionService.Decrypt($"0{RsaEncryptionService.SEPARATOR}0",
 				key);
@@ -29,7 +30,7 @@ namespace EncryptionService.Core.Services.Hashing
 		public bool VerifySignature(string text, string signature, RsaEncryptionKey key)
 		{
 			int n = key.Key.P * key.Key.Q;
-			int expectedHash = GetHashValue(text, n);
+			int expectedHash = MathUtils.ComputeQuadraticHash(text, n);
 
 			var encryptionResult = _encryptionService.Encrypt(string.Empty, key);
 			int e = encryptionResult.E
@@ -39,16 +40,6 @@ namespace EncryptionService.Core.Services.Hashing
 			int decryptedHash = (int)BigInteger.ModPow(s, e, n);
 
 			return decryptedHash == expectedHash;
-		}
-		private static int GetHashValue(string text, int n)
-		{
-			// Simplified Quadratic Convolution Hash Function
-			int m = 0;
-
-			foreach (char ch in text)
-				m = (int)BigInteger.ModPow(m + ch, 2, n);
-
-			return m;
 		}
 	}
 }
