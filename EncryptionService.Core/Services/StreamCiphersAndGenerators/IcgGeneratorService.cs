@@ -24,7 +24,17 @@ namespace EncryptionService.Core.Services.StreamCiphersAndGenerators
 			if (seed == 0)
 				return parameters.B;
 
-			return (parameters.A * MathUtils.ModInverse(seed, parameters.M) + parameters.B)
+			int modInverseSeed;
+			try
+			{
+				modInverseSeed = MathUtils.ModInverse(seed, parameters.M);
+			}
+			catch (ArgumentException)
+			{
+				modInverseSeed = 1;
+			}
+
+			return (parameters.A * modInverseSeed + parameters.B)
 				% parameters.M;
 		}
 	}
