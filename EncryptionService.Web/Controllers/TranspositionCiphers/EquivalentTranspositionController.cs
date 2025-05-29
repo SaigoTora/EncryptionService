@@ -5,7 +5,6 @@ using EncryptionService.Web.Configurations;
 using EncryptionService.Core.Interfaces;
 using EncryptionService.Core.Models.TranspositionCiphers.EquivalentTransposition;
 using EncryptionService.Web.Models.EncryptionViewModels;
-using EncryptionService.Web.Extensions;
 
 namespace EncryptionService.Web.Controllers.TranspositionCiphers
 {
@@ -23,66 +22,56 @@ namespace EncryptionService.Web.Controllers.TranspositionCiphers
 		public IActionResult Index() => View();
 
 		[HttpPost]
-		public IActionResult Index(
-			EncryptionViewModel<EquivalentTranspositionEncryptionResult> encryptionViewModel,
-			string actionType)
+		public IActionResult Encrypt(
+			EncryptionViewModel<EquivalentTranspositionEncryptionResult> model)
 		{
 			if (!ModelState.IsValid)
-				return View(encryptionViewModel);
+				return View("Index", model);
 
 			EquivalentTranspositionKey key = _encryptionSettings.EquivalentTranspositionKey;
 			ViewData["KeyRowNumbers"] = key.Key.RowNumbers;
 			ViewData["KeyColumnNumbers"] = key.Key.ColumnNumbers;
 			int maxTextLength = key.Key.RowNumbers.Length * key.Key.ColumnNumbers.Length;
 
-			if (actionType == "Encrypt")
-				return ProcessEncrypt(encryptionViewModel, key, maxTextLength);
-			else if (actionType == "Decrypt")
-				return ProcessDecrypt(encryptionViewModel, key, maxTextLength);
-
-			return View(encryptionViewModel);
-		}
-
-		private ViewResult ProcessEncrypt(
-			EncryptionViewModel<EquivalentTranspositionEncryptionResult> model,
-			EquivalentTranspositionKey key, int maxTextLength)
-		{
-			if (!this.ValidateRequiredInput(model.InputText,
-				nameof(model.InputText), "Text"))
-				return View(model);
-
-			if (model.InputText!.Length > maxTextLength)
-			{
-				ModelState.AddModelError(nameof(model.InputText),
-					"The length of the input text must be less than or equal to " +
-					$"{maxTextLength}. You have entered characters: " +
-					$"{model.InputText.Length}.");
-				return View(model);
-			}
+			if (!IsInputTextValid(model, maxTextLength))
+				return View("Index", model);
 
 			model.EncryptionResult = _encryptionService.Encrypt(model.InputText!, key);
-			return View(model);
+			return View("Index", model);
 		}
-		private ViewResult ProcessDecrypt(
-			EncryptionViewModel<EquivalentTranspositionEncryptionResult> model,
-			EquivalentTranspositionKey key, int maxTextLength)
-		{
-			if (!this.ValidateRequiredInput(model.EncryptedInputText,
-				nameof(model.EncryptedInputText), "Encrypted text"))
-				return View(model);
 
+		[HttpPost]
+		public IActionResult Decrypt(
+			EncryptionViewModel<EquivalentTranspositionEncryptionResult> model)
+		{
+			if (!ModelState.IsValid)
+				return View("Index", model);
+
+			EquivalentTranspositionKey key = _encryptionSettings.EquivalentTranspositionKey;
+			ViewData["KeyRowNumbers"] = key.Key.RowNumbers;
+			ViewData["KeyColumnNumbers"] = key.Key.ColumnNumbers;
+			int maxTextLength = key.Key.RowNumbers.Length * key.Key.ColumnNumbers.Length;
+
+			if (!IsInputTextValid(model, maxTextLength))
+				return View("Index", model);
+
+			model.DecryptionResult = _encryptionService.Decrypt(model.EncryptedInputText!, key);
+			return View("Index", model);
+		}
+
+		private bool IsInputTextValid(
+			EncryptionViewModel<EquivalentTranspositionEncryptionResult> model, int maxTextLength)
+		{
 			if (model.EncryptedInputText!.Length > maxTextLength)
 			{
 				ModelState.AddModelError(nameof(model.EncryptedInputText),
 					"The length of the encrypted input text must be less than or equal to " +
 					$"{maxTextLength}. You have entered characters: " +
 					$"{model.EncryptedInputText.Length}.");
-				return View(model);
+				return false;
 			}
-			model.DecryptionResult = _encryptionService.Decrypt(
-				model.EncryptedInputText!, key);
 
-			return View(model);
+			return true;
 		}
 	}
 }
